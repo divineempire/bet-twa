@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Main from '../views/Main.vue'
+import NavBar from "@/components/NavBar.vue";
 
 const routes = [
   {
@@ -7,6 +8,11 @@ const routes = [
     name: 'Main',
     component: Main
   },
+  {
+    path: '/test',
+    name: 'Test',
+    component: NavBar
+  }
 ]
 
 const router = createRouter({

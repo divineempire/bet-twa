@@ -2,7 +2,10 @@
 	<div class="header">
 		<button class="header__close-btn"
 			@click="closeApp"
-		>Close</button>
+		>
+			Close
+		</button>
+		<router-link :to="{name: 'Test'}">to Test</router-link>
 	</div>
 </template>
 

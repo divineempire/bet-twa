@@ -3,6 +3,7 @@
 		<Header />
 		<div class='main'>
 			<Sport />
+<!--			<router-view />-->
 		</div>
 	</div>
 </template>
