@@ -1,6 +1,6 @@
 <template>
 	<div class="sport">
-		<h1>App</h1>
+		<h1>Sport</h1>
 	</div>
 </template>
 

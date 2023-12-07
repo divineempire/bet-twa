@@ -1,16 +1,18 @@
 <template>
 	<div class="container">
-		<Header />
+<!--		<Header />-->
+		<Wallet />
 		<div class='main'>
-			<Sport />
-<!--			<router-view />-->
+			<router-view />
 		</div>
+		<NavBar />
 	</div>
 </template>
 
 <script>
-import Sport from "@/components/Sport.vue";
 import Header from "@/components/Header.vue";
+import NavBar from "@/components/NavBar.vue";
+import Wallet from "@/components/Wallet.vue";
 export default {
 	name: 'Main',
 	data() {
@@ -19,14 +21,21 @@ export default {
 		}
 	},
 	components: {
-		Sport,
+		Wallet,
+		NavBar,
 		Header
 	},
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
 		}
-	}
+	},
+	// created() {
+	// 	this.webApp.ready()
+	// 	if (!this.webApp.isExpanded) {
+	// 		this.webApp.expand()
+	// 	}
+	// }
 }
 </script>
 

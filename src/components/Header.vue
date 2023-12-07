@@ -5,7 +5,6 @@
 		>
 			Close
 		</button>
-		<router-link :to="{name: 'Test'}">to Test</router-link>
 	</div>
 </template>
 
