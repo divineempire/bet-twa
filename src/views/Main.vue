@@ -1,14 +1,15 @@
 <template>
-	<div class='main'>
-		<div class="container">
+	<div class="container">
+		<Header />
+		<div class='main'>
 			<Sport />
-<!--			<router-view />-->
 		</div>
 	</div>
 </template>
 
 <script>
 import Sport from "@/components/Sport.vue";
+import Header from "@/components/Header.vue";
 export default {
 	name: 'Main',
 	data() {
@@ -17,7 +18,8 @@ export default {
 		}
 	},
 	components: {
-		Sport
+		Sport,
+		Header
 	},
 	computed: {
 		webApp() {
