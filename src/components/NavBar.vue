@@ -83,6 +83,10 @@ export default {
 		gap: 0 24px;
 	}
 
+	.navigation__item {
+		padding: 0 6px;
+	}
+
 	.navigation__icon {
 		margin-bottom: 6px;
 		width: 24px;

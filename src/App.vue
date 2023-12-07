@@ -17,11 +17,32 @@ export default {
 		if (!this.webApp.isExpanded) {
 			this.webApp.expand()
 		}
+		if (!this.webApp.MainButton.isVisible) {
+			this.webApp.MainButton.hide()
+		}
 	}
 }
 </script>
 
 <style>
+@font-face {
+	font-family: Roboto-Regular;
+	src: url("~@/fonts/Roboto/Roboto-Regular.woff2") format("woff2"),
+	url("~@/fonts/Roboto/Roboto-Regular.woff") format("woff");
+	font-style: normal;
+	font-weight: normal;
+	font-display: fallback;
+}
+
+@font-face {
+	font-family: Roboto-Medium;
+	src: url("~@/fonts/Roboto/Roboto-Medium.woff2") format("woff2"),
+	url("~@/fonts/Roboto/Roboto-Medium.woff") format("woff");
+	font-style: normal;
+	font-weight: normal;
+	font-display: fallback;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -34,8 +55,28 @@ ul {
 	list-style: none;
 }
 
+h1, h2, h3 {
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+}
+
+li {
+	font-family: Roboto-Regular, sans-serif;
+}
+
 a {
 	text-decoration: none;
+	font-family: Roboto-Regular, sans-serif;
+	cursor: pointer;
+}
+
+p {
+	font-family: Roboto-Regular, sans-serif;
+}
+
+button {
+	font-family: Roboto-Regular, sans-serif;
+	cursor: pointer;
 }
 
 body {
@@ -43,10 +84,11 @@ body {
 }
 
 .container {
-	max-width: 480px;
-	width: 480px;
+	max-width: 390px;
+	width: 390px;
 	margin: 0 auto;
 	border: 1px solid #fff;
+	padding: 4px;
 }
 
 @media screen and (max-width: 600px) {
