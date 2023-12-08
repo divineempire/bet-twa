@@ -48,7 +48,7 @@
 		<ul class="navigation__list">
 			<li class="navigation__item">
 				<div class="navigation__btn"
-					:class="{active: sport === 'FOOTBALL'}"
+					:class="{active: this.activeSport === 'FOOTBALL'}"
 					 @click="chooseSport('FOOTBALL')"
 				>
 					<svg class="navigation__icon football" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -59,7 +59,7 @@
 			</li>
 			<li class="navigation__item">
 				<div class="navigation__btn"
-					:class="{active: sport === 'HOCKEY'}"
+					:class="{active: this.activeSport === 'HOCKEY'}"
 					 @click="chooseSport('HOCKEY')"
 				>
 					<svg class="navigation__icon hockey" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 27 26" fill="none">
@@ -70,7 +70,7 @@
 			</li>
 			<li class="navigation__item">
 				<div class="navigation__btn"
-					:class="{active: sport === 'BASKETBALL'}"
+					:class="{active: this.activeSport === 'BASKETBALL'}"
 					 @click="chooseSport('BASKETBALL')"
 				>
 					<svg class="navigation__icon basketball" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -84,7 +84,7 @@
 			</li>
 			<li class="navigation__item">
 				<div class="navigation__btn"
-					:class="{active: sport === 'TENNIS'}"
+					:class="{active: this.activeSport === 'TENNIS'}"
 					 @click="chooseSport('TENNIS')"
 				>
 					<svg class="navigation__icon tennis" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -95,7 +95,7 @@
 			</li>
 			<li class="navigation__item">
 				<div class="navigation__btn"
-					:class="{active: sport === 'VOLLEYBALL'}"
+					:class="{active: this.activeSport === 'VOLLEYBALL'}"
 					 @click="chooseSport('VOLLEYBALL')"
 				>
 					<svg class="navigation__icon volleyball" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 27 26" fill="none">
@@ -113,12 +113,22 @@ export default {
 	name: "SportNavigation",
 	data() {
 		return {
-			sport: 'FOOTBALL',
+			// sport: 'FOOTBALL',
+		}
+	},
+	props: {
+		activeSport: {
+			type: String,
+			default() {
+				return ''
+			}
 		}
 	},
 	methods: {
 		chooseSport(value) {
-			this.sport = value
+			console.log(this.activeSport)
+			this.$emit('updateSport', value)
+			// this.activeSport = value
 		}
 	}
 }
@@ -126,7 +136,7 @@ export default {
 
 <style scoped>
 	.sport__navigation {
-		padding: 14px 10px;
+		padding: 14px 0;
 	}
 
 	.navigation__list {

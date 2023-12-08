@@ -43,6 +43,15 @@ export default {
 	font-display: fallback;
 }
 
+@font-face {
+	font-family: Roboto-Bold;
+	src: url("~@/fonts/Roboto/Roboto-Bold.woff2") format("woff2"),
+	url("~@/fonts/Roboto/Roboto-Bold.woff") format("woff");
+	font-style: normal;
+	font-weight: normal;
+	font-display: fallback;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -80,7 +89,7 @@ button {
 }
 
 body {
-	background-color: #090909;
+	background-color: #151317;
 }
 
 .container {
@@ -88,7 +97,7 @@ body {
 	width: 390px;
 	margin: 0 auto;
 	border: 1px solid #fff;
-	padding: 4px;
+	padding: 0 10px;
 }
 
 @media screen and (max-width: 600px) {
@@ -96,7 +105,7 @@ body {
 		max-width: 100%;
 		width: 100%;
 		margin: 0 auto;
-		padding: 4px;
+		padding: 0 10px;
 	}
 }
 </style>
