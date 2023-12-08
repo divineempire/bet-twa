@@ -293,7 +293,7 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .sport__championship-list {
-	margin-bottom: ;
+	//margin-bottom: ;
 	display: flex;
 	flex-direction: column;
 	gap: 6px 0;
