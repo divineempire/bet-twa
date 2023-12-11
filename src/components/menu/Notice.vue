@@ -1,12 +1,15 @@
 <template>
-	<div class="menu">
-		<h1>Menu</h1>
+	<div class="notice">
+
 	</div>
 </template>
 
 <script>
 export default {
-	name: "Menu"
+	name: "Notice",
+	data() {
+		return {}
+	}
 }
 </script>
 

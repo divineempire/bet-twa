@@ -17,72 +17,72 @@
 		<div class="sport__search">
 			<input type="search" class="sport__search-input" placeholder="Введите название события или турнира">
 		</div>
-		<SportNavigation
-			:activeSport="activeSport"
-			@updateSport="updateSport"
+		<SportNavigation />
+		<router-view
+			:league="league"
 		/>
-		<ul class="sport__championship-list"
-			v-if="activeSport === 'FOOTBALL'"
-		>
-			<ChampionshipCard
-				v-for="(item, index) in championships"
-				:key="index"
-				:item="item"
-				:league="league"
-			/>
-		</ul>
-		<ul class="sport__championship-list"
-			v-if="activeSport === 'HOCKEY'"
-		>
-			<ChampionshipCard
-				v-for="(item, index) in championships"
-				:key="index"
-				:item="item"
-				:league="league"
-			/>
-		</ul>
-		<ul class="sport__championship-list"
-			v-if="activeSport === 'BASKETBALL'"
-		>
-			<ChampionshipCard
-				v-for="(item, index) in championships"
-				:key="index"
-				:item="item"
-				:league="league"
-			/>
-		</ul>
-		<ul class="sport__championship-list"
-			v-if="activeSport === 'TENNIS'"
-		>
-			<ChampionshipCard
-				v-for="(item, index) in championships"
-				:key="index"
-				:item="item"
-				:league="league"
-			/>
-		</ul>
-		<ul class="sport__championship-list"
-			v-if="activeSport === 'VOLLEYBALL'"
-		>
-			<ChampionshipCard
-				v-for="(item, index) in championships"
-				:key="index"
-				:item="item"
-				:league="league"
-			/>
-		</ul>
+<!--		<ul class="sport__championship-list"-->
+<!--			v-if="activeSport === 'FOOTBALL'"-->
+<!--		>-->
+<!--			<ChampionshipCard-->
+<!--				v-for="(item, index) in championships"-->
+<!--				:key="index"-->
+<!--				:item="item"-->
+<!--				:league="league"-->
+<!--			/>-->
+<!--		</ul>-->
+<!--		<ul class="sport__championship-list"-->
+<!--			v-if="activeSport === 'HOCKEY'"-->
+<!--		>-->
+<!--			<ChampionshipCard-->
+<!--				v-for="(item, index) in championships"-->
+<!--				:key="index"-->
+<!--				:item="item"-->
+<!--				:league="league"-->
+<!--			/>-->
+<!--		</ul>-->
+<!--		<ul class="sport__championship-list"-->
+<!--			v-if="activeSport === 'BASKETBALL'"-->
+<!--		>-->
+<!--			<ChampionshipCard-->
+<!--				v-for="(item, index) in championships"-->
+<!--				:key="index"-->
+<!--				:item="item"-->
+<!--				:league="league"-->
+<!--			/>-->
+<!--		</ul>-->
+<!--		<ul class="sport__championship-list"-->
+<!--			v-if="activeSport === 'TENNIS'"-->
+<!--		>-->
+<!--			<ChampionshipCard-->
+<!--				v-for="(item, index) in championships"-->
+<!--				:key="index"-->
+<!--				:item="item"-->
+<!--				:league="league"-->
+<!--			/>-->
+<!--		</ul>-->
+<!--		<ul class="sport__championship-list"-->
+<!--			v-if="activeSport === 'VOLLEYBALL'"-->
+<!--		>-->
+<!--			<ChampionshipCard-->
+<!--				v-for="(item, index) in championships"-->
+<!--				:key="index"-->
+<!--				:item="item"-->
+<!--				:league="league"-->
+<!--			/>-->
+<!--		</ul>-->
 	</div>
 </template>
 
 <script>
-import SportNavigation from "@/components/SportNavigation.vue";
-import ChampionshipCard from "@/components/ChampionshipCard.vue";
+import SportNavigation from "@/components/sport/SportNavigation.vue";
+import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
 export default {
 	name: 'Sport',
 	data() {
 		return {
 			league: 'REGULAR',
-			activeSport: 'FOOTBALL',
+			// activeSport: 'FOOTBALL',
 			championships: [
 				{
 					name: 'Аргентина. Кубок Профессиональной Лиги',
@@ -228,9 +228,9 @@ export default {
 		chooseLeague(value) {
 			this.league = value
 		},
-		updateSport(value) {
-			this.activeSport = value
-		}
+		// updateSport(value) {
+		// 	this.activeSport = value
+		// }
 	}
 }
 </script>

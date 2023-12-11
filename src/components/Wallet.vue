@@ -1,5 +1,7 @@
 <template>
-	<div class="wallet">
+	<div class="wallet"
+		v-if="showWalletCondition"
+	>
 		<div class="wallet__connect-info"
 			v-if="!connected"
 		>
@@ -7,16 +9,28 @@
 			<p class="wallet__description">Полностью децентрализованная биржа ставок. <br> Просто, анонимно и безопасно!</p>
 			<button class="wallet__connect-btn">Подключить кошелёк</button>
 		</div>
-		<div class="wallet__balance"
-			v-if="connected"
+		<div class="wallet__connected"
+			 v-if="connected"
 		>
-			<div class="wallet__main-balance">
-				<p class="wallet__text">Основной счёт:</p>
-				<p class="wallet__value">150 000 TON</p>
+			<div class="wallet__info"
+				v-if="getRouteName === 'Profile'"
+			>
+				<p class="wallet__address">Connected: UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM</p>
+				<button class="wallet__disconnect-btn"
+					@click="disconnect"
+				>
+					Disconnect Wallet
+				</button>
 			</div>
-			<div class="wallet__fantasy-balance">
-				<p class="wallet__text">Фентези счет:</p>
-				<p class="wallet__value">1000 Ф</p>
+			<div class="wallet__balance">
+				<div class="wallet__main-balance">
+					<p class="wallet__text">Основной счёт:</p>
+					<p class="wallet__value">150 000 TON</p>
+				</div>
+				<div class="wallet__fantasy-balance">
+					<p class="wallet__text">Фентези счет:</p>
+					<p class="wallet__value">1000 Ф</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -27,7 +41,24 @@ export default {
 	name: "Wallet",
 	data() {
 		return {
-			connected: false,
+			connected: true,
+		}
+	},
+	computed: {
+		getRouteName() {
+			return this.$route.name
+		},
+		showWalletCondition() {
+			if (this.getRouteName === 'League' || this.getRouteName === 'History') {
+				return false
+			} else {
+				return true
+			}
+		}
+	},
+	methods: {
+		disconnect() {
+			console.log('disconnect')
 		}
 	}
 }
@@ -68,6 +99,29 @@ export default {
 		flex-direction: column;
 		border-radius: 8px;
 		background: #28272B;
+	}
+
+	.wallet__info {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 12px;
+	}
+
+	.wallet__address {
+		white-space: nowrap;
+		max-width: 55%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 13px;
+	}
+
+	.wallet__disconnect-btn {
+		border: none;
+		outline: none;
+		background-color: transparent;
+		color: #FF3B30;
+		font-size: 13px;
 	}
 
 	.wallet__main-balance {

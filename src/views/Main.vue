@@ -1,6 +1,5 @@
 <template>
 	<div class="container">
-<!--		<Header />-->
 		<Wallet />
 		<div class='main'>
 			<router-view />
@@ -10,7 +9,6 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 import NavBar from "@/components/NavBar.vue";
 import Wallet from "@/components/Wallet.vue";
 export default {
@@ -23,7 +21,6 @@ export default {
 	components: {
 		Wallet,
 		NavBar,
-		Header
 	},
 	computed: {
 		webApp() {

@@ -1,8 +1,8 @@
 <template>
-	<li class="championship-card"
-		@click="showMore = !showMore"
-	>
-		<div class="championship-card__main">
+	<li class="championship-card">
+		<div class="championship-card__main"
+			 @click="showMore = !showMore"
+		>
 			<div class="championship-card__info">
 				<div :class="`${item?.region.toLowerCase()}` + '_flag'" class="championship-card__region-icon"></div>
 				<p class="championship-card__name">{{ item?.name }}</p>
@@ -104,6 +104,9 @@ export default {
 				return `${value.sum}` + ' Ф'
 			}
 		}
+	},
+	mounted() {
+		console.log(this.league)
 	}
 }
 </script>
