@@ -64,7 +64,7 @@ ul {
 	list-style: none;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
 	font-family: Roboto-Medium, sans-serif;
 	font-weight: 500;
 }

@@ -99,6 +99,7 @@ export default {
 		align-items: center;
 		opacity: 0.5;
 		font-size: 11px;
+		font-family: Roboto-Medium, sans-serif;
 		line-height: 13px;
 	}
 

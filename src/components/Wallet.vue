@@ -49,7 +49,7 @@ export default {
 			return this.$route.name
 		},
 		showWalletCondition() {
-			if (this.getRouteName === 'League' || this.getRouteName === 'History') {
+			if (this.getRouteName === 'League' || this.getRouteName === 'History' || this.getRouteName === 'Notice' || this.getRouteName === 'Bonus') {
 				return false
 			} else {
 				return true
