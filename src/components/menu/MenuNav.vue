@@ -39,7 +39,7 @@ export default {
 
 	.menu__nav {
 		margin-top: 28px;
-		padding: 10px 0;
+		padding: 14px 0;
 	}
 
 	.menu__list {

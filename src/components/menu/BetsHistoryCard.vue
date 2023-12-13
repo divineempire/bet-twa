@@ -7,11 +7,9 @@
 				<p class="card__status" :class="card.status.toLowerCase() + '_status'">{{ getStatus }}</p>
 				<p class="card__datetime">{{ getDatetime }}</p>
 			</div>
-			<div class="arrow-icon" :class="{reverse: showMore === false}"></div>
+			<div class="arrow-icon" :class="{reverse: showMore === true}"></div>
 		</div>
-		<div class="match-info"
-			 v-if="showMore"
-		>
+		<div class="match-info">
 			<div class="match-info__row">
 				<div class="match-info__title">
 					<div class="match-info__category"></div>
@@ -44,6 +42,28 @@
 				<p class="match-info__name">Потенциальный выйгрыш (Fee 5%)</p>
 				<p class="match-info__value" :class="{win: card.status === 'WIN'}">{{ card.possibleWin }}</p>
 			</div>
+			<button type="button" class="match-info__cancel-btn"
+					v-if="card.status === 'WAIT'"
+					@click="cancelBet"
+			>
+				Отменить ставку
+			</button>
+		</div>
+		<div class="hidden-info"
+			 v-show="showMore"
+		>
+			<div class="hidden-info__row"
+				 v-if="card.status !== 'LOSE'"
+			>
+				<p class="hidden-info__name">Комиссия с выйгрыша</p>
+				<p class="hidden-info__value">{{ card.feeWithWin }}</p>
+			</div>
+			<div class="hidden-info__row">
+				<p class="hidden-info__name">Смарт-контракт</p>
+				<a href="" class="hidden-info__link">
+					<p class="link-text">{{ card.smartContract }}</p>
+				</a>
+			</div>
 		</div>
 	</li>
 </template>
@@ -53,7 +73,7 @@ export default {
 	name: "BetsHistoryCard",
 	data() {
 		return {
-			showMore: true
+			showMore: false
 		}
 	},
 	props: {
@@ -83,6 +103,11 @@ export default {
 </script>
 
 <style scoped>
+.card {
+	background: rgba(40, 39, 43, 0.50);
+	border-radius: 8px;
+}
+
 .card__title {
 	display: flex;
 	align-items: center;
@@ -223,5 +248,60 @@ export default {
 
 .lose {
 	color: #F06159;
+}
+
+.match-info__cancel-btn {
+	width: 100%;
+	text-align: start;
+	padding: 10px;
+	border: none;
+	outline: none;
+	background: transparent;
+	color: #FF3B30;
+	font-size: 13px;
+}
+
+.hidden-info__row {
+	display: flex;
+	padding: 10px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.hidden-info__row:not(:last-child) {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hidden-info__name {
+	font-size: 13px;
+	opacity: 0.7;
+	white-space: nowrap;
+}
+
+.hidden-info__value {
+	font-size: 13px;
+	font-family: Roboto-Medium, sans-serif;
+}
+
+.hidden-info__link {
+	display: flex;
+	align-items: center;
+}
+
+.hidden-info__link::before {
+	content: '';
+	display: block;
+	margin-right: 6px;
+	min-width: 15px;
+	height: 15px;
+	background: url('~@/assets/menu/copy.svg') no-repeat;
+}
+
+.link-text {
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 13px;
+	font-family: Roboto-Medium, sans-serif;
 }
 </style>

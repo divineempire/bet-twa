@@ -96,7 +96,7 @@ body {
 	max-width: 390px;
 	width: 390px;
 	margin: 0 auto;
-	border: 1px solid #fff;
+	//border: 1px solid #fff;
 	padding: 0 10px;
 }
 

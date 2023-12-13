@@ -62,6 +62,8 @@ export default {
 					coefficient: 2,
 					betAmount: '200 TON',
 					possibleWin: '380 TON',
+					feeWithWin: '5 TON',
+					smartContract: '0xbede493b71edca82b3b24de407aba5445341ce907',
 					first: {
 						name: 'Natus Vincere',
 						result: 1
@@ -80,6 +82,8 @@ export default {
 					coefficient: 3,
 					betAmount: '150 TON',
 					possibleWin: '425 TON',
+					feeWithWin: '5 TON',
+					smartContract: '0xbede493b71edca82b3b24de407aba5445341ce907',
 					first: {
 						name: 'BetBoom Team',
 						result: 1
@@ -98,6 +102,8 @@ export default {
 					coefficient: 2.1,
 					betAmount: '55 TON',
 					possibleWin: '100 TON',
+					feeWithWin: '5 TON',
+					smartContract: '0xbede493b71edca82b3b24de407aba5445341ce907',
 					first: {
 						name: 'Tundra',
 						result: 1
@@ -116,6 +122,8 @@ export default {
 					coefficient: 2.2,
 					betAmount: '150 TON',
 					possibleWin: '300 TON',
+					feeWithWin: '5 TON',
+					smartContract: '0xbede493b71edca82b3b24de407aba5445341ce907',
 					first: {
 						name: 'BetBoom Team',
 						result: 2
@@ -134,6 +142,8 @@ export default {
 					coefficient: 3.5,
 					betAmount: '60 TON',
 					possibleWin: '180 TON',
+					feeWithWin: '5 TON',
+					smartContract: '0xbede493b71edca82b3b24de407aba5445341ce907',
 					first: {
 						name: 'Tundra',
 						result: 2

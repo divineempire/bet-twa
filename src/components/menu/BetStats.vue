@@ -10,17 +10,23 @@
 				<p class="stats__text">Всего выиграно</p>
 				<p class="stats__value">290 TON</p>
 			</div>
-			<div class="stats__row fee-lose">
+			<div class="stats__row fee-lose"
+				v-if="getRouteName === 'Profile'"
+			>
 				<p class="stats__text">Потеряно на комиссии</p>
 				<p class="stats__value">10 TON</p>
 			</div>
-			<div class="stats__column you-fee">
-				<div class="stats__text-info">
-					<p class="stats__text">Ваша комиссия</p>
-					<p class="stats__value">10%</p>
-				</div>
-				<button class="reduce-btn">Уменьшить комиссию</button>
+			<div class="stats__row your-fee">
+				<p class="stats__text">{{ yourFeeText }}</p>
+				<p class="stats__value">10%</p>
 			</div>
+<!--			<div class="stats__column you-fee">-->
+<!--				<div class="stats__text-info">-->
+<!--					<p class="stats__text">Ваша комиссия</p>-->
+<!--					<p class="stats__value">10%</p>-->
+<!--				</div>-->
+<!--				<button class="reduce-btn">Уменьшить комиссию</button>-->
+<!--			</div>-->
 		</div>
 	</div>
 </template>
@@ -29,7 +35,21 @@
 export default {
 	name: "BetStats",
 	data() {
-		return {}
+		return {
+
+		}
+	},
+	computed: {
+		getRouteName() {
+			return this.$route.name
+		},
+		yourFeeText() {
+			if (this.getRouteName === 'Profile') {
+				return 'Ваша комиссия'
+			} else {
+				return 'Комиссия с выйгрыша'
+			}
+		}
 	}
 }
 </script>
@@ -58,7 +78,7 @@ export default {
 	padding: 10px;
 }
 
-.stats__row {
+.stats__row:not(:last-child) {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
