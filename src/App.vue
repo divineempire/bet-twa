@@ -10,6 +10,9 @@ export default {
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
+		},
+		getRouteName() {
+			return this.$route.name
 		}
 	},
 	methods: {
@@ -25,11 +28,22 @@ export default {
 		if (!this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
-		if (!this.webApp.BackButton.isVisible) {
-			this.webApp.BackButton.show()
+	},
+	watch: {
+		getRouteName: {
+			handler() {
+				let route = this.$route
+				if (route.name === 'Profile' || route.name === 'History' || route.name === 'Bonus' || route.name === 'Notice') {
+					if (!this.webApp.BackButton.isVisible) {
+						this.webApp.BackButton.show()
+						this.webApp.BackButton.onClick(this.callback)
+					}
+				} else {
+					this.webApp.BackButton.offClick(this.callback)
+					this.webApp.BackButton.hide()
+				}
+			}
 		}
-		this.webApp.BackButton.onClick(this.callback)
-		window.Telegram.WebView.onEvent((event) => console.log(event))
 	}
 }
 </script>
@@ -103,8 +117,8 @@ body {
 }
 
 .container {
-	max-width: 100%;
-	width: 100%;
+	max-width: 390px;
+	width: 390px;
 	margin: 0 auto;
 	//border: 1px solid #fff;
 	padding: 0 10px;
