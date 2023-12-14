@@ -12,6 +12,11 @@ export default {
 			return window.Telegram.WebApp
 		}
 	},
+	methods: {
+		callback(e) {
+			this.$router.go(-1)
+		}
+	},
 	created() {
 		this.webApp.ready()
 		if (!this.webApp.isExpanded) {
@@ -20,6 +25,7 @@ export default {
 		if (!this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
+		this.webApp.BackButton.onClick(this.callback())
 		window.Telegram.WebView.onEvent((event) => console.log(event))
 	}
 }
