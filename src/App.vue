@@ -14,7 +14,7 @@ export default {
 	},
 	methods: {
 		callback(e) {
-			this.$router.go(-1)
+			window.history.back()
 		}
 	},
 	created() {
@@ -24,6 +24,9 @@ export default {
 		}
 		if (!this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
+		}
+		if (!this.webApp.BackButton.isVisible) {
+			this.webApp.BackButton.show()
 		}
 		this.webApp.BackButton.onClick(this.callback)
 		window.Telegram.WebView.onEvent((event) => console.log(event))
