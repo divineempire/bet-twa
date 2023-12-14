@@ -25,7 +25,7 @@ export default {
 		if (!this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
-		this.webApp.BackButton.onClick(this.callback())
+		this.webApp.BackButton.onClick(this.callback)
 		window.Telegram.WebView.onEvent((event) => console.log(event))
 	}
 }
