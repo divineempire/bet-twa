@@ -2,13 +2,13 @@
 	<div class="wallet"
 		v-if="showWalletCondition"
 	>
-		<div class="wallet__connect-info"
-			v-if="!connected"
-		>
-			<h1 class="wallet__app-name">Bets.coffee</h1>
-			<p class="wallet__description">Полностью децентрализованная биржа ставок. <br> Просто, анонимно и безопасно!</p>
-			<button class="wallet__connect-btn">Подключить кошелёк</button>
-		</div>
+<!--		<div class="wallet__connect-info"-->
+<!--			v-if="!connected"-->
+<!--		>-->
+<!--			<h1 class="wallet__app-name">Bets.coffee</h1>-->
+<!--			<p class="wallet__description">Полностью децентрализованная биржа ставок. <br> Просто, анонимно и безопасно!</p>-->
+<!--			<button class="wallet__connect-btn">Подключить кошелёк</button>-->
+<!--		</div>-->
 		<div class="wallet__connected"
 			 v-if="connected"
 		>
@@ -32,6 +32,12 @@
 					<p class="wallet__value">1000 Ф</p>
 				</div>
 			</div>
+			<button class="wallet__gift-btn"
+					:class="{ready_btn: gift.ready === true}"
+					v-if="getRouteName === 'Menu'"
+			>
+				{{ btnText }}
+			</button>
 		</div>
 	</div>
 </template>
@@ -42,6 +48,10 @@ export default {
 	data() {
 		return {
 			connected: true,
+			gift: {
+				ready: false,
+				time: '23:45:34'
+			}
 		}
 	},
 	computed: {
@@ -53,6 +63,13 @@ export default {
 				return false
 			} else {
 				return true
+			}
+		},
+		btnText() {
+			if (this.gift.ready === true) {
+				return 'Забрать ежедневную награду'
+			} else {
+				return `Время до следующей награды ${this.gift.time}`
 			}
 		}
 	},
@@ -147,5 +164,23 @@ export default {
 		font-size: 13px;
 		font-family: Roboto-Medium, sans-serif;
 		font-weight: 500;
+	}
+
+	.wallet__gift-btn {
+		width: 100%;
+		margin-top: 12px;
+		margin-bottom: 14px;
+		padding: 14.5px;
+		border-radius: 10px;
+		border: none;
+		outline: none;
+		background: #3F3C42;
+		font-size: 14px;
+		line-height: 16px;
+	}
+
+	.ready_btn {
+		background: #00F59B;
+		color: #000;
 	}
 </style>
