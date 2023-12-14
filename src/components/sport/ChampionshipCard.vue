@@ -116,11 +116,11 @@ export default {
 				title: 'Это попап',
 				message: 'Сообщение в попапе'
 			}
-			window.Telegram.WebApp.showPopup(params)
+			// window.Telegram.WebView.onEvent((event) => console.log(event))
 		}
 	},
 	mounted() {
-		console.log(this.league)
+
 	}
 }
 </script>

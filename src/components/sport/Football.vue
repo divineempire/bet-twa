@@ -165,7 +165,6 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.league)
 	}
 }
 </script>

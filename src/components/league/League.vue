@@ -480,7 +480,7 @@ export default {
 }
 
 .leaderboard__account {
-	max-width: 170px;
+	max-width: 40vw;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: 14px;

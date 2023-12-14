@@ -20,6 +20,7 @@ export default {
 		if (!this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
+		window.Telegram.WebView.onEvent((event) => console.log(event))
 	}
 }
 </script>
@@ -93,8 +94,8 @@ body {
 }
 
 .container {
-	max-width: 390px;
-	width: 390px;
+	max-width: 100%;
+	width: 100%;
 	margin: 0 auto;
 	//border: 1px solid #fff;
 	padding: 0 10px;
