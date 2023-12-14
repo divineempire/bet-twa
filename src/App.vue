@@ -25,7 +25,7 @@ export default {
 		if (!this.webApp.isExpanded) {
 			this.webApp.expand()
 		}
-		if (!this.webApp.MainButton.isVisible) {
+		if (this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
 	},
