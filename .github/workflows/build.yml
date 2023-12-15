@@ -1,0 +1,74 @@
+name: Build & Deploy
+
+on: 
+  workflow_dispatch:
+  push:
+
+env:
+  namespace: coffee-bet
+  image_url: ghcr.io/divineempire/bet-twa
+  app_name: bet-twa
+
+jobs:
+  packaging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get short SHA
+        run: |
+          echo "short_sha=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.PACKAGE_REGISTRY_USERNAME }}
+          password: ${{ secrets.PACKAGE_REGISTRY_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.image_url }}:${{ env.short_sha }}
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [packaging]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Kube Config
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          mkdir ~/.kube
+          echo "${KUBE_CONFIG}" | base64 --decode > ~/.kube/config
+          kubectl config use-context divine-host
+
+      - name: Get short SHA
+        run: |
+          echo "short_sha=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Grant access to registry for Kubernetes
+        run: >
+          kubectl create secret docker-registry github-registry
+          -n ${{ env.namespace }}
+          --docker-server=ghcr.io 
+          --docker-username=${{ secrets.PACKAGE_REGISTRY_USERNAME }} 
+          --docker-password=${{ secrets.PACKAGE_REGISTRY_TOKEN }}
+          --dry-run=client
+          --output=yaml
+          | kubectl apply -f -
+
+      - name: Deploy to Kubernetes
+        run: >
+          helm upgrade bet-twa .helm/
+          --namespace=${{ env.namespace }}
+          --install
+          --set=image.repository=${{ env.image_url }}
+          --set=image.tag=${{ env.short_sha }}
+
