@@ -37,7 +37,7 @@
 				v-for="(item, index) in bonuses"
 			>
 				<p class="bonus-card__amount">{{ item.amount }}</p>
-				<p class="bonus-card__promocode">{{ item.promocode }}</p>
+				<p class="bonus-card__type">{{ item.type }}</p>
 				<p class="bonus-card__date">{{ 'до ' + item.date }}</p>
 			</li>
 		</ul>
@@ -54,7 +54,7 @@ export default {
 			bonuses: [
 				{
 					amount: '0.5 TON',
-					promocode: 'FREE',
+					type: 'FREE',
 					date: '24.02.2024'
 				}
 			]
@@ -170,7 +170,7 @@ export default {
 		font-size: 14px;
 	}
 
-	.bonus-card__promocode {
+	.bonus-card__type {
 		margin-right: 12px;
 		padding: 4px 6px;
 		border-radius: 6px;

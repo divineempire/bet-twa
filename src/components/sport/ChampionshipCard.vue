@@ -71,17 +71,28 @@
 				</li>
 			</ul>
 		</div>
+		<Coupon
+			:showPopup="showPopup"
+			v-show="showPopup"
+			@closePopup="closePopup"
+		/>
 	</li>
 </template>
 
 <script>
 
+import Coupon from "@/components/sport/Coupon.vue";
+
 export default {
 	name: "ChampionshipCard",
+	components: {
+		Coupon
+	},
 	data() {
 		return {
 			showMore: true,
-			activeBet: ''
+			activeBet: '',
+			showPopup: false
 		}
 	},
 	props: {
@@ -98,25 +109,35 @@ export default {
 			}
 		}
 	},
+	computed: {
+		webApp() {
+			return window.Telegram.WebApp
+		}
+	},
 	methods: {
 		getCoefficient(value) {
-			return 'x' + `${value.coefficient}` + ' - ' + `${value.percent}` + '%'
+			return 'x' + `${ value.coefficient }` + ' - ' + `${ value.percent }` + '%'
 		},
 		getSum(value) {
 			if (this.league === 'REGULAR') {
-				return `${value.sum}` + ' TON'
+				return `${ value.sum }` + ' TON'
 			} else {
-				return `${value.sum}` + ' Ф'
+				return `${ value.sum }` + ' Ф'
 			}
+		},
+		closePopup() {
+			this.showPopup = false
+			this.activeBet = ''
+			this.webApp.BackButton.offClick(this.closePopup)
+			this.webApp.BackButton.hide()
 		},
 		chooseBet(value, index) {
 			this.activeBet = value + '_' + index
 			this.showPopup = true
-			let params = {
-				title: 'Это попап',
-				message: 'Сообщение в попапе'
+			if (!this.webApp.BackButton.isVisible) {
+				this.webApp.BackButton.show()
+				this.webApp.BackButton.onClick(this.closePopup)
 			}
-			// window.Telegram.WebView.onEvent((event) => console.log(event))
 		}
 	},
 	mounted() {
@@ -126,6 +147,7 @@ export default {
 </script>
 
 <style scoped>
+
 .championship-card {
 	cursor: pointer;
 }
