@@ -116,6 +116,47 @@ body {
 	background-color: #151317;
 }
 
+.swiper-pagination {
+	display: flex;
+	justify-content: center;
+	gap: 0 6px;
+	margin-top: 20px;
+}
+
+.dot {
+	width: 8px;
+	height: 8px;
+	background-color: #4C4C4C;
+	border-radius: 100px;
+}
+
+.dot_active {
+	position: relative;
+	width: 20px;
+	overflow: hidden;
+}
+
+.dot_active::before {
+	content: '';
+	position: absolute;
+	left: -20px;
+	width: 20px;
+	border-radius: 100px;
+	bottom: 0;
+	top: 0;
+	background-color: #fff;
+	animation: 3.5s forwards linear Progress;
+}
+
+@keyframes Progress {
+	0% {
+		left: -20px;
+	}
+	100% {
+		left: 0;
+	}
+}
+
 .container {
 	max-width: 390px;
 	width: 390px;

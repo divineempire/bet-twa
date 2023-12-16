@@ -14,75 +14,32 @@
 				Фэнтези
 			</button>
 		</div>
-		<div class="sport__search">
-			<input type="search" class="sport__search-input" placeholder="Введите название события или турнира">
-		</div>
+		<button type="button" class="sport__search-btn"
+			@click="openSearch"
+		>
+			Введите название события или турнира
+<!--			<input type="search" class="sport__search-input" placeholder="Введите название события или турнира">-->
+		</button>
 		<SportNavigation />
 		<router-view
 			:league="league"
 		/>
-<!--		<ul class="sport__championship-list"-->
-<!--			v-if="activeSport === 'FOOTBALL'"-->
-<!--		>-->
-<!--			<ChampionshipCard-->
-<!--				v-for="(item, index) in championships"-->
-<!--				:key="index"-->
-<!--				:item="item"-->
-<!--				:league="league"-->
-<!--			/>-->
-<!--		</ul>-->
-<!--		<ul class="sport__championship-list"-->
-<!--			v-if="activeSport === 'HOCKEY'"-->
-<!--		>-->
-<!--			<ChampionshipCard-->
-<!--				v-for="(item, index) in championships"-->
-<!--				:key="index"-->
-<!--				:item="item"-->
-<!--				:league="league"-->
-<!--			/>-->
-<!--		</ul>-->
-<!--		<ul class="sport__championship-list"-->
-<!--			v-if="activeSport === 'BASKETBALL'"-->
-<!--		>-->
-<!--			<ChampionshipCard-->
-<!--				v-for="(item, index) in championships"-->
-<!--				:key="index"-->
-<!--				:item="item"-->
-<!--				:league="league"-->
-<!--			/>-->
-<!--		</ul>-->
-<!--		<ul class="sport__championship-list"-->
-<!--			v-if="activeSport === 'TENNIS'"-->
-<!--		>-->
-<!--			<ChampionshipCard-->
-<!--				v-for="(item, index) in championships"-->
-<!--				:key="index"-->
-<!--				:item="item"-->
-<!--				:league="league"-->
-<!--			/>-->
-<!--		</ul>-->
-<!--		<ul class="sport__championship-list"-->
-<!--			v-if="activeSport === 'VOLLEYBALL'"-->
-<!--		>-->
-<!--			<ChampionshipCard-->
-<!--				v-for="(item, index) in championships"-->
-<!--				:key="index"-->
-<!--				:item="item"-->
-<!--				:league="league"-->
-<!--			/>-->
-<!--		</ul>-->
+		<SearchPopup
+			v-show="showSearch"
+		/>
 	</div>
 </template>
 
 <script>
 import SportNavigation from "@/components/sport/SportNavigation.vue";
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
+import SearchPopup from "@/components/sport/SearchPopup.vue";
 export default {
 	name: 'Sport',
 	data() {
 		return {
 			league: 'REGULAR',
-			// activeSport: 'FOOTBALL',
+			showSearch: '',
 			championships: [
 				{
 					name: 'Аргентина. Кубок Профессиональной Лиги',
@@ -221,16 +178,46 @@ export default {
 		}
 	},
 	components: {
+		SearchPopup,
 		ChampionshipCard,
 		SportNavigation,
+	},
+	computed: {
+		webApp() {
+			return window.Telegram.WebApp
+		}
 	},
 	methods: {
 		chooseLeague(value) {
 			this.league = value
 		},
+		closeSearch() {
+			this.showSearch = false
+			this.webApp.BackButton.offClick(this.closeSearch)
+			this.webApp.BackButton.hide()
+		},
+		openSearch() {
+			this.showSearch = true
+			if (!this.webApp.BackButton.isVisible) {
+				this.webApp.BackButton.show()
+				this.webApp.BackButton.onClick(this.closeSearch)
+			}
+		},
 		// updateSport(value) {
 		// 	this.activeSport = value
 		// }
+	},
+	watch: {
+		showSearch: {
+			handler: function() {
+				if  (this.showSearch) {
+					document.documentElement.style.overflow = 'hidden'
+					return
+				}
+				document.documentElement.style.overflow = 'auto'
+			},
+			deep: true
+		},
 	}
 }
 </script>
@@ -260,7 +247,9 @@ export default {
 	margin-right: 16px;
 }
 
-.sport__search-input {
+.sport__search-btn {
+	display: flex;
+	align-items: center;
 	width: 100%;
 	height: 44px;
 	margin-bottom: 6px;
@@ -270,16 +259,13 @@ export default {
 	outline: none;
 	background: #3F3C42;
 	font-size: 13px;
-	color: #fff;
+	color: rgba(255,255,255, .8);
 }
 
-.sport__search-input::placeholder {
-	color: #fff;
-}
-
-.sport__search-input::before {
+.sport__search-btn::before {
 	content: '';
 	display: block;
+	margin-right: 10px;
 	width: 22px;
 	height: 22px;
 	background: url('@/assets/sport/search-icon.svg') no-repeat;

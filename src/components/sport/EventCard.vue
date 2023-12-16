@@ -48,14 +48,39 @@
 				</div>
 			</div>
 		</div>
+		<div class="event-list__progress-bar">
+			<div class="progress-line first-line"
+				 :style="{flexBasis: event.p1.percent + '%'}"
+			></div>
+			<div class="progress-line second-line"
+				 :style="{flexBasis: event.draw.percent + '%'}"
+			></div>
+			<div class="progress-line third-line"
+				 :style="{flexBasis: event.p2.percent + '%'}"
+			></div>
+		</div>
+		<transition name="fade">
+			<Coupon
+				@closePopup="closePopup"
+				v-show="showPopup"
+				:event="event"
+				:activeBet="activeBet"
+				:showPopup="showPopup"
+				:league="league"
+			/>
+		</transition>
 	</li>
 </template>
 
 <script>
+import Coupon from "@/components/sport/Coupon.vue";
+
 export default {
 	name: "EventCard",
+	components: {Coupon},
 	data() {
 		return {
+			showPopup: false,
 			activeBet: '',
 		}
 	},
@@ -71,6 +96,29 @@ export default {
 			default() {
 				return ''
 			}
+		},
+		call: {
+			type: String,
+			default() {
+				return ''
+			}
+		}
+		// activeBet: {
+		// 	type: String,
+		// 	default() {
+		// 		return ''
+		// 	}
+		// },
+		// index: {
+		// 	type: Number,
+		// 	default() {
+		// 		return 0
+		// 	}
+		// }
+	},
+	computed: {
+		webApp() {
+			return window.Telegram.WebApp
 		}
 	},
 	methods: {
@@ -85,8 +133,35 @@ export default {
 			}
 		},
 		chooseBet(value) {
+			// this.$emit('chooseBet', value, index)
 			this.activeBet = value
-		}
+			this.showPopup = true
+			if (!this.webApp.BackButton.isVisible) {
+				this.webApp.BackButton.show()
+				this.webApp.BackButton.onClick(this.closePopup)
+			}
+		},
+		closePopup() {
+			// this.$emit('closePopup')
+			this.activeBet = ''
+			this.showPopup = false
+			this.webApp.BackButton.offClick(this.closePopup)
+			this.webApp.BackButton.hide()
+		},
+	},
+	watch: {
+		showPopup: {
+			handler: function() {
+				if (this.call !== 'SEARCH') {
+					if  (this.showPopup) {
+						document.documentElement.style.overflow = 'hidden'
+						return
+					}
+					document.documentElement.style.overflow = 'auto'
+				}
+			},
+			deep: true
+		},
 	}
 }
 </script>
@@ -217,5 +292,31 @@ export default {
 	font-size: 14px;
 	font-family: Roboto-Bold, sans-serif;
 	font-weight: 700;
+}
+
+.event-list__progress-bar {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0 3px;
+}
+
+.progress-line {
+	height: 2px;
+//flex: 33%; //flex-shrink: 0;
+}
+
+.first-line {
+	background: #fff;
+	border-radius: 3px 0 0 3px;
+}
+
+.second-line {
+	background: #909090;
+}
+
+.third-line {
+	background: #00F59B;
+	border-radius: 0 3px 3px 0;
 }
 </style>

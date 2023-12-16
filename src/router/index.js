@@ -15,6 +15,7 @@ import Hockey from "@/components/sport/Hockey.vue";
 import Basketball from "@/components/sport/Basketball.vue";
 import Tennis from "@/components/sport/Tennis.vue";
 import Volleyball from "@/components/sport/Volleyball.vue";
+import WalletConnect from "@/views/WalletConnect.vue";
 
 const routes = [
     {
@@ -103,13 +104,25 @@ const routes = [
                     },
                 ]
             },
-        ]
+        ],
+    },
+    {
+        path: '/wallet-connect',
+        component: WalletConnect,
+        name: 'WalletConnect',
     },
 ]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    let isAuthenticated = JSON.parse(localStorage.getItem('walletConnected'))
+    if (to.name !== 'WalletConnect' && !isAuthenticated) {
+        next({name: 'WalletConnect'})
+    } else next()
 })
 
 export default router
