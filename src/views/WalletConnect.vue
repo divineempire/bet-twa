@@ -21,7 +21,11 @@
 					<p class="item__second-text">{{ item?.secondText }}</p>
 				</swiper-slide>
 			</swiper>
-			<button class="wallet-connect__btn">Подключить кошелёк</button>
+			<button class="wallet-connect__btn"
+				@click="connectWallet"
+			>
+				Подключить кошелёк
+			</button>
 		</div>
 	</div>
 </template>
@@ -47,6 +51,14 @@ export default {
 				},
 			},
 		};
+	},
+	props: {
+		tonConnectUi: {
+			type: Object,
+			default() {
+				return {}
+			}
+		}
 	},
 	data() {
 		return {
@@ -87,6 +99,25 @@ export default {
 	components: {
 		Swiper,
 		SwiperSlide
+	},
+	computed: {
+		webApp() {
+			return window.Telegram.WebApp
+		}
+	},
+	methods: {
+		connectWallet() {
+			this.tonConnectUi.openModal()
+			if (!this.webApp.BackButton.isVisible) {
+				this.webApp.BackButton.show()
+				this.webApp.BackButton.onClick(this.closeModal)
+			}
+		},
+		closeModal() {
+			this.tonConnectUi.closeModal()
+			this.webApp.BackButton.offClick(this.closeModal)
+			this.webApp.BackButton.hide()
+		}
 	},
 	mounted() {
 		lottie.loadAnimation({
@@ -139,21 +170,23 @@ export default {
 
 <style scoped>
 	.wallet-container {
-		height: 100vh;
-		max-width: 390px;
-		width: 390px;
+		height: auto;
+		max-width: 100%;
+		width: 100%;
 		margin: 0 auto;
 		padding: 14px 14px 40px 14px;
 	}
 
 	.wallet-connect {
-		height: 100%;
+		min-height: 600px;
+		height: 91vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
 
 	.wallet-connect__slider {
+		margin-bottom: 20px;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -164,9 +197,11 @@ export default {
 	}
 
 	.lottie-image {
-		margin-bottom: 14px;
-		width: 362px;
-		height: 362px;
+		margin: 0 auto 14px auto;
+		max-width: 332px;
+		max-height: 332px;
+		width: 100%;
+		height: calc(100vw - 28px);
 	}
 
 	.item__title {

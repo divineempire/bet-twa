@@ -139,12 +139,12 @@ export default {
 				return `${ value.sum }` + ' Ф'
 			}
 		},
-		closePopup() {
-			// this.activeBet = ''
-		},
-		chooseBet(value, index) {
-			// this.activeBet = value + '_' + index
-		}
+		// closePopup() {
+		// 	this.activeBet = ''
+		// },
+		// chooseBet(value, index) {
+		// 	this.activeBet = value + '_' + index
+		// }
 	},
 	watch: {
 		showPopup: {

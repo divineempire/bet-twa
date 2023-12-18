@@ -1,11 +1,23 @@
 <template>
-	<router-view/>
+<!--	<button id="connect-btn">Подключить кошелёк</button>-->
+	<router-view :tonConnectUi="tonConnectUi" />
 </template>
 
 <script>
+import { TonConnectUI, THEME , toUserFriendlyAddress} from '@tonconnect/ui'
+
 export default {
 	data() {
-
+		return {
+			tonConnectSettings: {
+				manifestUrl: process.env.BASE_URL + '/tonconnect-manifest.json',
+				uiPreferences: {
+					// borderRadius: 'm',
+					theme: THEME.DARK,
+				}
+			},
+			unsubscribe: null
+		}
 	},
 	computed: {
 		webApp() {
@@ -13,11 +25,31 @@ export default {
 		},
 		getRouteName() {
 			return this.$route.name
+		},
+		tonConnectUi() {
+			return new TonConnectUI(this.tonConnectSettings)
 		}
 	},
 	methods: {
 		callback(e) {
 			window.history.back()
+		},
+		subscribeConnector: function () {
+			this.unsubscribe = this.tonConnectUi.onStatusChange(walletInfo => {
+				if (walletInfo === null) {
+					localStorage.removeItem('walletConnected')
+					return
+				}
+				if (walletInfo) {
+					this.saveWalletInfo(walletInfo)
+				}
+			})
+		},
+		saveWalletInfo(walletInfo) {
+			walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
+			localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
+			console.log(walletInfo)
+			console.log(this.tonConnectUi?.walletInfo)
 		}
 	},
 	created() {
@@ -27,6 +59,15 @@ export default {
 		}
 		if (this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
+		}
+		this.subscribeConnector()
+		this.tonConnectUi.uiOptions = {
+			twaReturnUrl: 'https://t.me/bettygames_bot'
+		};
+	},
+	unmounted() {
+		if (this.unsubscribe !== null) {
+			this.unsubscribe()
 		}
 	},
 	watch: {
