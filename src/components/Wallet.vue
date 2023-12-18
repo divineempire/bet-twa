@@ -15,7 +15,7 @@
 			<div class="wallet__info"
 				v-if="getRouteName === 'Profile'"
 			>
-				<p class="wallet__address">Connected: UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM</p>
+				<p class="wallet__address">Connected: {{ GET_WALLET_INFO?.userFriendlyAddress }}</p>
 				<button class="wallet__disconnect-btn"
 					@click="disconnect"
 				>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
 	name: "Wallet",
 	data() {
@@ -63,6 +65,9 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_WALLET_INFO',
+		]),
 		getRouteName() {
 			return this.$route.name
 		},
@@ -83,8 +88,11 @@ export default {
 	},
 	methods: {
 		async disconnect() {
-			await this.tonConnectUi.disconnect()
-			console.log('disconnect')
+			try {
+				await this.tonConnectUi.disconnect()
+			} catch(err) {
+				console.log(err)
+			}
 		}
 	}
 }
