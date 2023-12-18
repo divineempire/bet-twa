@@ -41,8 +41,8 @@ export default {
 		subscribeConnector: function () {
 			this.unsubscribe = this.tonConnectUi.onStatusChange(walletInfo => {
 				if (walletInfo === null) {
-					// localStorage.removeItem('walletConnected')
-					this.$router.push({name: 'WalletConnect'})
+					localStorage.removeItem('walletConnected')
+					// this.$router.push({name: 'WalletConnect'})
 					return
 				}
 				if (walletInfo) {
@@ -54,7 +54,7 @@ export default {
 		},
 		saveWalletInfo(walletInfo) {
 			walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
-			// localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
+			localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
 			this.SAVE_WALLET_INFO(walletInfo)
 		}
 	},
@@ -63,6 +63,7 @@ export default {
 		if (!this.webApp.isExpanded) {
 			this.webApp.expand()
 		}
+		console.log(this.webApp.MainButton.isVisible)
 		if (this.webApp.MainButton.isVisible) {
 			this.webApp.MainButton.hide()
 		}
