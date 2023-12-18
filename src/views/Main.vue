@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<Wallet />
+		<Wallet :tonConnectUi="tonConnectUi"/>
 		<div class='main'>
 			<router-view />
 		</div>
@@ -16,6 +16,14 @@ export default {
 	data() {
 		return {
 
+		}
+	},
+	props: {
+		tonConnectUi: {
+			type: Object,
+			default() {
+				return {}
+			}
 		}
 	},
 	components: {

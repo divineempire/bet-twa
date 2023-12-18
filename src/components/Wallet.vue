@@ -54,6 +54,14 @@ export default {
 			}
 		}
 	},
+	props: {
+		tonConnectUi: {
+			type: Object,
+			default() {
+				return {}
+			}
+		}
+	},
 	computed: {
 		getRouteName() {
 			return this.$route.name
@@ -74,7 +82,8 @@ export default {
 		}
 	},
 	methods: {
-		disconnect() {
+		async disconnect() {
+			await this.tonConnectUi.disconnect()
 			console.log('disconnect')
 		}
 	}

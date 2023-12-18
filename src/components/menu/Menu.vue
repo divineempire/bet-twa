@@ -3,7 +3,7 @@
 		<MenuNav
 			v-if="getRouteName === 'Menu'"
 		/>
-		<router-view/>
+		<router-view />
 	</div>
 </template>
 

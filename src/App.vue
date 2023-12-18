@@ -5,12 +5,13 @@
 
 <script>
 import { TonConnectUI, THEME , toUserFriendlyAddress} from '@tonconnect/ui'
+import {mapActions} from "vuex";
 
 export default {
 	data() {
 		return {
 			tonConnectSettings: {
-				manifestUrl: process.env.BASE_URL + '/tonconnect-manifest.json',
+				manifestUrl: 'https://app.betty.games/tonconnect-manifest.json',
 				uiPreferences: {
 					// borderRadius: 'm',
 					theme: THEME.DARK,
@@ -31,25 +32,30 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'SAVE_WALLET_INFO',
+		]),
 		callback(e) {
 			window.history.back()
 		},
 		subscribeConnector: function () {
 			this.unsubscribe = this.tonConnectUi.onStatusChange(walletInfo => {
 				if (walletInfo === null) {
-					localStorage.removeItem('walletConnected')
+					// localStorage.removeItem('walletConnected')
+					this.$router.push({name: 'WalletConnect'})
 					return
 				}
 				if (walletInfo) {
+					console.log(walletInfo)
+					this.$router.push({name: 'Main'})
 					this.saveWalletInfo(walletInfo)
 				}
 			})
 		},
 		saveWalletInfo(walletInfo) {
 			walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
-			localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
-			console.log(walletInfo)
-			console.log(this.tonConnectUi?.walletInfo)
+			// localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
+			this.SAVE_WALLET_INFO(walletInfo)
 		}
 	},
 	created() {
