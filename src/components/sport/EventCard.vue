@@ -2,16 +2,24 @@
 	<li class="event-list__item">
 		<div class="event-list__teams">
 			<div class="event-list__team first-team">
-				<img :src="event?.firstTeam?.logo" alt="" class="event-list__logo">
-				<p class="event-list__team-name">{{ event?.firstTeam?.name }}</p>
+				<img :src="event.team1?.icon_url" alt="" class="event-list__logo">
+				<p class="event-list__team-name">{{ event.team1?.name }}</p>
 			</div>
-			<div class="event-list__date">
-				<p class="event-list__date-text">{{ event?.date }}</p>
-				<p class="event-list__date-time">{{ event?.dateTime }}</p>
+			<div class="event-list__date"
+				v-if="event.phase === 'prematch'"
+			>
+				<p class="event-list__date-text">{{ getDate }}</p>
+				<p class="event-list__date-time">{{ getDatetime }}</p>
+			</div>
+			<div class="event-list__date"
+				v-if="event.phase === 'live'"
+			>
+				<p class="event-list__date-text">{{ getMatchTime }}</p>
+				<p class="event-list__score">{{ getScore }}</p>
 			</div>
 			<div class="event-list__team second-team">
-				<img :src="event?.secondTeam?.logo" alt="" class="event-list__logo">
-				<p class="event-list__team-name">{{ event?.secondTeam?.name }}</p>
+				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">
+				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
 		</div>
 		<div class="event-list__bet-names">
@@ -24,39 +32,39 @@
 				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'FIRST_WIN'}"
 				 @click="chooseBet('FIRST_WIN')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event.p1) }}</p>
+				<p class="choose-bet__sum">{{ getSum(event?.team1_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient(event.p1) }}</p>
+					<p class="choose-bet__coefficient">{{ getCoefficient("TEAM1") }}</p>
 				</div>
 			</div>
 			<div class="choose-bet__card second-bet"
 				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'DRAW'}"
 				 @click="chooseBet('DRAW')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event.draw) }}</p>
+				<p class="choose-bet__sum">{{ getSum(event?.draw_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient(event.draw) }}</p>
+					<p class="choose-bet__coefficient">{{ getCoefficient("DRAW") }}</p>
 				</div>
 			</div>
 			<div class="choose-bet__card third-bet"
 				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'SECOND_WIN'}"
 				 @click="chooseBet('SECOND_WIN')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event.p2) }}</p>
+				<p class="choose-bet__sum">{{ getSum(event?.team2_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient(event.p2) }}</p>
+					<p class="choose-bet__coefficient">{{ getCoefficient("TEAM2") }}</p>
 				</div>
 			</div>
 		</div>
 		<div class="event-list__progress-bar">
 			<div class="progress-line first-line"
-				 :style="{flexBasis: event.p1.percent + '%'}"
+				 :style="{flexBasis: '33%'}"
 			></div>
 			<div class="progress-line second-line"
-				 :style="{flexBasis: event.draw.percent + '%'}"
+				 :style="{flexBasis: '33%'}"
 			></div>
 			<div class="progress-line third-line"
-				 :style="{flexBasis: event.p2.percent + '%'}"
+				 :style="{flexBasis: '33%'}"
 			></div>
 		</div>
 		<transition name="fade">
@@ -74,6 +82,8 @@
 
 <script>
 import Coupon from "@/components/sport/Coupon.vue";
+import TeamsApi from "/src/api/src/api/TeamsApi.js";
+import { getFullDate, getDateTime } from "@/helpers/time/time.js";
 
 export default {
 	name: "EventCard",
@@ -82,6 +92,8 @@ export default {
 		return {
 			showPopup: false,
 			activeBet: '',
+			// firstTeam: null,
+			// secondTeam: null
 		}
 	},
 	props: {
@@ -102,6 +114,12 @@ export default {
 			default() {
 				return ''
 			}
+		},
+		showMore: {
+			type: Boolean,
+			default() {
+				return false
+			}
 		}
 		// activeBet: {
 		// 	type: String,
@@ -119,17 +137,53 @@ export default {
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
-		}
+		},
+		teamsApi() {
+			return new TeamsApi()
+		},
+		getScore() {
+			return this.event.team1_score + ':' + this.event.team2_score
+		},
+		getMatchTime() {
+			return '00:45'
+		},
+		getDate() {
+			return getFullDate(this.event.match_start_time)
+			// let matchDate = new Date(this.event.match_start_time * 1000)
+			// let now = new Date(Date.now())
+			// if (matchDate.getFullYear() > now.getFullYear() || matchDate.getMonth() > now.getMonth()) {
+			// 	return matchDate.toLocaleDateString()
+			// } else if (matchDate.getFullYear() === now.getFullYear() && matchDate.getMonth() === now.getMonth()) {
+			// 	if (matchDate.getDate() === now.getDate()) {
+			// 		return 'Сегодня'
+			// 	} else if (matchDate.getDate() - now.getDate() === 1) {
+			// 		return 'Завтра'
+			// 	} else {
+			// 		return matchDate.toLocaleDateString()
+			// 	}
+			// }
+		},
+		getDatetime() {
+			return getDateTime(this.event.match_start_time)
+			// let matchDate = new Date(this.event.match_start_time * 1000)
+			// return matchDate.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})
+		},
 	},
 	methods: {
 		getCoefficient(value) {
-			return 'x' + `${value.coefficient}` + ' - ' + `${value.percent}` + '%'
+			if (value === 'TEAM1') {
+				return 'x' + `${this.event.team1_ratio}` + ' - ' + '33%'
+			} else if (value === 'DRAW') {
+				return 'x' + `${this.event.draw_ratio}` + ' - ' + '33%'
+			} else if (value === 'TEAM2') {
+				return 'x' + `${this.event.team2_ratio}` + ' - ' + '33%'
+			}
 		},
 		getSum(value) {
 			if (this.league === 'REGULAR') {
-				return `${value.sum}` + ' TON'
+				return `${value}` + ' TON'
 			} else {
-				return `${value.sum}` + ' Ф'
+				return `${value}` + ' Ф'
 			}
 		},
 		chooseBet(value) {
@@ -142,12 +196,31 @@ export default {
 			}
 		},
 		closePopup() {
+			console.log('event card coupon close')
 			// this.$emit('closePopup')
 			this.activeBet = ''
 			this.showPopup = false
 			this.webApp.BackButton.offClick(this.closePopup)
 			this.webApp.BackButton.hide()
 		},
+		// getTeam(type, teamId) {
+		// 	this.teamsApi.getTeam(teamId)
+		// 		.then((res) => {
+		// 			if (type === 'FIRST') {
+		// 				this.firstTeam = res
+		// 			} else if (type === 'SECOND') {
+		// 				this.secondTeam = res
+		// 			}
+		// 			console.log(res)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.log(err)
+		// 		})
+		// }
+	},
+	created() {
+		// this.getTeam('FIRST', this.event.team1_id)
+		// this.getTeam('SECOND', this.event.team2_id)
 	},
 	watch: {
 		showPopup: {
@@ -162,6 +235,18 @@ export default {
 			},
 			deep: true
 		},
+		// showMore: {
+		// 	handler: function() {
+		// 		if (this.showMore === true) {
+		// 			if (this.firstTeam === null) {
+		// 				this.getTeam('FIRST', this.event.team1_id)
+		// 			}
+		// 			if (this.secondTeam === null) {
+		// 				this.getTeam('SECOND', this.event.team2_id)
+		// 			}
+		// 		}
+		// 	}
+		// }
 	}
 }
 </script>
@@ -222,6 +307,14 @@ export default {
 	font-family: Roboto-Medium, sans-serif;
 	font-weight: 500;
 	color: #00F59B;
+}
+
+.event-list__score {
+	margin-bottom: 8px;
+	font-size: 12px;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+	color: #F5EB00;
 }
 
 .event-list__bet-names {

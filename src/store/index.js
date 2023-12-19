@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
 import wallet from '@/store/wallet/wallet.js'
+import events from "@/store/events/events.js";
+import menu from "@/store/menu/menu.js";
 
 export default createStore({
   state: {
@@ -12,5 +14,7 @@ export default createStore({
   },
   modules: {
     wallet: wallet,
+    events: events,
+    menu: menu
   }
 })

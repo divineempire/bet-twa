@@ -1,84 +1,43 @@
 <template>
-	<li class="championship-card">
+	<li class="championship-card"
+		v-show="filteredEvents.length > 0"
+	>
 		<div class="championship-card__main"
 			 @click="showMore = !showMore"
 		>
 			<div class="championship-card__info">
-				<div :class="`${item?.region.toLowerCase()}` + '_flag'" class="championship-card__region-icon"></div>
+<!--				<div :class="`${item?.region.toLowerCase()}` + '_flag'" class="championship-card__region-icon"></div>-->
 				<p class="championship-card__name">{{ item?.name }}</p>
 			</div>
 			<div class="championship-card__amount">
-				<p class="championship-card__text">{{ item?.amount }}</p>
+				<p class="championship-card__text">{{ filteredEvents.length }}</p>
 				<div :class="{reverse: showMore === false}" class="championship-card__arrow-icon"></div>
 			</div>
 		</div>
 		<div class="events"
 			 v-show="showMore"
 		>
-			<ul class="events__list event-list">
+			<ul class="events__list event-list"
+				v-if="league === 'REGULAR'"
+			>
 				<EventCard
-					v-for="(event, index) in item?.events"
+					v-for="(event, index) in filteredEvents"
 					:key="index"
 					:event="event"
 					:league="league"
+					:showMore="showMore"
 				/>
-<!--				:index="index"-->
-<!--				:activeBet="activeBet"-->
-<!--				@chooseBet="chooseBet"-->
-<!--				@closePopup="closePopup"-->
-<!--				<li class="event-list__item"-->
-<!--					v-for="(event, index) in item?.events"-->
-<!--					:key="index"-->
-<!--				>-->
-<!--					<div class="event-list__teams">-->
-<!--						<div class="event-list__team first-team">-->
-<!--							<img :src="event?.firstTeam?.logo" alt="" class="event-list__logo">-->
-<!--							<p class="event-list__team-name">{{ event?.firstTeam?.name }}</p>-->
-<!--						</div>-->
-<!--						<div class="event-list__date">-->
-<!--							<p class="event-list__date-text">{{ event?.date }}</p>-->
-<!--							<p class="event-list__date-time">{{ event?.dateTime }}</p>-->
-<!--						</div>-->
-<!--						<div class="event-list__team second-team">-->
-<!--							<img :src="event?.secondTeam?.logo" alt="" class="event-list__logo">-->
-<!--							<p class="event-list__team-name">{{ event?.secondTeam?.name }}</p>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="event-list__bet-names">-->
-<!--						<p class="event-list__bet-text">П1</p>-->
-<!--						<p class="event-list__bet-text">Х</p>-->
-<!--						<p class="event-list__bet-text">П2</p>-->
-<!--					</div>-->
-<!--					<div class="event-list__bets choose-bet">-->
-<!--						<div class="choose-bet__card first-bet"-->
-<!--							 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'FIRST_WIN_' + index}"-->
-<!--							 @click="chooseBet('FIRST_WIN', index)"-->
-<!--						>-->
-<!--							<p class="choose-bet__sum">{{ getSum(event.p1) }}</p>-->
-<!--							<div class="choose-bet__odds">-->
-<!--								<p class="choose-bet__coefficient">{{ getCoefficient(event.p1) }}</p>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<div class="choose-bet__card second-bet"-->
-<!--							 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'DRAW_' + index}"-->
-<!--							 @click="chooseBet('DRAW', index)"-->
-<!--						>-->
-<!--							<p class="choose-bet__sum">{{ getSum(event.draw) }}</p>-->
-<!--							<div class="choose-bet__odds">-->
-<!--								<p class="choose-bet__coefficient">{{ getCoefficient(event.draw) }}</p>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<div class="choose-bet__card third-bet"-->
-<!--							 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'SECOND_WIN_' + index}"-->
-<!--							 @click="chooseBet('SECOND_WIN', index)"-->
-<!--						>-->
-<!--							<p class="choose-bet__sum">{{ getSum(event.p2) }}</p>-->
-<!--							<div class="choose-bet__odds">-->
-<!--								<p class="choose-bet__coefficient">{{ getCoefficient(event.p2) }}</p>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</li>-->
+			</ul>
+			<ul class="events__list event-list"
+				v-if="league === 'FANTASY'"
+			>
+				<EventCard
+					v-for="(event, index) in filteredEvents"
+					:key="index"
+					:event="event"
+					:league="league"
+					:showMore="showMore"
+				/>
 			</ul>
 		</div>
 <!--		<transition name="fade">-->
@@ -95,6 +54,7 @@
 
 import Coupon from "@/components/sport/Coupon.vue";
 import EventCard from "@/components/sport/EventCard.vue";
+import MatchesApi from "/src/api/src/api/MatchesApi.js";
 
 export default {
 	name: "ChampionshipCard",
@@ -104,7 +64,8 @@ export default {
 	},
 	data() {
 		return {
-			showMore: true,
+			showMore: false,
+			events: []
 			// activeBet: '',
 			// showPopup: false,
 		}
@@ -121,11 +82,30 @@ export default {
 			default() {
 				return ''
 			}
+		},
+		index: {
+			type: Number,
+			default() {
+				return null
+			}
 		}
 	},
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
+		},
+		matchesApi() {
+			return new MatchesApi()
+		},
+		sortEventsByTime() {
+			return this.events.sort((a, b) => a.match_start_time - b.match_start_time)
+		},
+		filteredEvents() {
+			if (this.league === 'REGULAR') {
+				return this.sortEventsByTime.filter((item) => item?.fantasy === false && item?.finished === false)
+			} else if (this.league === 'FANTASY') {
+				return this.sortEventsByTime.filter((item) => item?.fantasy === true && item?.finished === false)
+			}
 		}
 	},
 	methods: {
@@ -139,6 +119,18 @@ export default {
 				return `${ value.sum }` + ' Ф'
 			}
 		},
+		async getMatches() {
+			let opts = {
+				page: 1,
+				size: 5
+			}
+			try {
+				let result = await this.matchesApi.getMatchesByTournament(this.item.id, opts)
+				this.events = result.items
+			} catch(err) {
+				console.log(err)
+			}
+		}
 		// closePopup() {
 		// 	this.activeBet = ''
 		// },
@@ -159,7 +151,12 @@ export default {
 		},
 	},
 	mounted() {
-
+		this.getMatches()
+		setTimeout(() => {
+			if (this.index === 0) {
+				this.showMore = true
+			}
+		}, 1000)
 	}
 }
 </script>

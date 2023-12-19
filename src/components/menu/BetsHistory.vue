@@ -42,6 +42,7 @@
 <script>
 import BetStats from "@/components/menu/BetStats.vue";
 import BetsHistoryCard from "@/components/menu/BetsHistoryCard.vue";
+import {mapGetters} from "vuex";
 
 export default {
 	name: "BetsHistory",
@@ -157,11 +158,24 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_BETS_HISTORY',
+		]),
 		filterUncalculated() {
-			return this.history.filter((item) => item.status === 'WAIT')
+			// return this.history.filter((item) => item.status === 'WAIT')
+			if (this.GET_BETS_HISTORY?.items) {
+				return this.GET_BETS_HISTORY.items.filter((item) => item.win_amount === null)
+			} else {
+				return []
+			}
 		},
 		filterCalculated() {
-			return this.history.filter((item) => item.status !== 'WAIT')
+			// return this.history.filter((item) => item.status !== 'WAIT')
+			if (this.GET_BETS_HISTORY?.items) {
+				return this.GET_BETS_HISTORY.items.filter((item) => item.win_amount !== null)
+			} else {
+				return []
+			}
 		}
 	}
 }

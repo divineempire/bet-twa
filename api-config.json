@@ -1,0 +1,6 @@
+{
+    "allowUnicodeIdentifiers": true,
+    "dryRun": false,
+    "modelPropertyNaming": "original",
+    "usePromises": true
+}

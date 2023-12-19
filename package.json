@@ -4,18 +4,22 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "refresh-api": "npx @openapitools/openapi-generator-cli generate -i https://api.betty.games/openapi.json -g javascript -c api-config.json -o src/api/ --skip-validate-spec --global-property=apiTests=false,apiDocs=false,modelDocs=false,modelTests=false"
   },
   "dependencies": {
     "@tonconnect/ui": "^2.0.0-beta.6",
     "core-js": "^3.8.3",
     "lottie-web": "^5.12.2",
+    "querystring": "^0.2.1",
+    "superagent": "^8.1.2",
     "swiper": "^11.0.5",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",

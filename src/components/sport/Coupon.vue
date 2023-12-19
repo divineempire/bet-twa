@@ -1,10 +1,10 @@
 <template>
 	<div class="popup">
 		<transition name="slide">
-			<div class="coupon"
-				v-show="showPopup"
+			<div class="coupon" :id="'coupon_' + event?.id"
+				 v-if="showPopup"
 			>
-				<div class="line-icon" @click="$emit('closePopup')"></div>
+				<div class="line-icon"></div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
 					<p class="balance__value">150 TON</p>
@@ -15,10 +15,10 @@
 						<p class="bet-info__teams">{{ getTeamNames }}</p>
 						<p class="bet-info__category">{{ category }}</p>
 					</div>
-					<p class="coupon__coefficient">x2.01</p>
+					<p class="coupon__coefficient">{{ getCoefficient }}</p>
 				</div>
 				<label for="" class="coupon__label">
-					<input type="number" class="coupon__input" placeholder="Сумма ставки">
+					<input type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount">
 				</label>
 				<div class="coupon__button-block">
 					<button class="coupon__choose-btn">15 TON</button>
@@ -47,7 +47,11 @@
 					</li>
 				</ul>
 				<div class="coupon__make-bet">
-					<button class="coupon__main-btn">Сделать ставку</button>
+					<button class="coupon__main-btn"
+							@click="makeBet"
+					>
+						Сделать ставку
+					</button>
 				</div>
 				<p class="coupon__notice">Коэффициент может измениться до начала матча, <br> в зависимости от ставок других игроков</p>
 			</div>
@@ -56,10 +60,17 @@
 </template>
 
 <script>
+import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
+import BetsApi from "/src/api/src/api/BetsApi.js";
+
 export default {
 	name: "Coupon",
 	data() {
 		return {
+			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
+			activeFreeBet: null,
+			betAmount: null,
+			type: '',
 			bonuses: [
 				{
 					amount: '0.5 TON',
@@ -89,6 +100,18 @@ export default {
 				return {}
 			}
 		},
+		firstTeam: {
+			type: Object,
+			default() {
+				return {}
+			}
+		},
+		secondTeam: {
+			type: Object,
+			default() {
+				return {}
+			}
+		},
 		activeBet: {
 			type: String,
 			default() {
@@ -97,12 +120,18 @@ export default {
 		}
 	},
 	computed: {
+		betsApi() {
+			return new BetsApi()
+		},
 		betType() {
 			if (this.activeBet === 'FIRST_WIN') {
+				this.type = 'team1'
 				return 'Исход: П1'
 			} else if (this.activeBet === 'DRAW') {
+				this.type = 'draw'
 				return 'Исход: Ничья'
 			} else if (this.activeBet === 'SECOND_WIN') {
+				this.type = 'team2'
 				return 'Исход: П2'
 			}
 		},
@@ -119,7 +148,7 @@ export default {
 			return text
 		},
 		getTeamNames() {
-			return this.event.firstTeam.name + ' - ' + this.event.secondTeam.name
+			return this.event.team1?.name + ' - ' + this.event.team2?.name
 		},
 		getBetType() {
 			let path = this.$route.path
@@ -134,255 +163,324 @@ export default {
 			} else if (path === '/sport/tennis') {
 				return 'Спорт/Теннис'
 			}
+		},
+		getCoefficient() {
+			if (this.activeBet === 'FIRST_WIN') {
+				return 'x' + this.event.team1_ratio
+			} else if (this.activeBet === 'DRAW') {
+				return 'x' + this.event.draw_ratio
+			} else if (this.activeBet === 'SECOND_WIN') {
+				return 'x' + this.event.team2_ratio
+			}
+		},
+		setFantasyData() {
+			let obj = {
+				match_id: this.event.id,
+				bet_amount: this.betAmount,
+				bet_team: this.type,
+				free_bet_id: 0
+			}
+			if (this.activeFreeBet !== null) {
+				obj.free_bet_id = this.activeFreeBet?.id
+			}
+			return obj
 		}
 	},
 	methods: {
 		activeSwitch(value) {
 			if (this.active.includes(value)) {
 				let index = this.active.indexOf(value)
-				this.active.splice( index,1)
+				this.active.splice(index, 1)
 			} else {
 				this.active.push(value)
 			}
+		},
+		closePopup() {
+			console.log('clooooose')
+			console.log(this.showPopup)
+			this.$emit('closePopup')
+			setTimeout(() => {
+				console.log(this.showPopup)
+			}, 200)
+		},
+		makeBet() {
+			if (this.league === 'FANTASY') {
+				this.fantasyBet()
+			}
+		},
+		fantasyBet() {
+			let obj = this.setFantasyData
+			console.log(obj)
+			// console.log(this.event)
+			// console.log(this.betAmount)
+			this.betsApi.createFantasyBet(this.testInitData, obj)
+				.then((res) => {
+					console.log(res)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+	},
+	watch: {
+		showPopup: {
+			handler: function () {
+				if (this.showPopup === true) {
+					setTimeout(() => {
+						let coupon = document.getElementById('coupon_' + this.event?.id)
+						subscribeTouchEvents(coupon, this)
+					}, 300)
+				} else {
+					// setTimeout(() => {
+					let coupon = document.getElementById('coupon_' + this.event?.id)
+					unsubscribeTouchEvents(coupon)
+					// }, 300)
+				}
+			}
 		}
-	}
+	},
+	// mounted() {
+	// 	let coupon = document.getElementById('coupon_' + this.event?.id)
+	// 	subscribeTouchEvents(coupon, this)
+	// },
+	// unmounted() {
+	// 	let coupon = document.getElementById('coupon' + this.event?.id)
+	// 	unsubscribeTouchEvents(coupon)
+	// }
 }
 </script>
 <style scoped>
-	.slide-enter-active, .slide-leave-active {
-		transition: .2s linear;
-		transform-origin: right;
-	}
-	.slide-enter-from, .slide-leave-to {
-		transform: translateY(450px);
-	}
+.slide-enter-active, .slide-leave-active {
+	transition: .2s linear;
+	transform-origin: right;
+}
 
-	.popup {
-		z-index: 999;
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		display: flex;
-		align-items: flex-end;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.2);
-	}
+.slide-enter-from, .slide-leave-to {
+	transform: translateY(450px);
+}
 
-	.popup-container {
-		position: relative;
-		max-width: 390px;
-		width: 390px;
-		margin: 0 auto;
-		padding: 0 10px;
-	}
+.popup {
+	z-index: 999;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: flex-end;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.2);
+}
 
-	.coupon {
-		//position: fixed;
-		//left: 0;
-		//right: 0;
-		//bottom: 0;
-		width: 100%;
-		padding: 10px 14px 28px 14px;
-		border-radius: 14px 14px 0px 0px;
-		background: #151317;
-	}
+.popup-container {
+	position: relative;
+	max-width: 390px;
+	width: 390px;
+	margin: 0 auto;
+	padding: 0 10px;
+}
 
-	.line-icon {
-		margin: 0 auto 14px auto;
-		width: 34px;
-		height: 4px;
-		border-radius: 3px;
-		background: rgba(255, 255, 255, 0.50);
-	}
+.coupon {
+//position: fixed; //left: 0; //right: 0; //bottom: 0; width: 100%;
+	padding: 10px 14px 28px 14px;
+	border-radius: 14px 14px 0px 0px;
+	background: #151317;
+}
 
-	.balance {
-		margin-bottom: 22px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
+.line-icon {
+	margin: 0 auto 14px auto;
+	width: 34px;
+	height: 4px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.50);
+}
 
-	.balance__name {
-		font-size: 16px;
-		font-family: Roboto-Medium, sans-serif;
-		line-height: 19px;
-	}
+.balance {
+	margin-bottom: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 
-	.balance__value {
-		font-size: 16px;
-		font-family: Roboto-Medium, sans-serif;
-		line-height: 19px;
-	}
+.balance__name {
+	font-size: 16px;
+	font-family: Roboto-Medium, sans-serif;
+	line-height: 19px;
+}
 
-	.coupon__info {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 8px;
-		padding: 12px;
-		border-radius: 8px;
-		background: #28272B;
-	}
+.balance__value {
+	font-size: 16px;
+	font-family: Roboto-Medium, sans-serif;
+	line-height: 19px;
+}
 
-	.bet-info__name {
-		margin-bottom: 4px;
-		font-size: 15px;
-		font-family: Roboto-Medium, sans-serif;
-	}
+.coupon__info {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+	padding: 12px;
+	border-radius: 8px;
+	background: #28272B;
+}
 
-	.bet-info__teams {
-		margin-bottom: 4px;
-		font-size: 13px;
-	}
+.bet-info__name {
+	margin-bottom: 4px;
+	font-size: 15px;
+	font-family: Roboto-Medium, sans-serif;
+}
 
-	.bet-info__category {
-		font-size: 11px;
-		opacity: 0.8;
-	}
+.bet-info__teams {
+	margin-bottom: 4px;
+	font-size: 13px;
+}
 
-	.coupon__coefficient {
-		font-size: 15px;
-		font-family: Roboto-Medium, sans-serif;
-	}
+.bet-info__category {
+	font-size: 11px;
+	opacity: 0.8;
+}
 
-	.coupon__label {
-		display: block;
-		margin-bottom: 8px;
-	}
+.coupon__coefficient {
+	font-size: 15px;
+	font-family: Roboto-Medium, sans-serif;
+}
 
-	.coupon__input {
-		width: 100%;
-		padding: 19px 14px;
-		outline: none;
-		border: none;
-		border-radius: 8px;
-		background: #000;
-		font-size: 15px;
-		line-height: 18px;
-		font-family: Roboto-Regular, sans-serif;
-	}
+.coupon__label {
+	display: block;
+	margin-bottom: 8px;
+}
 
-	.coupon__input::placeholder {
-		color: #fff;
-		opacity: 0.6;
-	}
+.coupon__input {
+	width: 100%;
+	padding: 19px 14px;
+	outline: none;
+	border: none;
+	border-radius: 8px;
+	background: #000;
+	font-size: 15px;
+	line-height: 18px;
+	font-family: Roboto-Regular, sans-serif;
+}
 
-	.coupon__input::-webkit-outer-spin-button,
-	.coupon__input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
+.coupon__input::placeholder {
+	color: #fff;
+	opacity: 0.6;
+}
 
-	.coupon__button-block {
-		display: flex;
-		align-items: center;
-		gap: 0 6px;
-		padding-bottom: 8px;
-		overflow-x: scroll;
-	}
+.coupon__input::-webkit-outer-spin-button,
+.coupon__input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
-	.coupon__choose-btn {
-		padding: 12px 14px;
-		outline: none;
-		border-radius: 8px;
-		border: 1px solid rgba(255, 255, 255, 0.15);
-		background: transparent;
-		font-size: 14px;
-		font-family: Roboto-Medium, sans-serif;
-		white-space: nowrap;
-	}
+.coupon__button-block {
+	display: flex;
+	align-items: center;
+	gap: 0 6px;
+	padding-bottom: 8px;
+	overflow-x: auto;
+}
 
-	.bonus-card {
-		transition: .2s;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 11px 14px;
-		border-radius: 8px;
-		border: 1px solid rgba(255, 255, 255, 0.15);
-	}
+.coupon__choose-btn {
+	padding: 12px 14px;
+	outline: none;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: transparent;
+	font-size: 14px;
+	font-family: Roboto-Medium, sans-serif;
+	white-space: nowrap;
+}
 
-	.active_card {
-		border: 1px solid rgba(0, 245, 155, 0.50);
-	}
+.bonus-card {
+	transition: .2s;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 11px 14px;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-	.bonus-card__main {
-		display: flex;
-		align-items: center;
-	}
+.active_card {
+	border: 1px solid rgba(0, 245, 155, 0.50);
+}
 
-	.bonus-card__amount {
-		margin-right: 4px;
-		font-family: Roboto-Medium, sans-serif;
-		font-weight: 500;
-		font-size: 14px;
-	}
+.bonus-card__main {
+	display: flex;
+	align-items: center;
+}
 
-	.bonus-card__type {
-		margin-right: 12px;
-		padding: 4px 6px;
-		border-radius: 6px;
-		background: #3F3C42;
-		font-family: Roboto-Medium, sans-serif;
-		font-weight: 500;
-		font-size: 12px;
-		text-transform: uppercase;
-	}
+.bonus-card__amount {
+	margin-right: 4px;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+}
 
-	.bonus-card__date {
-		font-size: 11px;
-		opacity: 0.7;
-	}
+.bonus-card__type {
+	margin-right: 12px;
+	padding: 4px 6px;
+	border-radius: 6px;
+	background: #3F3C42;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+	font-size: 12px;
+	text-transform: uppercase;
+}
 
-	.bonus-card__switch-btn {
-		transition: .15s;
-		width: 38px;
-		height: 22px;
-		padding: 1px;
-		border: 1px solid #00F59B;
-		border-radius: 100px;
-		cursor: pointer;
-	}
+.bonus-card__date {
+	font-size: 11px;
+	opacity: 0.7;
+}
 
-	.switch-toggle {
-		transition: .15s linear;
-		width: 18px;
-		height: 18px;
-		border: 4px solid #151317;
-		border-radius: 100px;
-		background: #00F59B;
-	}
+.bonus-card__switch-btn {
+	transition: .15s;
+	width: 38px;
+	height: 22px;
+	padding: 1px;
+	border: 1px solid #00F59B;
+	border-radius: 100px;
+	cursor: pointer;
+}
 
-	.active_switch {
-		background: #00F59B;
-	}
+.switch-toggle {
+	transition: .15s linear;
+	width: 18px;
+	height: 18px;
+	border: 4px solid #151317;
+	border-radius: 100px;
+	background: #00F59B;
+}
 
-	.active_switch .switch-toggle {
-		background: #000;
-		transform: translateX(16px);
-		border: none;
-	}
+.active_switch {
+	background: #00F59B;
+}
 
-	.coupon__make-bet {
-		padding: 14px 0;
-	}
+.active_switch .switch-toggle {
+	background: #000;
+	transform: translateX(16px);
+	border: none;
+}
 
-	.coupon__main-btn {
-		width: 100%;
-		padding: 13px 0 14px 0;
-		outline: none;
-		border: none;
-		border-radius: 10px;
-		background: #00F59B;
-		color: #141414;
-		font-size: 15px;
-		font-family: Roboto-Medium, sans-serif;
-	}
+.coupon__make-bet {
+	padding: 14px 0;
+}
 
-	.coupon__notice {
-		text-align: center;
-		font-size: 12px;
-	}
+.coupon__main-btn {
+	width: 100%;
+	padding: 13px 0 14px 0;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	background: #00F59B;
+	color: #141414;
+	font-size: 15px;
+	font-family: Roboto-Medium, sans-serif;
+}
+
+.coupon__notice {
+	text-align: center;
+	font-size: 12px;
+}
 </style>

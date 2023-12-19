@@ -94,6 +94,9 @@ export default {
 				console.log(err)
 			}
 		}
+	},
+	mounted() {
+		// console.log(this.tonConnectUi)
 	}
 }
 </script>

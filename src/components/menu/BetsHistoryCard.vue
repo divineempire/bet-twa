@@ -4,7 +4,7 @@
 			 @click="showMore = !showMore"
 		>
 			<div class="card__info">
-				<p class="card__status" :class="card.status.toLowerCase() + '_status'">{{ getStatus }}</p>
+				<p class="card__status" :class="status.toLowerCase() + '_status'">{{ getStatus }}</p>
 				<p class="card__datetime">{{ getDatetime }}</p>
 			</div>
 			<div class="arrow-icon" :class="{reverse: showMore === true}"></div>
@@ -13,12 +13,12 @@
 			<div class="match-info__row">
 				<div class="match-info__title">
 					<div class="match-info__category"></div>
-					<p class="match-info__name bet-type">{{ card.betType }}</p>
+					<p class="match-info__name bet-type">{{ getBetType }}</p>
 				</div>
 				<div class="match-info__coefficient">
-					<p class="match-info__value coefficient">{{ 'x' + card.coefficient }}</p>
+					<p class="match-info__value coefficient">{{ 'x' + card?.bet_ratio }}</p>
 					<button type="button" class="match-info__btn"
-							v-if="card.status === 'WAIT'"
+							v-if="status === 'WAIT'"
 					></button>
 				</div>
 			</div>
@@ -34,16 +34,16 @@
 			</div>
 			<div class="match-info__row">
 				<p class="match-info__name">Ставка</p>
-				<p class="match-info__value" :class="{lose: card.status === 'LOSE'}">{{ card.betAmount }}</p>
+				<p class="match-info__value" :class="{lose: status === 'LOSE'}">{{ card.bet_amount }}</p>
 			</div>
 			<div class="match-info__row"
-				 v-if="card.status !== 'LOSE'"
+				 v-if="status !== 'LOSE'"
 			>
 				<p class="match-info__name">Потенциальный выйгрыш (Fee 5%)</p>
-				<p class="match-info__value" :class="{win: card.status === 'WIN'}">{{ card.possibleWin }}</p>
+				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ card.possibleWin }}</p>
 			</div>
 			<button type="button" class="match-info__cancel-btn"
-					v-if="card.status === 'WAIT'"
+					v-if="status === 'WAIT'"
 					@click="cancelBet"
 			>
 				Отменить ставку
@@ -53,7 +53,7 @@
 			 v-show="showMore"
 		>
 			<div class="hidden-info__row"
-				 v-if="card.status !== 'LOSE'"
+				 v-if="status !== 'LOSE'"
 			>
 				<p class="hidden-info__name">Комиссия с выйгрыша</p>
 				<p class="hidden-info__value">{{ card.feeWithWin }}</p>
@@ -69,11 +69,14 @@
 </template>
 
 <script>
+// import Profile from "@/components/menu/Profile.vue";
+import { getFullDate, getDateTime } from "@/helpers/time/time.js";
 export default {
 	name: "BetsHistoryCard",
 	data() {
 		return {
-			showMore: false
+			showMore: false,
+			status: 'wait'
 		}
 	},
 	props: {
@@ -85,20 +88,36 @@ export default {
 		}
 	},
 	computed: {
+		getBetType() {
+			if (this.card?.bet_team === 'team1') {
+				return 'Исход: П1'
+			} else if (this.card?.bet_team === 'draw') {
+				return 'Исход: Ничья'
+			} else if (this.card?.bet_team === 'team2') {
+				return 'Исход: П2'
+			}
+		},
 		getStatus() {
-			if (this.card.status === 'WIN') {
+			if (this.card?.win_amount > 0) {
+				this.status = 'WIN'
 				return 'Выигрыш'
-			} else if (this.card.status === 'LOSE') {
+			} else if (this.card?.win_amount === 0) {
+				this.status = 'LOSE'
 				return 'Проигрыш'
-			} else if (this.card.status === 'WAIT') {
-				return 'Нерассчитана'
+			} else if (this.card?.win_amount === null) {
+				this.status = 'WAIT'
+				return 'Не рассчитана'
 			}
 		},
 		getDatetime() {
-			return this.card.date + ' в ' + this.card.datetime
+			return getFullDate() + ' в ' + getDateTime()
 		}
 	},
-	methods: {}
+	methods: {
+		cancelBet() {
+			console.log('cancel')
+		}
+	}
 }
 </script>
 
