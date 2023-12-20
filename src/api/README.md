@@ -113,12 +113,10 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
 
 ```
 
-[//]: # (## Documentation for API Endpoints)
+## Documentation for API Endpoints
 
-[//]: # ()
-[//]: # (All URIs are relative to *http://localhost*)
+All URIs are relative to *http://localhost*
 
-[//]: # ()
 [//]: # (Class | Method | HTTP request | Description)
 
 [//]: # (------------ | ------------- | ------------- | -------------)
@@ -127,7 +125,7 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
 
 [//]: # (*BetCoffeeApi.BetsApi* | [**finalizeBetApiV1BetsFantasyFinalizeBetIdPatch**]&#40;docs/BetsApi.md#finalizeBetApiV1BetsFantasyFinalizeBetIdPatch&#41; | **PATCH** /api/v1/bets/fantasy/finalize/{bet_id} | Finalize Bet)
 
-[//]: # (*BetCoffeeApi.BetsApi* | [**getBetApiV1BetsBetIdGet**]&#40;docs/BetsApi.md#getBetApiV1BetsBetIdGet&#41; | **GET** /api/v1/bets/{bet_id} | Get Bet)
+[//]: # (*BetCoffeeApi.BetsApi* | [**getBet**]&#40;docs/BetsApi.md#getBet&#41; | **GET** /api/v1/bets/{bet_id} | Get Bet)
 
 [//]: # (*BetCoffeeApi.BetsApi* | [**getBetsByMatchApiV1BetsMatchMatchIdGet**]&#40;docs/BetsApi.md#getBetsByMatchApiV1BetsMatchMatchIdGet&#41; | **GET** /api/v1/bets/match/{match_id} | Get Bets By Match)
 
@@ -135,31 +133,11 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
 
 [//]: # (*BetCoffeeApi.BetsApi* | [**updateBetApiV1BetsBetIdPatch**]&#40;docs/BetsApi.md#updateBetApiV1BetsBetIdPatch&#41; | **PATCH** /api/v1/bets/{bet_id} | Update Bet)
 
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getFrom**]&#40;docs/MatchesApi.md#getFrom&#41; | **GET** /api/v1/matches/from/{from_time} | Get Incoming Matches)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getLive**]&#40;docs/MatchesApi.md#getLive&#41; | **GET** /api/v1/matches/phase/live | Get Live Matches)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getLiveMatchesByTournament**]&#40;docs/MatchesApi.md#getLiveMatchesByTournament&#41; | **GET** /api/v1/matches/tournament/{tournament_id}/live | Get Live Matches By Tournament)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getMatchApiV1MatchesMatchIdGet**]&#40;docs/MatchesApi.md#getMatchApiV1MatchesMatchIdGet&#41; | **GET** /api/v1/matches/{match_id} | Get Match)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getMatchByBookmakerId**]&#40;docs/MatchesApi.md#getMatchByBookmakerId&#41; | **GET** /api/v1/matches/bookmaker/{bookmaker_match_id} | Get Match By Bookmaker Id)
+[//]: # (*BetCoffeeApi.MatchesApi* | [**getMatch**]&#40;docs/MatchesApi.md#getMatch&#41; | **GET** /api/v1/matches/{match_id} | Get Match)
 
 [//]: # (*BetCoffeeApi.MatchesApi* | [**getMatches**]&#40;docs/MatchesApi.md#getMatches&#41; | **GET** /api/v1/matches/ | Get Matches)
 
 [//]: # (*BetCoffeeApi.MatchesApi* | [**getMatchesByTeam**]&#40;docs/MatchesApi.md#getMatchesByTeam&#41; | **GET** /api/v1/matches/team/{team_id} | Get Matches By Team)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getMatchesByTournament**]&#40;docs/MatchesApi.md#getMatchesByTournament&#41; | **GET** /api/v1/matches/tournament/{tournament_id} | Get Matches By Tournament)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getPre**]&#40;docs/MatchesApi.md#getPre&#41; | **GET** /api/v1/matches/phase/prematch | Get Pre Matches)
-
-[//]: # (*BetCoffeeApi.MatchesApi* | [**getPreMatchesByTournament**]&#40;docs/MatchesApi.md#getPreMatchesByTournament&#41; | **GET** /api/v1/matches/tournament/{tournament_id}/prematch | Get Pre Matches By Tournament)
-
-[//]: # (*BetCoffeeApi.NFTsApi* | [**accountNftsApiV1NftsListAccountIdGet**]&#40;docs/NFTsApi.md#accountNftsApiV1NftsListAccountIdGet&#41; | **GET** /api/v1/nfts/list/{account_id} | Account Nfts)
-
-[//]: # (*BetCoffeeApi.RatingApi* | [**createLeague**]&#40;docs/RatingApi.md#createLeague&#41; | **POST** /api/v1/rating/ | Create League)
-
-[//]: # (*BetCoffeeApi.RatingApi* | [**createLeagueEntry**]&#40;docs/RatingApi.md#createLeagueEntry&#41; | **POST** /api/v1/rating/{league_id}/entries | Create League Entry)
 
 [//]: # (*BetCoffeeApi.RatingApi* | [**getLeague**]&#40;docs/RatingApi.md#getLeague&#41; | **GET** /api/v1/rating/{league_id} | Get League)
 
@@ -168,8 +146,6 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
 [//]: # (*BetCoffeeApi.RatingApi* | [**getLeagueEntry**]&#40;docs/RatingApi.md#getLeagueEntry&#41; | **GET** /api/v1/rating/{league_id}/entries/{entry_id} | Get League Entry)
 
 [//]: # (*BetCoffeeApi.RatingApi* | [**getLeagues**]&#40;docs/RatingApi.md#getLeagues&#41; | **GET** /api/v1/rating/ | Get Leagues)
-
-[//]: # (*BetCoffeeApi.RatingApi* | [**updateLeagueEntry**]&#40;docs/RatingApi.md#updateLeagueEntry&#41; | **PATCH** /api/v1/rating/{league_id}/entries/{entry_id} | Update League Entry)
 
 [//]: # (*BetCoffeeApi.RewardsApi* | [**createRewardApiV1RewardsPost**]&#40;docs/RewardsApi.md#createRewardApiV1RewardsPost&#41; | **POST** /api/v1/rewards/ | Create Reward)
 
@@ -185,21 +161,26 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
 
 [//]: # (*BetCoffeeApi.TeamsApi* | [**getTeams**]&#40;docs/TeamsApi.md#getTeams&#41; | **GET** /api/v1/teams/ | Get Teams)
 
-[//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournamentApiV1TournamentsTournamentIdGet**]&#40;docs/TournamentsApi.md#getTournamentApiV1TournamentsTournamentIdGet&#41; | **GET** /api/v1/tournaments/{tournament_id} | Get Tournament)
+[//]: # (*BetCoffeeApi.TonAPIApi* | [**accountInfo**]&#40;docs/TonAPIApi.md#accountInfo&#41; | **GET** /api/v1/tonapi/info/{account_id} | Account Info)
 
-[//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournamentByBookmakerId**]&#40;docs/TournamentsApi.md#getTournamentByBookmakerId&#41; | **GET** /api/v1/tournaments/bookmaker/{bookmaker_tournament_id} | Get Tournament By Bookmaker Id)
+[//]: # (*BetCoffeeApi.TonAPIApi* | [**accountNfts**]&#40;docs/TonAPIApi.md#accountNfts&#41; | **GET** /api/v1/tonapinfts/{account_id} | Account Nfts)
 
-[//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournamentsApiV1TournamentsGet**]&#40;docs/TournamentsApi.md#getTournamentsApiV1TournamentsGet&#41; | **GET** /api/v1/tournaments/ | Get Tournaments)
+[//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournament**]&#40;docs/TournamentsApi.md#getTournament&#41; | **GET** /api/v1/tournaments/{tournament_id} | Get Tournament)
+
+[//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournaments**]&#40;docs/TournamentsApi.md#getTournaments&#41; | **GET** /api/v1/tournaments/ | Get Tournaments)
 
 [//]: # (*BetCoffeeApi.UsersApi* | [**createUser**]&#40;docs/UsersApi.md#createUser&#41; | **POST** /api/v1/users/ | Create User)
 
 [//]: # (*BetCoffeeApi.UsersApi* | [**getCurrentUser**]&#40;docs/UsersApi.md#getCurrentUser&#41; | **GET** /api/v1/users/me | Get Current User)
+
+[//]: # (*BetCoffeeApi.UsersApi* | [**grabReward**]&#40;docs/UsersApi.md#grabReward&#41; | **GET** /api/v1/users/reward | Grab Reward)
 
 [//]: # (*BetCoffeeApi.UsersApi* | [**updateUser**]&#40;docs/UsersApi.md#updateUser&#41; | **PATCH** /api/v1/users/settings | Update User)
 
 
 ## Documentation for Models
 
+ - [BetCoffeeApi.Account](docs/Account.md)
  - [BetCoffeeApi.BetOutcome](docs/BetOutcome.md)
  - [BetCoffeeApi.BetType](docs/BetType.md)
  - [BetCoffeeApi.HTTPValidationError](docs/HTTPValidationError.md)
@@ -211,32 +192,33 @@ api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
  - [BetCoffeeApi.NftPrice](docs/NftPrice.md)
  - [BetCoffeeApi.NftSale](docs/NftSale.md)
  - [BetCoffeeApi.PageSportMatchBet](docs/PageSportMatchBet.md)
+ - [BetCoffeeApi.PageSportMatchBetRead](docs/PageSportMatchBetRead.md)
  - [BetCoffeeApi.PageSportMatchRead](docs/PageSportMatchRead.md)
- - [BetCoffeeApi.PageSportRatedLeague](docs/PageSportRatedLeague.md)
- - [BetCoffeeApi.PageSportRatedLeagueEntry](docs/PageSportRatedLeagueEntry.md)
+ - [BetCoffeeApi.PageSportRatedLeagueEntryRead](docs/PageSportRatedLeagueEntryRead.md)
  - [BetCoffeeApi.PageSportReward](docs/PageSportReward.md)
  - [BetCoffeeApi.PageSportTeam](docs/PageSportTeam.md)
  - [BetCoffeeApi.PageSportTournament](docs/PageSportTournament.md)
  - [BetCoffeeApi.PhaseType](docs/PhaseType.md)
  - [BetCoffeeApi.RewardType](docs/RewardType.md)
+ - [BetCoffeeApi.SportFreeBetNft](docs/SportFreeBetNft.md)
  - [BetCoffeeApi.SportMatchBet](docs/SportMatchBet.md)
  - [BetCoffeeApi.SportMatchBetCreate](docs/SportMatchBetCreate.md)
+ - [BetCoffeeApi.SportMatchBetRead](docs/SportMatchBetRead.md)
  - [BetCoffeeApi.SportMatchBetUpdate](docs/SportMatchBetUpdate.md)
  - [BetCoffeeApi.SportMatchRead](docs/SportMatchRead.md)
  - [BetCoffeeApi.SportRatedLeague](docs/SportRatedLeague.md)
- - [BetCoffeeApi.SportRatedLeagueCreate](docs/SportRatedLeagueCreate.md)
  - [BetCoffeeApi.SportRatedLeagueEntry](docs/SportRatedLeagueEntry.md)
- - [BetCoffeeApi.SportRatedLeagueEntryCreate](docs/SportRatedLeagueEntryCreate.md)
- - [BetCoffeeApi.SportRatedLeagueEntryUpdate](docs/SportRatedLeagueEntryUpdate.md)
+ - [BetCoffeeApi.SportRatedLeagueEntryRead](docs/SportRatedLeagueEntryRead.md)
+ - [BetCoffeeApi.SportRatedLeagueEntryReadWithLeague](docs/SportRatedLeagueEntryReadWithLeague.md)
  - [BetCoffeeApi.SportReward](docs/SportReward.md)
  - [BetCoffeeApi.SportRewardCreate](docs/SportRewardCreate.md)
  - [BetCoffeeApi.SportTeam](docs/SportTeam.md)
- - [BetCoffeeApi.SportTeamRead](docs/SportTeamRead.md)
  - [BetCoffeeApi.SportTournament](docs/SportTournament.md)
- - [BetCoffeeApi.SportTournamentRead](docs/SportTournamentRead.md)
  - [BetCoffeeApi.User](docs/User.md)
  - [BetCoffeeApi.UserCreate](docs/UserCreate.md)
  - [BetCoffeeApi.UserNftItems](docs/UserNftItems.md)
+ - [BetCoffeeApi.UserRead](docs/UserRead.md)
+ - [BetCoffeeApi.UserReadWithLeagueEntries](docs/UserReadWithLeagueEntries.md)
  - [BetCoffeeApi.UserUpdate](docs/UserUpdate.md)
  - [BetCoffeeApi.ValidationError](docs/ValidationError.md)
  - [BetCoffeeApi.ValidationErrorLocInner](docs/ValidationErrorLocInner.md)

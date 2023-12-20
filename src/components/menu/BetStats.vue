@@ -2,24 +2,28 @@
 	<div class="stats">
 		<h3 class="stats__caption">Статистика ставок</h3>
 		<div class="stats__info">
-			<div class="stats__row total-bet">
-				<p class="stats__text">Всего поставлено</p>
-				<p class="stats__value">1500 TON</p>
-			</div>
+<!--			<div class="stats__row total-bet">-->
+<!--				<p class="stats__text">Всего поставлено</p>-->
+<!--				<p class="stats__value">{{ totalBets || 0 }} TON</p>-->
+<!--			</div>-->
 			<div class="stats__row total-win">
 				<p class="stats__text">Всего выиграно</p>
-				<p class="stats__value">290 TON</p>
+				<p class="stats__value">{{ totalWinBets || 0 }} TON</p>
+			</div>
+			<div class="stats__row total-win">
+				<p class="stats__text">Всего выиграно фентези</p>
+				<p class="stats__value">{{ totalWinFantasyBets || 0 }} TON</p>
 			</div>
 			<div class="stats__row fee-lose"
 				v-if="getRouteName === 'Profile'"
 			>
 				<p class="stats__text">Потеряно на комиссии</p>
-				<p class="stats__value">10 TON</p>
+				<p class="stats__value">0 TON</p>
 			</div>
-			<div class="stats__row your-fee">
-				<p class="stats__text">{{ yourFeeText }}</p>
-				<p class="stats__value">10%</p>
-			</div>
+<!--			<div class="stats__row your-fee">-->
+<!--				<p class="stats__text">{{ yourFeeText }}</p>-->
+<!--				<p class="stats__value">10%</p>-->
+<!--			</div>-->
 <!--			<div class="stats__column you-fee">-->
 <!--				<div class="stats__text-info">-->
 <!--					<p class="stats__text">Ваша комиссия</p>-->
@@ -32,6 +36,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
 	name: "BetStats",
 	data() {
@@ -40,6 +46,9 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_USER_INFO',
+		]),
 		getRouteName() {
 			return this.$route.name
 		},
@@ -49,6 +58,15 @@ export default {
 			} else {
 				return 'Комиссия с выйгрыша'
 			}
+		},
+		totalBets() {
+			return this.GET_USER_INFO?.total_bets
+		},
+		totalWinBets() {
+			return this.GET_USER_INFO?.total_earned_tons
+		},
+		totalWinFantasyBets() {
+			return this.GET_USER_INFO?.total_earned_balance
 		}
 	}
 }

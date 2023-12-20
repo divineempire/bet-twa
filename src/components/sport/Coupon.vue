@@ -7,7 +7,7 @@
 				<div class="line-icon"></div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
-					<p class="balance__value">150 TON</p>
+					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType}}</p>
 				</div>
 				<div class="coupon__info">
 					<div class="bet-info">
@@ -15,37 +15,66 @@
 						<p class="bet-info__teams">{{ getTeamNames }}</p>
 						<p class="bet-info__category">{{ category }}</p>
 					</div>
-					<p class="coupon__coefficient">{{ getCoefficient }}</p>
+					<p class="coupon__coefficient">{{ 'x' + getCoefficient }}</p>
 				</div>
-				<label for="" class="coupon__label">
-					<input type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount">
-				</label>
-				<div class="coupon__button-block">
-					<button class="coupon__choose-btn">15 TON</button>
-					<button class="coupon__choose-btn">25 TON</button>
-					<button class="coupon__choose-btn">50 TON</button>
-					<button class="coupon__choose-btn">100 TON</button>
-					<button class="coupon__choose-btn">200 TON</button>
-				</div>
-				<ul class="coupon__bonus-list">
-					<li class="bonus-card"
-						v-for="(item, index) in bonuses"
-						:key="index"
-						:class="{active_card: active.includes(index)}"
+				<div class="coupon__input-container">
+					<div class="additional-value"
+						@click="focusInput"
 					>
-						<div class="bonus-card__main">
-							<p class="bonus-card__amount">{{ item?.amount }}</p>
-							<p class="bonus-card__type">{{ item?.type }}</p>
-							<p class="bonus-card__date">{{ 'до ' + item?.date }}</p>
-						</div>
-						<div class="bonus-card__switch-btn"
-							 @click="activeSwitch(index)"
-							 :class="{active_switch: active.includes(index)}"
+						<p class="hidden_value" v-show="betAmount !== null && betAmount !== ''">{{ betAmount + ' ' + getValueType }}</p>
+						<svg class="additional-value__arrow-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none"
+							v-show="betAmount !== null && betAmount !== ''"
 						>
-							<div class="switch-toggle"></div>
-						</div>
-					</li>
-				</ul>
+							<path d="M10.3846 13.7404L9.59422 12.9269L12.4587 10.0625H3.375V8.93753H12.4587L9.59422 6.07309L10.3846 5.25964L14.625 9.50001L10.3846 13.7404Z" fill="white"/>
+						</svg>
+						<p class="win-value" v-show="betAmount !== null && betAmount !== ''">{{ getPossibleWin + ' ' + getValueType }}</p>
+					</div>
+<!--					v-if="event?.match?.fee > 0"-->
+					<p class="input-fee">{{ event?.match?.fee }}</p>
+					<label for="bet-amount" class="coupon__label">
+						<p class="label-text" :class="{message_red: inputMessage === 'Недостаточно средств'}" v-if="betAmount !== null && betAmount !== ''">{{ inputMessage }}</p>
+						<input type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount" @input="inputBetAmount" id="bet-amount">
+					</label>
+				</div>
+				<div class="coupon__button-block"
+					 v-if="league === 'REGULAR'"
+				>
+					<button class="coupon__choose-btn"
+							v-for="(item, index) in offers"
+							@click="setAmount(item.regular)"
+					>
+						{{ item.regular + ' ' + getValueType }}
+					</button>
+				</div>
+				<div class="coupon__button-block"
+					v-if="league === 'FANTASY'"
+				>
+					<button class="coupon__choose-btn"
+							v-for="(item, index) in offers"
+							@click="setAmount(item.fantasy)"
+					>
+						{{ item.fantasy + ' ' + getValueType }}
+					</button>
+				</div>
+<!--				<ul class="coupon__bonus-list">-->
+<!--					<li class="bonus-card"-->
+<!--						v-for="(item, index) in bonuses"-->
+<!--						:key="index"-->
+<!--						:class="{active_card: active.includes(index)}"-->
+<!--					>-->
+<!--						<div class="bonus-card__main">-->
+<!--							<p class="bonus-card__amount">{{ item?.amount }}</p>-->
+<!--							<p class="bonus-card__type">{{ item?.type }}</p>-->
+<!--							<p class="bonus-card__date">{{ 'до ' + item?.date }}</p>-->
+<!--						</div>-->
+<!--						<div class="bonus-card__switch-btn"-->
+<!--							 @click="activeSwitch(index)"-->
+<!--							 :class="{active_switch: active.includes(index)}"-->
+<!--						>-->
+<!--							<div class="switch-toggle"></div>-->
+<!--						</div>-->
+<!--					</li>-->
+<!--				</ul>-->
 				<div class="coupon__make-bet">
 					<button class="coupon__main-btn"
 							@click="makeBet"
@@ -62,6 +91,7 @@
 <script>
 import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
 import BetsApi from "/src/api/src/api/BetsApi.js";
+import {mapGetters} from "vuex";
 
 export default {
 	name: "Coupon",
@@ -79,6 +109,28 @@ export default {
 				}
 			],
 			active: [],
+			offers: [
+				{
+					regular: 15,
+					fantasy: 500
+				},
+				{
+					regular: 25,
+					fantasy: 1000
+				},
+				{
+					regular: 50,
+					fantasy: 2000
+				},
+				{
+					regular: 100,
+					fantasy: 3000
+				},
+				{
+					regular: 200,
+					fantasy: 5000
+				}
+			]
 		}
 	},
 	props: {
@@ -120,8 +172,36 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_WALLET_INFO',
+			'GET_USER_INFO'
+		]),
 		betsApi() {
 			return new BetsApi()
+		},
+		getValueType() {
+			if (this.league === 'REGULAR') {
+				return 'TON'
+			} else {
+				return 'Ф'
+			}
+		},
+		getActualBalance() {
+			if (this.league === 'REGULAR') {
+				return this.GET_WALLET_INFO?.balance
+			} else if (this.league === 'FANTASY') {
+				return this.GET_USER_INFO?.balance
+			}
+		},
+		getPossibleWin() {
+			if (this.betAmount !== null && this.betAmount > 0 && this.betAmount !== '') {
+				console.log(this.betAmount)
+				let winAmount = this.betAmount * this.getCoefficient
+				let feeAmount = winAmount / 100 * this.event?.fee
+				return winAmount.toFixed(1) - feeAmount.toFixed(1)
+			} else {
+				return ''
+			}
 		},
 		betType() {
 			if (this.activeBet === 'FIRST_WIN') {
@@ -147,6 +227,17 @@ export default {
 
 			return text
 		},
+		inputMessage() {
+			if (this.getActualBalance >= this.betAmount ) {
+				if (this.event?.fee > 0) {
+					return	'Потенциальный выигрыш с учётом комиссии'
+				} else if (this.event?.fee === 0) {
+					return	'Потенциальный выигрыш'
+				}
+			} else {
+				return 'Недостаточно средств'
+			}
+		},
 		getTeamNames() {
 			return this.event.team1?.name + ' - ' + this.event.team2?.name
 		},
@@ -166,11 +257,11 @@ export default {
 		},
 		getCoefficient() {
 			if (this.activeBet === 'FIRST_WIN') {
-				return 'x' + this.event.team1_ratio
+				return this.event.team1_ratio
 			} else if (this.activeBet === 'DRAW') {
-				return 'x' + this.event.draw_ratio
+				return this.event.draw_ratio
 			} else if (this.activeBet === 'SECOND_WIN') {
-				return 'x' + this.event.team2_ratio
+				return this.event.team2_ratio
 			}
 		},
 		setFantasyData() {
@@ -196,12 +287,7 @@ export default {
 			}
 		},
 		closePopup() {
-			console.log('clooooose')
-			console.log(this.showPopup)
 			this.$emit('closePopup')
-			setTimeout(() => {
-				console.log(this.showPopup)
-			}, 200)
 		},
 		makeBet() {
 			if (this.league === 'FANTASY') {
@@ -210,17 +296,30 @@ export default {
 		},
 		fantasyBet() {
 			let obj = this.setFantasyData
-			console.log(obj)
-			// console.log(this.event)
-			// console.log(this.betAmount)
 			this.betsApi.createFantasyBet(this.testInitData, obj)
 				.then((res) => {
 					console.log(res)
+					this.closePopup()
 				})
 				.catch((err) => {
 					console.error(err)
 				})
 		},
+		inputBetAmount() {
+			let maxValue = 100000
+			if (this.betAmount > maxValue) {
+				this.betAmount = maxValue
+			}
+		},
+		setAmount(value) {
+			this.betAmount = value
+			this.focusInput()
+		},
+		focusInput() {
+			console.log('focus')
+			let input = document.getElementById('bet-amount')
+			input.focus()
+		}
 	},
 	watch: {
 		showPopup: {
@@ -270,7 +369,7 @@ export default {
 	align-items: flex-end;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.2);
+	background: rgba(0, 0, 0, 0.8);
 }
 
 .popup-container {
@@ -345,21 +444,27 @@ export default {
 	font-family: Roboto-Medium, sans-serif;
 }
 
+.coupon__input-container {
+	position: relative;
+}
+
 .coupon__label {
 	display: block;
 	margin-bottom: 8px;
 }
 
 .coupon__input {
+	transition: .2s;
 	width: 100%;
 	padding: 19px 14px;
 	outline: none;
 	border: none;
 	border-radius: 8px;
 	background: #000;
-	font-size: 15px;
-	line-height: 18px;
+	font-size: 16px;
+	line-height: 19px;
 	font-family: Roboto-Regular, sans-serif;
+	color: transparent;
 }
 
 .coupon__input::placeholder {
@@ -371,6 +476,60 @@ export default {
 .coupon__input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
+}
+
+.coupon__input:focus::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.coupon__input:focus::-moz-placeholder {
+	color: transparent;
+}
+
+.coupon__input:focus:-moz-placeholder {
+	color: transparent;
+}
+
+.coupon__input:focus:-ms-input-placeholder {
+	color: transparent;
+}
+
+.label-text {
+	transition: .2s;
+	position: absolute;
+	line-height: 0;
+	padding-left: 15px;
+	transform: translateY(17px);
+	font-size: 11px;
+	opacity: 0.8;
+}
+
+.message_red {
+	transition: .2s;
+	color: #FF453A;
+}
+
+.additional-value {
+	position: absolute;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	gap: 0 2px;
+	padding-left: 15px;
+	transform: translateY(26px);
+}
+
+.hidden_value {
+	font-size: 16px;
+	line-height: 19px;
+	font-family: Roboto-Regular, sans-serif;
+}
+
+.win-value {
+	color: #00F59B;
+	font-size: 16px;
+	line-height: 19px;
+	font-family: Roboto-Regular, sans-serif;
 }
 
 .coupon__button-block {

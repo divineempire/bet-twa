@@ -1,7 +1,7 @@
 <template>
 	<ul class="sport__championship-list">
 		<ChampionshipCard
-			v-for="(item, index) in championships"
+			v-for="(item, index) in basketballTournaments"
 			:key="index"
 			:item="item"
 			:league="league"
@@ -11,6 +11,8 @@
 
 <script>
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
+import {mapGetters} from "vuex";
+import MatchesApi from "../../api/src/api/MatchesApi";
 
 export default {
 	name: "Basketball",
@@ -163,7 +165,26 @@ export default {
 				return ''
 			}
 		}
-	}
+	},
+	computed: {
+		...mapGetters([
+			'GET_BASKETBALL_TOURNAMENTS',
+		]),
+		matchesApi() {
+			return new MatchesApi()
+		},
+		basketballTournaments() {
+			if (this.GET_BASKETBALL_TOURNAMENTS.items) {
+				if (this.league === 'FANTASY') {
+					return this.GET_BASKETBALL_TOURNAMENTS.items.filter((item) => item?.fantasy === true)
+				} else {
+					return this.GET_BASKETBALL_TOURNAMENTS.items.filter((item) => item?.fantasy === false)
+				}
+			} else {
+				return []
+			}
+		}
+	},
 }
 </script>
 

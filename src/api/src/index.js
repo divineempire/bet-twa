@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import Account from './model/Account';
 import BetOutcome from './model/BetOutcome';
 import BetType from './model/BetType';
 import HTTPValidationError from './model/HTTPValidationError';
@@ -24,41 +25,42 @@ import NftPreview from './model/NftPreview';
 import NftPrice from './model/NftPrice';
 import NftSale from './model/NftSale';
 import PageSportMatchBet from './model/PageSportMatchBet';
+import PageSportMatchBetRead from './model/PageSportMatchBetRead';
 import PageSportMatchRead from './model/PageSportMatchRead';
-import PageSportRatedLeague from './model/PageSportRatedLeague';
-import PageSportRatedLeagueEntry from './model/PageSportRatedLeagueEntry';
+import PageSportRatedLeagueEntryRead from './model/PageSportRatedLeagueEntryRead';
 import PageSportReward from './model/PageSportReward';
 import PageSportTeam from './model/PageSportTeam';
 import PageSportTournament from './model/PageSportTournament';
 import PhaseType from './model/PhaseType';
 import RewardType from './model/RewardType';
+import SportFreeBetNft from './model/SportFreeBetNft';
 import SportMatchBet from './model/SportMatchBet';
 import SportMatchBetCreate from './model/SportMatchBetCreate';
+import SportMatchBetRead from './model/SportMatchBetRead';
 import SportMatchBetUpdate from './model/SportMatchBetUpdate';
 import SportMatchRead from './model/SportMatchRead';
 import SportRatedLeague from './model/SportRatedLeague';
-import SportRatedLeagueCreate from './model/SportRatedLeagueCreate';
 import SportRatedLeagueEntry from './model/SportRatedLeagueEntry';
-import SportRatedLeagueEntryCreate from './model/SportRatedLeagueEntryCreate';
-import SportRatedLeagueEntryUpdate from './model/SportRatedLeagueEntryUpdate';
+import SportRatedLeagueEntryRead from './model/SportRatedLeagueEntryRead';
+import SportRatedLeagueEntryReadWithLeague from './model/SportRatedLeagueEntryReadWithLeague';
 import SportReward from './model/SportReward';
 import SportRewardCreate from './model/SportRewardCreate';
 import SportTeam from './model/SportTeam';
-import SportTeamRead from './model/SportTeamRead';
 import SportTournament from './model/SportTournament';
-import SportTournamentRead from './model/SportTournamentRead';
 import User from './model/User';
 import UserCreate from './model/UserCreate';
 import UserNftItems from './model/UserNftItems';
+import UserRead from './model/UserRead';
+import UserReadWithLeagueEntries from './model/UserReadWithLeagueEntries';
 import UserUpdate from './model/UserUpdate';
 import ValidationError from './model/ValidationError';
 import ValidationErrorLocInner from './model/ValidationErrorLocInner';
 import BetsApi from './api/BetsApi';
 import MatchesApi from './api/MatchesApi';
-import NFTsApi from './api/NFTsApi';
 import RatingApi from './api/RatingApi';
 import RewardsApi from './api/RewardsApi';
 import TeamsApi from './api/TeamsApi';
+import TonAPIApi from './api/TonAPIApi';
 import TournamentsApi from './api/TournamentsApi';
 import UsersApi from './api/UsersApi';
 
@@ -100,6 +102,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The Account model constructor.
+     * @property {module:model/Account}
+     */
+    Account,
 
     /**
      * The BetOutcome model constructor.
@@ -168,22 +176,22 @@ export {
     PageSportMatchBet,
 
     /**
+     * The PageSportMatchBetRead model constructor.
+     * @property {module:model/PageSportMatchBetRead}
+     */
+    PageSportMatchBetRead,
+
+    /**
      * The PageSportMatchRead model constructor.
      * @property {module:model/PageSportMatchRead}
      */
     PageSportMatchRead,
 
     /**
-     * The PageSportRatedLeague model constructor.
-     * @property {module:model/PageSportRatedLeague}
+     * The PageSportRatedLeagueEntryRead model constructor.
+     * @property {module:model/PageSportRatedLeagueEntryRead}
      */
-    PageSportRatedLeague,
-
-    /**
-     * The PageSportRatedLeagueEntry model constructor.
-     * @property {module:model/PageSportRatedLeagueEntry}
-     */
-    PageSportRatedLeagueEntry,
+    PageSportRatedLeagueEntryRead,
 
     /**
      * The PageSportReward model constructor.
@@ -216,6 +224,12 @@ export {
     RewardType,
 
     /**
+     * The SportFreeBetNft model constructor.
+     * @property {module:model/SportFreeBetNft}
+     */
+    SportFreeBetNft,
+
+    /**
      * The SportMatchBet model constructor.
      * @property {module:model/SportMatchBet}
      */
@@ -226,6 +240,12 @@ export {
      * @property {module:model/SportMatchBetCreate}
      */
     SportMatchBetCreate,
+
+    /**
+     * The SportMatchBetRead model constructor.
+     * @property {module:model/SportMatchBetRead}
+     */
+    SportMatchBetRead,
 
     /**
      * The SportMatchBetUpdate model constructor.
@@ -246,28 +266,22 @@ export {
     SportRatedLeague,
 
     /**
-     * The SportRatedLeagueCreate model constructor.
-     * @property {module:model/SportRatedLeagueCreate}
-     */
-    SportRatedLeagueCreate,
-
-    /**
      * The SportRatedLeagueEntry model constructor.
      * @property {module:model/SportRatedLeagueEntry}
      */
     SportRatedLeagueEntry,
 
     /**
-     * The SportRatedLeagueEntryCreate model constructor.
-     * @property {module:model/SportRatedLeagueEntryCreate}
+     * The SportRatedLeagueEntryRead model constructor.
+     * @property {module:model/SportRatedLeagueEntryRead}
      */
-    SportRatedLeagueEntryCreate,
+    SportRatedLeagueEntryRead,
 
     /**
-     * The SportRatedLeagueEntryUpdate model constructor.
-     * @property {module:model/SportRatedLeagueEntryUpdate}
+     * The SportRatedLeagueEntryReadWithLeague model constructor.
+     * @property {module:model/SportRatedLeagueEntryReadWithLeague}
      */
-    SportRatedLeagueEntryUpdate,
+    SportRatedLeagueEntryReadWithLeague,
 
     /**
      * The SportReward model constructor.
@@ -288,22 +302,10 @@ export {
     SportTeam,
 
     /**
-     * The SportTeamRead model constructor.
-     * @property {module:model/SportTeamRead}
-     */
-    SportTeamRead,
-
-    /**
      * The SportTournament model constructor.
      * @property {module:model/SportTournament}
      */
     SportTournament,
-
-    /**
-     * The SportTournamentRead model constructor.
-     * @property {module:model/SportTournamentRead}
-     */
-    SportTournamentRead,
 
     /**
      * The User model constructor.
@@ -322,6 +324,18 @@ export {
      * @property {module:model/UserNftItems}
      */
     UserNftItems,
+
+    /**
+     * The UserRead model constructor.
+     * @property {module:model/UserRead}
+     */
+    UserRead,
+
+    /**
+     * The UserReadWithLeagueEntries model constructor.
+     * @property {module:model/UserReadWithLeagueEntries}
+     */
+    UserReadWithLeagueEntries,
 
     /**
      * The UserUpdate model constructor.
@@ -354,12 +368,6 @@ export {
     MatchesApi,
 
     /**
-    * The NFTsApi service constructor.
-    * @property {module:api/NFTsApi}
-    */
-    NFTsApi,
-
-    /**
     * The RatingApi service constructor.
     * @property {module:api/RatingApi}
     */
@@ -376,6 +384,12 @@ export {
     * @property {module:api/TeamsApi}
     */
     TeamsApi,
+
+    /**
+    * The TonAPIApi service constructor.
+    * @property {module:api/TonAPIApi}
+    */
+    TonAPIApi,
 
     /**
     * The TournamentsApi service constructor.

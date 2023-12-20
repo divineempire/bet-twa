@@ -27,12 +27,13 @@ class SportTournament {
      * @param sport_id {Number} 
      * @param e_sport {Boolean} 
      * @param top {Boolean} 
-     * @param bookmaker_tournament_id {Number} 
+     * @param fantasy {Boolean} 
      * @param bookmaker_category_id {Number} 
+     * @param bookmaker_tournament_id {Number} 
      */
-    constructor(icon_url, name, sport_id, e_sport, top, bookmaker_tournament_id, bookmaker_category_id) { 
+    constructor(icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id) { 
         
-        SportTournament.initialize(this, icon_url, name, sport_id, e_sport, top, bookmaker_tournament_id, bookmaker_category_id);
+        SportTournament.initialize(this, icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id);
     }
 
     /**
@@ -40,14 +41,15 @@ class SportTournament {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, icon_url, name, sport_id, e_sport, top, bookmaker_tournament_id, bookmaker_category_id) { 
+    static initialize(obj, icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id) { 
         obj['icon_url'] = icon_url;
         obj['name'] = name;
         obj['sport_id'] = sport_id;
         obj['e_sport'] = e_sport;
         obj['top'] = top;
-        obj['bookmaker_tournament_id'] = bookmaker_tournament_id;
+        obj['fantasy'] = fantasy;
         obj['bookmaker_category_id'] = bookmaker_category_id;
+        obj['bookmaker_tournament_id'] = bookmaker_tournament_id;
     }
 
     /**
@@ -76,14 +78,17 @@ class SportTournament {
             if (data.hasOwnProperty('top')) {
                 obj['top'] = ApiClient.convertToType(data['top'], 'Boolean');
             }
+            if (data.hasOwnProperty('fantasy')) {
+                obj['fantasy'] = ApiClient.convertToType(data['fantasy'], 'Boolean');
+            }
             if (data.hasOwnProperty('prize_fund')) {
                 obj['prize_fund'] = ApiClient.convertToType(data['prize_fund'], 'Number');
             }
-            if (data.hasOwnProperty('bookmaker_tournament_id')) {
-                obj['bookmaker_tournament_id'] = ApiClient.convertToType(data['bookmaker_tournament_id'], 'Number');
-            }
             if (data.hasOwnProperty('bookmaker_category_id')) {
                 obj['bookmaker_category_id'] = ApiClient.convertToType(data['bookmaker_category_id'], 'Number');
+            }
+            if (data.hasOwnProperty('bookmaker_tournament_id')) {
+                obj['bookmaker_tournament_id'] = ApiClient.convertToType(data['bookmaker_tournament_id'], 'Number');
             }
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'Number');
@@ -119,7 +124,7 @@ class SportTournament {
 
 }
 
-SportTournament.RequiredProperties = ["icon_url", "name", "sport_id", "e_sport", "top", "bookmaker_tournament_id", "bookmaker_category_id"];
+SportTournament.RequiredProperties = ["icon_url", "name", "sport_id", "e_sport", "top", "fantasy", "bookmaker_category_id", "bookmaker_tournament_id"];
 
 /**
  * @member {String} icon_url
@@ -147,19 +152,24 @@ SportTournament.prototype['e_sport'] = undefined;
 SportTournament.prototype['top'] = undefined;
 
 /**
+ * @member {Boolean} fantasy
+ */
+SportTournament.prototype['fantasy'] = undefined;
+
+/**
  * @member {Number} prize_fund
  */
 SportTournament.prototype['prize_fund'] = undefined;
 
 /**
- * @member {Number} bookmaker_tournament_id
- */
-SportTournament.prototype['bookmaker_tournament_id'] = undefined;
-
-/**
  * @member {Number} bookmaker_category_id
  */
 SportTournament.prototype['bookmaker_category_id'] = undefined;
+
+/**
+ * @member {Number} bookmaker_tournament_id
+ */
+SportTournament.prototype['bookmaker_tournament_id'] = undefined;
 
 /**
  * @member {Number} id

@@ -13,8 +13,10 @@
 
 
 import ApiClient from "../ApiClient";
+import BetType from '../model/BetType';
 import HTTPValidationError from '../model/HTTPValidationError';
 import PageSportMatchRead from '../model/PageSportMatchRead';
+import PhaseType from '../model/PhaseType';
 import SportMatchRead from '../model/SportMatchRead';
 
 /**
@@ -38,173 +40,15 @@ export default class MatchesApi {
 
 
     /**
-     * Get Incoming Matches
-     * @param {Number} from_time 
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getFromWithHttpInfo(from_time, opts) {
-      opts = opts || {};
-      let postBody = null;
-      // verify the required parameter 'from_time' is set
-      if (from_time === undefined || from_time === null) {
-        throw new Error("Missing the required parameter 'from_time' when calling getFrom");
-      }
-
-      let pathParams = {
-        'from_time': from_time
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/from/{from_time}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Incoming Matches
-     * @param {Number} from_time 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getFrom(from_time, opts) {
-      return this.getFromWithHttpInfo(from_time, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Live Matches
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getLiveWithHttpInfo(opts) {
-      opts = opts || {};
-      let postBody = null;
-
-      let pathParams = {
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/phase/live', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Live Matches
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getLive(opts) {
-      return this.getLiveWithHttpInfo(opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Live Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getLiveMatchesByTournamentWithHttpInfo(tournament_id, opts) {
-      opts = opts || {};
-      let postBody = null;
-      // verify the required parameter 'tournament_id' is set
-      if (tournament_id === undefined || tournament_id === null) {
-        throw new Error("Missing the required parameter 'tournament_id' when calling getLiveMatchesByTournament");
-      }
-
-      let pathParams = {
-        'tournament_id': tournament_id
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/tournament/{tournament_id}/live', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Live Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getLiveMatchesByTournament(tournament_id, opts) {
-      return this.getLiveMatchesByTournamentWithHttpInfo(tournament_id, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
      * Get Match
      * @param {Number} match_id 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchRead} and HTTP response
      */
-    getMatchApiV1MatchesMatchIdGetWithHttpInfo(match_id) {
+    getMatchWithHttpInfo(match_id) {
       let postBody = null;
       // verify the required parameter 'match_id' is set
       if (match_id === undefined || match_id === null) {
-        throw new Error("Missing the required parameter 'match_id' when calling getMatchApiV1MatchesMatchIdGet");
+        throw new Error("Missing the required parameter 'match_id' when calling getMatch");
       }
 
       let pathParams = {
@@ -233,54 +77,8 @@ export default class MatchesApi {
      * @param {Number} match_id 
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchRead}
      */
-    getMatchApiV1MatchesMatchIdGet(match_id) {
-      return this.getMatchApiV1MatchesMatchIdGetWithHttpInfo(match_id)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Match By Bookmaker Id
-     * @param {Number} bookmaker_match_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchRead} and HTTP response
-     */
-    getMatchByBookmakerIdWithHttpInfo(bookmaker_match_id) {
-      let postBody = null;
-      // verify the required parameter 'bookmaker_match_id' is set
-      if (bookmaker_match_id === undefined || bookmaker_match_id === null) {
-        throw new Error("Missing the required parameter 'bookmaker_match_id' when calling getMatchByBookmakerId");
-      }
-
-      let pathParams = {
-        'bookmaker_match_id': bookmaker_match_id
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = SportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/bookmaker/{bookmaker_match_id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Match By Bookmaker Id
-     * @param {Number} bookmaker_match_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchRead}
-     */
-    getMatchByBookmakerId(bookmaker_match_id) {
-      return this.getMatchByBookmakerIdWithHttpInfo(bookmaker_match_id)
+    getMatch(match_id) {
+      return this.getMatchWithHttpInfo(match_id)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -290,7 +88,26 @@ export default class MatchesApi {
     /**
      * Get Matches
      * @param {Object} opts Optional parameters
-     * @param {Boolean} [fantasy = false)] 
+     * @param {String} [search] 
+     * @param {Number} [tournament_id] 
+     * @param {Number} [total_bets__gte] 
+     * @param {Number} [total_bets__lte] 
+     * @param {Number} [total_win_bets__lte] 
+     * @param {Number} [total_win_bets__gte] 
+     * @param {Number} [total_earned_tons__lte] 
+     * @param {Number} [total_earned_tons__gte] 
+     * @param {Number} [team1_summary] 
+     * @param {Number} [team2_summary] 
+     * @param {Number} [draw_summary] 
+     * @param {Boolean} [fantasy] 
+     * @param {module:model/PhaseType} [phase] 
+     * @param {Boolean} [finished] 
+     * @param {module:model/BetType} [type] 
+     * @param {Number} [match_start_time__gte] 
+     * @param {Number} [match_start_time__lte] 
+     * @param {Number} [sport_id] 
+     * @param {String} [order_by] 
+     * @param {Number} [bookmaker_match_id] 
      * @param {Number} [page = 1)] Page number
      * @param {Number} [size = 50)] Page size
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
@@ -302,7 +119,26 @@ export default class MatchesApi {
       let pathParams = {
       };
       let queryParams = {
+        'search': opts['search'],
+        'tournament_id': opts['tournament_id'],
+        'total_bets__gte': opts['total_bets__gte'],
+        'total_bets__lte': opts['total_bets__lte'],
+        'total_win_bets__lte': opts['total_win_bets__lte'],
+        'total_win_bets__gte': opts['total_win_bets__gte'],
+        'total_earned_tons__lte': opts['total_earned_tons__lte'],
+        'total_earned_tons__gte': opts['total_earned_tons__gte'],
+        'team1_summary': opts['team1_summary'],
+        'team2_summary': opts['team2_summary'],
+        'draw_summary': opts['draw_summary'],
         'fantasy': opts['fantasy'],
+        'phase': opts['phase'],
+        'finished': opts['finished'],
+        'type': opts['type'],
+        'match_start_time__gte': opts['match_start_time__gte'],
+        'match_start_time__lte': opts['match_start_time__lte'],
+        'sport_id': opts['sport_id'],
+        'order_by': opts['order_by'],
+        'bookmaker_match_id': opts['bookmaker_match_id'],
         'page': opts['page'],
         'size': opts['size']
       };
@@ -325,7 +161,26 @@ export default class MatchesApi {
     /**
      * Get Matches
      * @param {Object} opts Optional parameters
-     * @param {Boolean} opts.fantasy  (default to false)
+     * @param {String} opts.search 
+     * @param {Number} opts.tournament_id 
+     * @param {Number} opts.total_bets__gte 
+     * @param {Number} opts.total_bets__lte 
+     * @param {Number} opts.total_win_bets__lte 
+     * @param {Number} opts.total_win_bets__gte 
+     * @param {Number} opts.total_earned_tons__lte 
+     * @param {Number} opts.total_earned_tons__gte 
+     * @param {Number} opts.team1_summary 
+     * @param {Number} opts.team2_summary 
+     * @param {Number} opts.draw_summary 
+     * @param {Boolean} opts.fantasy 
+     * @param {module:model/PhaseType} opts.phase 
+     * @param {Boolean} opts.finished 
+     * @param {module:model/BetType} opts.type 
+     * @param {Number} opts.match_start_time__gte 
+     * @param {Number} opts.match_start_time__lte 
+     * @param {Number} opts.sport_id 
+     * @param {String} opts.order_by 
+     * @param {Number} opts.bookmaker_match_id 
      * @param {Number} opts.page Page number (default to 1)
      * @param {Number} opts.size Page size (default to 50)
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
@@ -387,164 +242,6 @@ export default class MatchesApi {
      */
     getMatchesByTeam(team_id, opts) {
       return this.getMatchesByTeamWithHttpInfo(team_id, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getMatchesByTournamentWithHttpInfo(tournament_id, opts) {
-      opts = opts || {};
-      let postBody = null;
-      // verify the required parameter 'tournament_id' is set
-      if (tournament_id === undefined || tournament_id === null) {
-        throw new Error("Missing the required parameter 'tournament_id' when calling getMatchesByTournament");
-      }
-
-      let pathParams = {
-        'tournament_id': tournament_id
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/tournament/{tournament_id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getMatchesByTournament(tournament_id, opts) {
-      return this.getMatchesByTournamentWithHttpInfo(tournament_id, opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Pre Matches
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getPreWithHttpInfo(opts) {
-      opts = opts || {};
-      let postBody = null;
-
-      let pathParams = {
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/phase/prematch', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Pre Matches
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getPre(opts) {
-      return this.getPreWithHttpInfo(opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Get Pre Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchRead} and HTTP response
-     */
-    getPreMatchesByTournamentWithHttpInfo(tournament_id, opts) {
-      opts = opts || {};
-      let postBody = null;
-      // verify the required parameter 'tournament_id' is set
-      if (tournament_id === undefined || tournament_id === null) {
-        throw new Error("Missing the required parameter 'tournament_id' when calling getPreMatchesByTournament");
-      }
-
-      let pathParams = {
-        'tournament_id': tournament_id
-      };
-      let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = PageSportMatchRead;
-      return this.apiClient.callApi(
-        '/api/v1/matches/tournament/{tournament_id}/prematch', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Get Pre Matches By Tournament
-     * @param {Number} tournament_id 
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchRead}
-     */
-    getPreMatchesByTournament(tournament_id, opts) {
-      return this.getPreMatchesByTournamentWithHttpInfo(tournament_id, opts)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

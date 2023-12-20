@@ -7,18 +7,18 @@
 			<li class="menu__item">
 				<router-link class="menu__link" active-class="active_link" :to="{name: 'History'}">Мои ставки</router-link>
 			</li>
-			<li class="menu__item">
-				<router-link class="menu__link" active-class="active_link" :to="{name: 'Bonus'}">Акции и бонусы</router-link>
-			</li>
+<!--			<li class="menu__item">-->
+<!--				<router-link class="menu__link" active-class="active_link" :to="{name: 'Bonus'}">Акции и бонусы</router-link>-->
+<!--			</li>-->
 <!--			<li class="menu__item">-->
 <!--				<router-link class="menu__link" active-class="active_link" :to="{name: 'Referal'}">Реферальная система</router-link>-->
 <!--			</li>-->
 			<li class="menu__item">
 				<router-link class="menu__link" active-class="active_link" :to="{name: 'Notice'}">Уведомления</router-link>
 			</li>
-			<li class="menu__item">
-				<router-link class="menu__link" active-class="active_link" :to="{name: 'Support'}">Поддержка</router-link>
-			</li>
+<!--			<li class="menu__item">-->
+<!--				<router-link class="menu__link" active-class="active_link" :to="{name: 'Support'}">Поддержка</router-link>-->
+<!--			</li>-->
 		</ul>
 	</nav>
 </template>

@@ -38,6 +38,7 @@
 
 <script>
 import BetStats from "@/components/menu/BetStats.vue";
+import {mapGetters} from "vuex";
 
 export default {
 	name: "Profile",
@@ -47,6 +48,11 @@ export default {
 			regularPlacement: 1,
 			fantasyPlacement: null
 		}
+	},
+	computed: {
+		...mapGetters([
+			'GET_LEAGUES',
+		]),
 	}
 }
 </script>

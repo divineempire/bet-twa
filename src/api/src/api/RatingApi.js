@@ -14,13 +14,9 @@
 
 import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
-import PageSportRatedLeague from '../model/PageSportRatedLeague';
-import PageSportRatedLeagueEntry from '../model/PageSportRatedLeagueEntry';
+import PageSportRatedLeagueEntryRead from '../model/PageSportRatedLeagueEntryRead';
 import SportRatedLeague from '../model/SportRatedLeague';
-import SportRatedLeagueCreate from '../model/SportRatedLeagueCreate';
 import SportRatedLeagueEntry from '../model/SportRatedLeagueEntry';
-import SportRatedLeagueEntryCreate from '../model/SportRatedLeagueEntryCreate';
-import SportRatedLeagueEntryUpdate from '../model/SportRatedLeagueEntryUpdate';
 
 /**
 * Rating service.
@@ -40,103 +36,6 @@ export default class RatingApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
-
-
-    /**
-     * Create League
-     * @param {module:model/SportRatedLeagueCreate} SportRatedLeagueCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportRatedLeague} and HTTP response
-     */
-    createLeagueWithHttpInfo(SportRatedLeagueCreate) {
-      let postBody = SportRatedLeagueCreate;
-      // verify the required parameter 'SportRatedLeagueCreate' is set
-      if (SportRatedLeagueCreate === undefined || SportRatedLeagueCreate === null) {
-        throw new Error("Missing the required parameter 'SportRatedLeagueCreate' when calling createLeague");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['HTTPBearer'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = SportRatedLeague;
-      return this.apiClient.callApi(
-        '/api/v1/rating/', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Create League
-     * @param {module:model/SportRatedLeagueCreate} SportRatedLeagueCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportRatedLeague}
-     */
-    createLeague(SportRatedLeagueCreate) {
-      return this.createLeagueWithHttpInfo(SportRatedLeagueCreate)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Create League Entry
-     * @param {Number} league_id 
-     * @param {module:model/SportRatedLeagueEntryCreate} SportRatedLeagueEntryCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportRatedLeagueEntry} and HTTP response
-     */
-    createLeagueEntryWithHttpInfo(league_id, SportRatedLeagueEntryCreate) {
-      let postBody = SportRatedLeagueEntryCreate;
-      // verify the required parameter 'league_id' is set
-      if (league_id === undefined || league_id === null) {
-        throw new Error("Missing the required parameter 'league_id' when calling createLeagueEntry");
-      }
-      // verify the required parameter 'SportRatedLeagueEntryCreate' is set
-      if (SportRatedLeagueEntryCreate === undefined || SportRatedLeagueEntryCreate === null) {
-        throw new Error("Missing the required parameter 'SportRatedLeagueEntryCreate' when calling createLeagueEntry");
-      }
-
-      let pathParams = {
-        'league_id': league_id
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['HTTPBearer'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = SportRatedLeagueEntry;
-      return this.apiClient.callApi(
-        '/api/v1/rating/{league_id}/entries', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Create League Entry
-     * @param {Number} league_id 
-     * @param {module:model/SportRatedLeagueEntryCreate} SportRatedLeagueEntryCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportRatedLeagueEntry}
-     */
-    createLeagueEntry(league_id, SportRatedLeagueEntryCreate) {
-      return this.createLeagueEntryWithHttpInfo(league_id, SportRatedLeagueEntryCreate)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
 
 
     /**
@@ -191,7 +90,7 @@ export default class RatingApi {
      * @param {Object} opts Optional parameters
      * @param {Number} [page = 1)] Page number
      * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportRatedLeagueEntry} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportRatedLeagueEntryRead} and HTTP response
      */
     getLeagueEntriesWithHttpInfo(league_id, opts) {
       opts = opts || {};
@@ -216,7 +115,7 @@ export default class RatingApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = PageSportRatedLeagueEntry;
+      let returnType = PageSportRatedLeagueEntryRead;
       return this.apiClient.callApi(
         '/api/v1/rating/{league_id}/entries', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -230,7 +129,7 @@ export default class RatingApi {
      * @param {Object} opts Optional parameters
      * @param {Number} opts.page Page number (default to 1)
      * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportRatedLeagueEntry}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportRatedLeagueEntryRead}
      */
     getLeagueEntries(league_id, opts) {
       return this.getLeagueEntriesWithHttpInfo(league_id, opts)
@@ -295,20 +194,14 @@ export default class RatingApi {
 
     /**
      * Get Leagues
-     * @param {Object} opts Optional parameters
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportRatedLeague} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link Array.<module:model/SportRatedLeague>} and HTTP response
      */
-    getLeaguesWithHttpInfo(opts) {
-      opts = opts || {};
+    getLeaguesWithHttpInfo() {
       let postBody = null;
 
       let pathParams = {
       };
       let queryParams = {
-        'page': opts['page'],
-        'size': opts['size']
       };
       let headerParams = {
       };
@@ -318,7 +211,7 @@ export default class RatingApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = PageSportRatedLeague;
+      let returnType = [SportRatedLeague];
       return this.apiClient.callApi(
         '/api/v1/rating/', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -328,72 +221,10 @@ export default class RatingApi {
 
     /**
      * Get Leagues
-     * @param {Object} opts Optional parameters
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportRatedLeague}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link Array.<module:model/SportRatedLeague>}
      */
-    getLeagues(opts) {
-      return this.getLeaguesWithHttpInfo(opts)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
-
-
-    /**
-     * Update League Entry
-     * @param {Number} league_id 
-     * @param {Number} entry_id 
-     * @param {module:model/SportRatedLeagueEntryUpdate} SportRatedLeagueEntryUpdate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportRatedLeagueEntry} and HTTP response
-     */
-    updateLeagueEntryWithHttpInfo(league_id, entry_id, SportRatedLeagueEntryUpdate) {
-      let postBody = SportRatedLeagueEntryUpdate;
-      // verify the required parameter 'league_id' is set
-      if (league_id === undefined || league_id === null) {
-        throw new Error("Missing the required parameter 'league_id' when calling updateLeagueEntry");
-      }
-      // verify the required parameter 'entry_id' is set
-      if (entry_id === undefined || entry_id === null) {
-        throw new Error("Missing the required parameter 'entry_id' when calling updateLeagueEntry");
-      }
-      // verify the required parameter 'SportRatedLeagueEntryUpdate' is set
-      if (SportRatedLeagueEntryUpdate === undefined || SportRatedLeagueEntryUpdate === null) {
-        throw new Error("Missing the required parameter 'SportRatedLeagueEntryUpdate' when calling updateLeagueEntry");
-      }
-
-      let pathParams = {
-        'league_id': league_id,
-        'entry_id': entry_id
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['HTTPBearer'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = SportRatedLeagueEntry;
-      return this.apiClient.callApi(
-        '/api/v1/rating/{league_id}/entries/{entry_id}', 'PATCH',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Update League Entry
-     * @param {Number} league_id 
-     * @param {Number} entry_id 
-     * @param {module:model/SportRatedLeagueEntryUpdate} SportRatedLeagueEntryUpdate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportRatedLeagueEntry}
-     */
-    updateLeagueEntry(league_id, entry_id, SportRatedLeagueEntryUpdate) {
-      return this.updateLeagueEntryWithHttpInfo(league_id, entry_id, SportRatedLeagueEntryUpdate)
+    getLeagues() {
+      return this.getLeaguesWithHttpInfo()
         .then(function(response_and_data) {
           return response_and_data.data;
         });

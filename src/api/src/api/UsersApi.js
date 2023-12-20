@@ -16,6 +16,7 @@ import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
 import User from '../model/User';
 import UserCreate from '../model/UserCreate';
+import UserReadWithLeagueEntries from '../model/UserReadWithLeagueEntries';
 import UserUpdate from '../model/UserUpdate';
 
 /**
@@ -93,7 +94,7 @@ export default class UsersApi {
     /**
      * Get Current User
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/User} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/UserReadWithLeagueEntries} and HTTP response
      */
     getCurrentUserWithHttpInfo(X_Init_Data) {
       let postBody = null;
@@ -115,7 +116,7 @@ export default class UsersApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = User;
+      let returnType = UserReadWithLeagueEntries;
       return this.apiClient.callApi(
         '/api/v1/users/me', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -126,10 +127,56 @@ export default class UsersApi {
     /**
      * Get Current User
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/User}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/UserReadWithLeagueEntries}
      */
     getCurrentUser(X_Init_Data) {
       return this.getCurrentUserWithHttpInfo(X_Init_Data)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
+
+
+    /**
+     * Grab Reward
+     * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/User} and HTTP response
+     */
+    grabRewardWithHttpInfo(X_Init_Data) {
+      let postBody = null;
+      // verify the required parameter 'X_Init_Data' is set
+      if (X_Init_Data === undefined || X_Init_Data === null) {
+        throw new Error("Missing the required parameter 'X_Init_Data' when calling grabReward");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+        'X-Init-Data': X_Init_Data
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = User;
+      return this.apiClient.callApi(
+        '/api/v1/users/reward', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null
+      );
+    }
+
+    /**
+     * Grab Reward
+     * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/User}
+     */
+    grabReward(X_Init_Data) {
+      return this.grabRewardWithHttpInfo(X_Init_Data)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

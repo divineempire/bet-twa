@@ -1,5 +1,14 @@
 <template>
-	<div class="league">
+	<div class="league"
+		:class="{soon: league === 'REGULAR'}"
+	>
+		<transition name="fade">
+			<div class="coming-soon"
+				 v-show="league === 'REGULAR'"
+			>
+				<div class="coming-soon__lottie" id="coming-soon"></div>
+			</div>
+		</transition>
 		<div class="league__button-block">
 			<button class="league__choose-btn"
 					:class="{active_btn: league === 'REGULAR'}"
@@ -72,30 +81,40 @@
 					:key="index"
 				>
 					<div class="leaderboard__placement">
-						<p class="leaderboard__place">{{ index + 1 + '-й' }}</p>
-						<p class="leaderboard__account">{{ item.account }}</p>
+						<p class="leaderboard__place">{{ item?.place + '-й' }}</p>
+						<p class="leaderboard__account">{{ item?.user?.telegram_user_id }}</p>
 					</div>
 					<div class="leaderboard__amount">
-						<p class="leaderboard__win-amount">{{ item.winAmount + ' Побед' }}</p>
+						<p class="leaderboard__win-amount">{{ item.score + ' Побед' }}</p>
 						<div class="leaderboard__arrow-icon"
-							 :class="item.rising"
+							 :class="item.place <= item.previous_place ? 'up' : 'down'"
 						></div>
 					</div>
 				</li>
 			</ul>
-			<button class="show-more-btn">Показать ещё</button>
+			<p class="empty-text" v-if="sortFantasyLeaders.length === 0">Пока в лиге нет участников</p>
+			<button class="show-more-btn"
+				v-if="sortFantasyLeaders.length > 0 && fantasyTotal > opts.size"
+				@click="showMoreFantasy"
+			>
+				Показать ещё
+			</button>
 		</div>
 	</div>
 </template>
 
 <script>
+import RatingApi from "/src/api/src/api/RatingApi.js";
+import { mapGetters } from "vuex";
+
 export default {
 	name: "League",
 	data() {
 		return {
-			league: 'REGULAR',
-			regularPlacement: 56,
+			league: 'FANTASY',
+			regularPlacement: null,
 			fantasyPlacement: null,
+			// userInFantasy: null,
 			regularLeaders: [
 				{
 					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
@@ -127,182 +146,31 @@ export default {
 					winAmount: 80,
 					rising: 'up'
 				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 77,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 22,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 38,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 54,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 66,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 67,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 97,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 84,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 82,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 44,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 42,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 19,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 72,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 59,
-					rising: 'down'
-				}
 			],
-			fantasyLeaders: [
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 101,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 10,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 24,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 15,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 33,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 80,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 77,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 22,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 38,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 54,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 66,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 67,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 97,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 84,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 82,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 44,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 42,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 19,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 72,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 59,
-					rising: 'down'
-				}
-			]
+			fantasyLeaders: [],
+			fantasyTotal: null,
+			opts: {
+				page: 1,
+				size: 20
+			}
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_LEAGUES',
+			'GET_USER_INFO'
+		]),
+		ratingApi() {
+			return new RatingApi()
+		},
+		getFantasyLeague() {
+			console.log(this.GET_LEAGUES)
+			if (this.GET_LEAGUES.length > 0) {
+				return this.GET_LEAGUES[0]
+			} else {
+				return []
+			}
+		},
 		getHeading() {
 			if (this.league === 'REGULAR') {
 				return 'Winter Betting League'
@@ -318,8 +186,8 @@ export default {
 					return 'Вы ещё не участвовали в обычной лиге'
 				}
 			} else if (this.league === 'FANTASY') {
-				if (this.fantasyPlacement !== null) {
-					return `Вы занимаете ${this.fantasyPlacement} место`
+				if (this.userInFantasy !== null) {
+					return `Вы занимаете ${this.userInFantasy} место`
 				} else {
 					return 'Вы ещё не участвовали в фентези лиге'
 				}
@@ -329,8 +197,40 @@ export default {
 			return this.regularLeaders.sort((a, b) => b.winAmount - a.winAmount )
 		},
 		sortFantasyLeaders() {
-			return this.fantasyLeaders.sort((a, b) => b.winAmount - a.winAmount )
+			return this.fantasyLeaders.sort((a, b) => b.place - a.place )
+		},
+		userInFantasy() {
+			if (this.GET_USER_INFO.rated_league_entries) {
+				let meFantasy = this.GET_USER_INFO?.rated_league_entries.find((item) => item?.rated_league?.fantasy === true)
+				console.log(meFantasy?.place)
+				return meFantasy?.place
+			} else {
+				return null
+			}
+		},
+	},
+	methods: {
+		getFantasyRating() {
+			if (this.getFantasyLeague.id) {
+				this.ratingApi.getLeagueEntries(this.getFantasyLeague?.id, this.opts)
+					.then((res) => {
+						this.fantasyLeaders = res.items
+						console.log(this.fantasyLeaders)
+						this.fantasyTotal = res.total
+					})
+					.catch((err) => {
+						console.log(err)
+					})
+			}
+		},
+		showMoreFantasy() {
+			if (this.fantasyTotal > this.opts.size) {
+				this.opts.size = 40
+			}
 		}
+	},
+	mounted() {
+		this.getFantasyRating()
 	}
 }
 </script>
@@ -338,6 +238,29 @@ export default {
 <style scoped>
 .league {
 	padding: 14px 0;
+}
+
+.soon {
+	position: relative;
+}
+
+.coming-soon {
+	position: absolute;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 55px;
+	left: -10px;
+	right: -10px;
+	bottom: -5px;
+	background: rgba(21, 19, 23, 0.80);
+	backdrop-filter: blur(5px);
+}
+
+.coming-soon__lottie {
+	width: 274px;
+	height: 180px;
 }
 
 .league__button-block {
@@ -422,6 +345,8 @@ export default {
 }
 
 .member {
+	top: 14px;
+	position: sticky;
 	background: #3F3C42;
 }
 
@@ -508,6 +433,11 @@ export default {
 
 .down {
 	background: url('~@/assets/league/down.svg') no-repeat;
+}
+
+.empty-text {
+	text-align: center;
+	font-size: 20px;
 }
 
 .show-more-btn {

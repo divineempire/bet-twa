@@ -1,7 +1,6 @@
 <template>
 	<div class="sport">
 		<div class="sport__choose-league">
-<!--			@click="chooseLeague('REGULAR')"-->
 			<button class="sport__choose-btn regular-btn"
 					:class="{active_btn: league === 'REGULAR'}"
 					@click="chooseLeague('REGULAR')"
@@ -15,16 +14,26 @@
 				Фэнтези
 			</button>
 		</div>
-		<button type="button" class="sport__search-btn"
-			@click="openSearch"
+		<div class="sport__content"
+			 :class="{soon: league === 'REGULAR'}"
 		>
-			Введите название события или турнира
-<!--			<input type="search" class="sport__search-input" placeholder="Введите название события или турнира">-->
-		</button>
-		<SportNavigation />
-		<router-view
-			:league="league"
-		/>
+			<button type="button" class="sport__search-btn"
+					@click="openSearch"
+			>
+				Введите название события или турнира
+			</button>
+			<SportNavigation />
+			<router-view
+				:league="league"
+			/>
+			<transition name="fade">
+				<div class="coming-soon"
+					 v-show="league === 'REGULAR'"
+				>
+					<div class="coming-soon__lottie" id="coming-soon"></div>
+				</div>
+			</transition>
+		</div>
 		<SearchPopup
 			v-show="showSearch"
 		/>
@@ -35,6 +44,7 @@
 import SportNavigation from "@/components/sport/SportNavigation.vue";
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
 import SearchPopup from "@/components/sport/SearchPopup.vue";
+import lottie from "lottie-web";
 export default {
 	name: 'Sport',
 	data() {
@@ -186,6 +196,14 @@ export default {
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
+		},
+		getOptions() {
+			return {
+				page: 1,
+				size: 20,
+				top: true,
+				sport_id: 18
+			}
 		}
 	},
 	methods: {
@@ -204,9 +222,45 @@ export default {
 				this.webApp.BackButton.onClick(this.closeSearch)
 			}
 		},
-		// updateSport(value) {
-		// 	this.activeSport = value
-		// }
+		// async getSportTournaments(sportId) {
+		// 	let opts = {
+		// 		page: 1,
+		// 		size: 20,
+		// 		top: true,
+		// 	}
+		// 	opts.sport_id = sportId
+		// 	try {
+		// 		let result = await this.tournamentsApi.getTournaments(opts)
+		// 		if (sportId === hockey_id) {
+		//			SAVE_HOCKEY_TOURNAMENTS(result)
+		// 		} else if(sportId === basketball_id) {
+		//			SAVE_BASKETBALL_TOURNAMENTS(result)
+		// 		} else if(sportId === tennis_id) {
+		//			SAVE_TENNIS_TOURNAMENTS(result)
+		// 		} else if(sportId === volleyball_id) {
+		//			SAVE_VOLLEYBALL_TOURNAMENTS(result)
+		// 		}
+		// 	} catch(err) {
+		// 		console.log(err)
+		// 	}
+		// },
+	},
+	async created() {
+		// Получить турниры баскетбол, хоккей и т.д.
+		// await this.getSportTournaments(18)
+		// await this.getSportTournaments(18)
+		// await this.getSportTournaments(18)
+		// await this.getSportTournaments(18)
+	},
+	mounted() {
+		lottie.loadAnimation({
+			container: document.getElementById('coming-soon'), // the dom element that will contain the animation
+			renderer: 'svg',
+			loop: true,
+			autoplay: true,
+			name: 'soon',
+			path: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/coming-soon.json'
+		});
 	},
 	watch: {
 		showSearch: {
@@ -224,6 +278,19 @@ export default {
 </script>
 
 <style scoped>
+
+.fade-enter-active {
+	transition: .5s linear;
+	//transform-origin: bottom;
+}
+
+.fade-leave-active {
+	transition: 0s linear;
+}
+
+.fade-enter-from, .fade-leave-to {
+	opacity: 0;
+}
 
 .sport__choose-league {
 	padding: 14px 0;
@@ -272,18 +339,33 @@ export default {
 	background: url('@/assets/sport/search-icon.svg') no-repeat;
 }
 
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
-	display: none;
-}
-
 .sport__championship-list {
 	//margin-bottom: ;
 	display: flex;
 	flex-direction: column;
 	gap: 6px 0;
+}
+
+.soon {
+	position: relative;
+}
+
+.coming-soon {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: -5px;
+	left: -10px;
+	right: -10px;
+	bottom: -5px;
+	background: rgba(21, 19, 23, 0.80);
+	backdrop-filter: blur(5px);
+}
+
+.coming-soon__lottie {
+	width: 274px;
+	height: 180px;
 }
 
 </style>

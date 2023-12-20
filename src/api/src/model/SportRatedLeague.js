@@ -25,12 +25,13 @@ class SportRatedLeague {
      * @param name {String} 
      * @param description {String} 
      * @param icon_url {String} 
+     * @param fantasy {Boolean} 
      * @param start_time {Number} 
      * @param end_time {Number} 
      */
-    constructor(name, description, icon_url, start_time, end_time) { 
+    constructor(name, description, icon_url, fantasy, start_time, end_time) { 
         
-        SportRatedLeague.initialize(this, name, description, icon_url, start_time, end_time);
+        SportRatedLeague.initialize(this, name, description, icon_url, fantasy, start_time, end_time);
     }
 
     /**
@@ -38,10 +39,11 @@ class SportRatedLeague {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name, description, icon_url, start_time, end_time) { 
+    static initialize(obj, name, description, icon_url, fantasy, start_time, end_time) { 
         obj['name'] = name;
         obj['description'] = description;
         obj['icon_url'] = icon_url;
+        obj['fantasy'] = fantasy;
         obj['start_time'] = start_time;
         obj['end_time'] = end_time;
     }
@@ -66,11 +68,17 @@ class SportRatedLeague {
             if (data.hasOwnProperty('icon_url')) {
                 obj['icon_url'] = ApiClient.convertToType(data['icon_url'], 'String');
             }
+            if (data.hasOwnProperty('fantasy')) {
+                obj['fantasy'] = ApiClient.convertToType(data['fantasy'], 'Boolean');
+            }
             if (data.hasOwnProperty('start_time')) {
                 obj['start_time'] = ApiClient.convertToType(data['start_time'], 'Number');
             }
             if (data.hasOwnProperty('end_time')) {
                 obj['end_time'] = ApiClient.convertToType(data['end_time'], 'Number');
+            }
+            if (data.hasOwnProperty('closed')) {
+                obj['closed'] = ApiClient.convertToType(data['closed'], 'Boolean');
             }
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'Number');
@@ -110,7 +118,7 @@ class SportRatedLeague {
 
 }
 
-SportRatedLeague.RequiredProperties = ["name", "description", "icon_url", "start_time", "end_time"];
+SportRatedLeague.RequiredProperties = ["name", "description", "icon_url", "fantasy", "start_time", "end_time"];
 
 /**
  * @member {String} name
@@ -128,6 +136,11 @@ SportRatedLeague.prototype['description'] = undefined;
 SportRatedLeague.prototype['icon_url'] = undefined;
 
 /**
+ * @member {Boolean} fantasy
+ */
+SportRatedLeague.prototype['fantasy'] = undefined;
+
+/**
  * @member {Number} start_time
  */
 SportRatedLeague.prototype['start_time'] = undefined;
@@ -136,6 +149,12 @@ SportRatedLeague.prototype['start_time'] = undefined;
  * @member {Number} end_time
  */
 SportRatedLeague.prototype['end_time'] = undefined;
+
+/**
+ * @member {Boolean} closed
+ * @default false
+ */
+SportRatedLeague.prototype['closed'] = false;
 
 /**
  * @member {Number} id

@@ -24,23 +24,23 @@
 			</div>
 			<div class="match-info__column match-result">
 				<div class="match-result__value">
-					<p class="match-info__name">{{ card.first.name }}</p>
-					<p class="match-info__value">{{ card.first.result }}</p>
+					<p class="match-info__name">{{ card?.match.team1.name }}</p>
+					<p class="match-info__value">{{ card?.match?.team1_score }}</p>
 				</div>
 				<div class="match-result__value">
-					<p class="match-info__name">{{ card.second.name }}</p>
-					<p class="match-info__value">{{ card.second.result }}</p>
+					<p class="match-info__name">{{ card?.match.team2.name }}</p>
+					<p class="match-info__value">{{ card?.match?.team2_score }}</p>
 				</div>
 			</div>
 			<div class="match-info__row">
 				<p class="match-info__name">Ставка</p>
-				<p class="match-info__value" :class="{lose: status === 'LOSE'}">{{ card.bet_amount }}</p>
+				<p class="match-info__value" :class="{lose: status === 'LOSE'}">{{ card?.bet_amount }}</p>
 			</div>
 			<div class="match-info__row"
 				 v-if="status !== 'LOSE'"
 			>
 				<p class="match-info__name">Потенциальный выйгрыш (Fee 5%)</p>
-				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ card.possibleWin }}</p>
+				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
 			<button type="button" class="match-info__cancel-btn"
 					v-if="status === 'WAIT'"
@@ -56,12 +56,14 @@
 				 v-if="status !== 'LOSE'"
 			>
 				<p class="hidden-info__name">Комиссия с выйгрыша</p>
-				<p class="hidden-info__value">{{ card.feeWithWin }}</p>
+				<p class="hidden-info__value">{{ getFeeWithWin + '%' }}</p>
 			</div>
-			<div class="hidden-info__row">
+			<div class="hidden-info__row"
+				v-if="league === 'REGULAR'"
+			>
 				<p class="hidden-info__name">Смарт-контракт</p>
 				<a href="" class="hidden-info__link">
-					<p class="link-text">{{ card.smartContract }}</p>
+					<p class="link-text">{{ card?.match?.contract_address }}</p>
 				</a>
 			</div>
 		</div>
@@ -76,7 +78,7 @@ export default {
 	data() {
 		return {
 			showMore: false,
-			status: 'wait'
+			status: 'WAIT'
 		}
 	},
 	props: {
@@ -110,7 +112,16 @@ export default {
 			}
 		},
 		getDatetime() {
-			return getFullDate() + ' в ' + getDateTime()
+			return getFullDate(this.card?.match?.match_start_time) + ' в ' + getDateTime(this.card?.match?.match_start_time)
+		},
+		getPossibleWin() {
+			let winAmount = this.card?.bet_amount * this.card?.bet_ratio
+			let feeAmount = winAmount / 100 * this.card?.match?.fee
+			return winAmount.toFixed(1) - feeAmount.toFixed(1)
+		},
+		getFeeWithWin() {
+			let winAmount = this.card?.bet_amount * this.card?.bet_ratio
+			return winAmount / 100 * this.card?.match?.fee
 		}
 	},
 	methods: {

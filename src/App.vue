@@ -9,6 +9,8 @@ import {mapActions} from "vuex";
 import TournamentsApi from '/src/api/src/api/TournamentsApi.js'
 import MatchesApi from "/src/api/src/api/MatchesApi.js";
 import UsersApi from "/src/api/src/api/UsersApi.js";
+import RatingApi from "/src/api/src/api/RatingApi.js";
+import TonAPIApi from "/src/api/src/api/TonAPIApi.js";
 
 export default {
 	data() {
@@ -43,12 +45,21 @@ export default {
 		},
 		usersApi() {
 			return new UsersApi()
+		},
+		ratingApi() {
+			return new RatingApi()
+		},
+		tonApi() {
+			return new TonAPIApi()
 		}
 	},
 	methods: {
 		...mapActions([
 			'SAVE_WALLET_INFO',
-			'SAVE_TOURNAMENTS'
+			'SAVE_USER_INFO',
+			'SAVE_FOOTBALL_TOURNAMENTS',
+			'SAVE_LEAGUES',
+			// 'SAVE_USER_FANTASY_INFO'
 		]),
 		callback(e) {
 			window.history.back()
@@ -68,30 +79,34 @@ export default {
 				}
 			})
 		},
-		saveWalletInfo(walletInfo) {
-			walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address, true)
-			localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
-			this.SAVE_WALLET_INFO(walletInfo)
+		async saveWalletInfo(walletInfo) {
+			try {
+				walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
+				localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
+				let info = await this.getWalletBalance(walletInfo?.account?.address)
+				walletInfo.balance = info?.balance
+				this.SAVE_WALLET_INFO(walletInfo)
+			} catch(err) {
+				console.error(err)
+			}
 		},
-		async getTournaments() {
-			// let opts = {
-			// 	page: 1,
-			// 	size: 20
-			// }
-			// this.tournamentsApi.getTournaments(opts)
-			// 	.then((res) => {
-			// 		this.SAVE_TOURNAMENTS(res)
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log(err)
-			// 	})
+		async getWalletBalance(address) {
+			try {
+				return await this.tonApi.accountInfo(address)
+			} catch(err) {
+				throw(err)
+			}
+		},
+		async getFootballTournaments() {
 			try {
 				let opts = {
 					page: 1,
-					size: 20
+					size: 20,
+					// top: true,
+					sport_id: 18
 				}
 				let result = await this.tournamentsApi.getTournaments(opts)
-				this.SAVE_TOURNAMENTS(result)
+				this.SAVE_FOOTBALL_TOURNAMENTS(result)
 			} catch(err) {
 				console.log(err)
 			}
@@ -99,7 +114,8 @@ export default {
 		getCurrentUser() {
 			this.usersApi.getCurrentUser(this.testInitData)
 				.then((res) => {
-					console.log(res)
+					// console.log(res)
+					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {
 					if (err.error.status === 404) {
@@ -121,6 +137,30 @@ export default {
 					console.error(err)
 				})
 		},
+		async getAllLeagues() {
+			try {
+				let result = await this.ratingApi.getLeagues({page: 1, size: 10})
+				this.SAVE_LEAGUES(result)
+				// await this.getUserInFantasy()
+			} catch(err) {
+				console.log(err)
+			}
+		},
+		// async getUserInFantasy() {
+		// 	let opts = {
+		// 		page: 1,
+		// 		size: 2
+		// 	}
+		// 	let initData = this.webApp.initData
+		// 	this.ratingApi.getLeagueEntriesByUser(opts, this.testInitData)
+		// 		.then((res) => {
+		// 			console.log(res)
+		// 			this.SAVE_USER_FANTASY_INFO(res.items)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.log(err)
+		// 		})
+		// },
 		setTwaOptions() {
 			if (!this.webApp.isExpanded) {
 				this.webApp.expand()
@@ -132,18 +172,20 @@ export default {
 				twaReturnUrl: 'https://t.me/bettygames_bot'
 			};
 			this.webApp.ready()
-		}
+		},
 	},
 	async created() {
 		// if (this.webApp.initData) {
 			this.getCurrentUser()
 		// }
-		await this.getTournaments()
+		this.subscribeConnector()
+		await this.getFootballTournaments()
+		await this.getAllLeagues()
 		console.log('Турниры загружены')
 		this.setTwaOptions()
-		this.subscribeConnector()
 	},
 	mounted() {
+
 	},
 	unmounted() {
 		if (this.unsubscribe !== null) {

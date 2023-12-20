@@ -1,81 +1,99 @@
 <template>
 	<div class="settings">
 		<h3 class="settings__caption">Настройка уведомлений</h3>
-		<h4 class="settings__title">Новости</h4>
-		<ul class="settings__list">
-			<li class="settings__item">
-				<p class="settings__name">Анонсы событий</p>
-				<div class="settings__switch-btn"
-					@click="activeSwitch(1)"
-					 :class="{active_switch: active.includes(1)}"
-				>
-					<div class="switch-toggle"></div>
-				</div>
-			</li>
-			<li class="settings__item">
-				<p class="settings__name">Анонсы акций и бонусных программ</p>
-				<div class="settings__switch-btn"
-					@click="activeSwitch(2)"
-					 :class="{active_switch: active.includes(2)}"
-				>
-					<div class="switch-toggle"></div>
-				</div>
-			</li>
-			<li class="settings__item">
-				<p class="settings__name">Информация о новых лигах</p>
-				<div class="settings__switch-btn"
-					@click="activeSwitch(3)"
-					 :class="{active_switch: active.includes(3)}"
-				>
-					<div class="switch-toggle"></div>
-				</div>
-			</li>
-		</ul>
+<!--		<h4 class="settings__title">Новости</h4>-->
+<!--		<ul class="settings__list">-->
+<!--			<li class="settings__item">-->
+<!--				<p class="settings__name">Анонсы событий</p>-->
+<!--				<div class="settings__switch-btn"-->
+<!--					@click="activeSwitch(1)"-->
+<!--					 :class="{active_switch: active.includes(1)}"-->
+<!--				>-->
+<!--					<div class="switch-toggle"></div>-->
+<!--				</div>-->
+<!--			</li>-->
+<!--			<li class="settings__item">-->
+<!--				<p class="settings__name">Анонсы акций и бонусных программ</p>-->
+<!--				<div class="settings__switch-btn"-->
+<!--					@click="activeSwitch(2)"-->
+<!--					 :class="{active_switch: active.includes(2)}"-->
+<!--				>-->
+<!--					<div class="switch-toggle"></div>-->
+<!--				</div>-->
+<!--			</li>-->
+<!--			<li class="settings__item">-->
+<!--				<p class="settings__name">Информация о новых лигах</p>-->
+<!--				<div class="settings__switch-btn"-->
+<!--					@click="activeSwitch(3)"-->
+<!--					 :class="{active_switch: active.includes(3)}"-->
+<!--				>-->
+<!--					<div class="switch-toggle"></div>-->
+<!--				</div>-->
+<!--			</li>-->
+<!--		</ul>-->
 		<h4 class="settings__title">Ставки</h4>
 		<ul class="settings__list">
 			<li class="settings__item">
 				<p class="settings__name">Информация о результатах ставки</p>
 				<div class="settings__switch-btn"
-					@click="activeSwitch(4)"
-					 :class="{active_switch: active.includes(4)}"
+					@click="activeSwitch('bet-notice')"
+					 :class="{active_switch: active.includes('bet-notice')}"
 				>
 					<div class="switch-toggle"></div>
 				</div>
 			</li>
 		</ul>
-		<h4 class="settings__title">Анонс новых событий</h4>
-		<ul class="settings__list">
-			<li class="settings__item">
-				<p class="settings__name">Спорт</p>
-				<div class="settings__switch-btn"
-					@click="activeSwitch(5)"
-					 :class="{active_switch: active.includes(5)}"
-				>
-					<div class="switch-toggle"></div>
-				</div>
-			</li>
-			<li class="settings__item">
-				<p class="settings__name">Киберспорт</p>
-				<div class="settings__switch-btn"
-					@click="activeSwitch(6)"
-					 :class="{active_switch: active.includes(6)}"
-				>
-					<div class="switch-toggle"></div>
-				</div>
-			</li>
-		</ul>
+<!--		<h4 class="settings__title">Анонс новых событий</h4>-->
+<!--		<ul class="settings__list">-->
+<!--			<li class="settings__item">-->
+<!--				<p class="settings__name">Спорт</p>-->
+<!--				<div class="settings__switch-btn"-->
+<!--					@click="activeSwitch(5)"-->
+<!--					 :class="{active_switch: active.includes(5)}"-->
+<!--				>-->
+<!--					<div class="switch-toggle"></div>-->
+<!--				</div>-->
+<!--			</li>-->
+<!--			<li class="settings__item">-->
+<!--				<p class="settings__name">Киберспорт</p>-->
+<!--				<div class="settings__switch-btn"-->
+<!--					@click="activeSwitch(6)"-->
+<!--					 :class="{active_switch: active.includes(6)}"-->
+<!--				>-->
+<!--					<div class="switch-toggle"></div>-->
+<!--				</div>-->
+<!--			</li>-->
+<!--		</ul>-->
 	</div>
 </template>
 
 <script>
+import UsersApi from "/src/api/src/api/UsersApi.js";
+import {mapActions, mapGetters} from "vuex";
+
 export default {
 	name: "NoticeSettings",
 	data() {
 		return {
-			active: []
+			active: [],
+			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
+		}
+	},
+	computed: {
+		...mapGetters([
+			'GET_USER_INFO',
+		]),
+		webApp() {
+			return window.Telegram.WebApp
+		},
+		usersApi() {
+			return new UsersApi()
 		}
 	},
 	methods: {
+		...mapActions([
+			'SAVE_USER_INFO',
+		]),
 		activeSwitch(value) {
 			if (this.active.includes(value)) {
 				let index = this.active.indexOf(value)
@@ -83,13 +101,55 @@ export default {
 			} else {
 				this.active.push(value)
 			}
-			console.log(this.active)
+			this.updateUserNotice(value)
+			// console.log(this.active)
 			// if (!this.active.includes(value)) {
 			// 	this.active.push(value)
 			// } else {
 			// 	this.active.splice( index,1)
 			// }
+		},
+		getStatusNotification() {
+			if (this.GET_USER_INFO?.notifications_enabled) {
+				this.active.push('bet-notice')
+			} else {
+				let index = this.active.indexOf('bet-notice')
+				this.active.splice( index,1)
+			}
+		},
+		updateUserNotice(value) {
+			let object = {}
+			if (this.active.includes(value)) {
+				object.notifications_enabled = true
+			} else {
+				object.notifications_enabled = false
+			}
+			if (this.webApp.initData) {
+				this.initData = this.webApp.initData
+			}
+			console.log(this.active, 'active')
+			console.log(object)
+			this.usersApi.updateUser(this.testInitData, object)
+				.then((res) => {
+					console.log(res)
+					this.updateUserInfo()
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		},
+		updateUserInfo() {
+			this.usersApi.getCurrentUser(this.testInitData)
+				.then((res) => {
+					this.SAVE_USER_INFO(res)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
 		}
+	},
+	mounted() {
+		this.getStatusNotification()
 	}
 }
 </script>

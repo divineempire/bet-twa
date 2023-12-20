@@ -10,7 +10,8 @@
 <script>
 import MenuNav from "@/components/menu/MenuNav.vue";
 import BetsApi from "/src/api/src/api/BetsApi.js";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
+import UsersApi from "/src/api/src/api/UsersApi";
 
 export default {
 	name: "Menu",
@@ -25,6 +26,9 @@ export default {
 	computed: {
 		getRouteName() {
 			return this.$route.name
+		},
+		usersApi() {
+			return new UsersApi()
 		},
 		betsApi() {
 			return new BetsApi()

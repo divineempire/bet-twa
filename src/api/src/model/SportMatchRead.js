@@ -14,8 +14,8 @@
 import ApiClient from '../ApiClient';
 import BetType from './BetType';
 import PhaseType from './PhaseType';
-import SportTeamRead from './SportTeamRead';
-import SportTournamentRead from './SportTournamentRead';
+import SportTeam from './SportTeam';
+import SportTournament from './SportTournament';
 
 /**
  * The SportMatchRead model module.
@@ -29,15 +29,16 @@ class SportMatchRead {
      * @param match_start_time {Number} 
      * @param team1_id {Number} 
      * @param team2_id {Number} 
+     * @param bookmaker_match_id {Number} 
      * @param sport_id {Number} 
-     * @param team1 {module:model/SportTeamRead} 
-     * @param team2 {module:model/SportTeamRead} 
+     * @param team1 {module:model/SportTeam} 
+     * @param team2 {module:model/SportTeam} 
      * @param id {Number} 
-     * @param tournament {module:model/SportTournamentRead} 
+     * @param tournament {module:model/SportTournament} 
      */
-    constructor(match_start_time, team1_id, team2_id, sport_id, team1, team2, id, tournament) { 
+    constructor(match_start_time, team1_id, team2_id, bookmaker_match_id, sport_id, team1, team2, id, tournament) { 
         
-        SportMatchRead.initialize(this, match_start_time, team1_id, team2_id, sport_id, team1, team2, id, tournament);
+        SportMatchRead.initialize(this, match_start_time, team1_id, team2_id, bookmaker_match_id, sport_id, team1, team2, id, tournament);
     }
 
     /**
@@ -45,10 +46,11 @@ class SportMatchRead {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, match_start_time, team1_id, team2_id, sport_id, team1, team2, id, tournament) { 
+    static initialize(obj, match_start_time, team1_id, team2_id, bookmaker_match_id, sport_id, team1, team2, id, tournament) { 
         obj['match_start_time'] = match_start_time;
         obj['team1_id'] = team1_id;
         obj['team2_id'] = team2_id;
+        obj['bookmaker_match_id'] = bookmaker_match_id;
         obj['sport_id'] = sport_id;
         obj['team1'] = team1;
         obj['team2'] = team2;
@@ -116,16 +118,16 @@ class SportMatchRead {
                 obj['sport_id'] = ApiClient.convertToType(data['sport_id'], 'Number');
             }
             if (data.hasOwnProperty('team1')) {
-                obj['team1'] = SportTeamRead.constructFromObject(data['team1']);
+                obj['team1'] = SportTeam.constructFromObject(data['team1']);
             }
             if (data.hasOwnProperty('team2')) {
-                obj['team2'] = SportTeamRead.constructFromObject(data['team2']);
+                obj['team2'] = SportTeam.constructFromObject(data['team2']);
             }
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'Number');
             }
             if (data.hasOwnProperty('tournament')) {
-                obj['tournament'] = SportTournamentRead.constructFromObject(data['tournament']);
+                obj['tournament'] = SportTournament.constructFromObject(data['tournament']);
             }
             if (data.hasOwnProperty('total_bets')) {
                 obj['total_bets'] = ApiClient.convertToType(data['total_bets'], 'Number');
@@ -169,15 +171,15 @@ class SportMatchRead {
         }
         // validate the optional field `team1`
         if (data['team1']) { // data not null
-          SportTeamRead.validateJSON(data['team1']);
+          SportTeam.validateJSON(data['team1']);
         }
         // validate the optional field `team2`
         if (data['team2']) { // data not null
-          SportTeamRead.validateJSON(data['team2']);
+          SportTeam.validateJSON(data['team2']);
         }
         // validate the optional field `tournament`
         if (data['tournament']) { // data not null
-          SportTournamentRead.validateJSON(data['tournament']);
+          SportTournament.validateJSON(data['tournament']);
         }
         // ensure the json data is a string
         if (data['contract_address'] && !(typeof data['contract_address'] === 'string' || data['contract_address'] instanceof String)) {
@@ -190,7 +192,7 @@ class SportMatchRead {
 
 }
 
-SportMatchRead.RequiredProperties = ["match_start_time", "team1_id", "team2_id", "sport_id", "team1", "team2", "id", "tournament"];
+SportMatchRead.RequiredProperties = ["match_start_time", "team1_id", "team2_id", "bookmaker_match_id", "sport_id", "team1", "team2", "id", "tournament"];
 
 /**
  * @member {Number} tournament_id
@@ -275,12 +277,12 @@ SportMatchRead.prototype['type'] = undefined;
 SportMatchRead.prototype['sport_id'] = undefined;
 
 /**
- * @member {module:model/SportTeamRead} team1
+ * @member {module:model/SportTeam} team1
  */
 SportMatchRead.prototype['team1'] = undefined;
 
 /**
- * @member {module:model/SportTeamRead} team2
+ * @member {module:model/SportTeam} team2
  */
 SportMatchRead.prototype['team2'] = undefined;
 
@@ -290,7 +292,7 @@ SportMatchRead.prototype['team2'] = undefined;
 SportMatchRead.prototype['id'] = undefined;
 
 /**
- * @member {module:model/SportTournamentRead} tournament
+ * @member {module:model/SportTournament} tournament
  */
 SportMatchRead.prototype['tournament'] = undefined;
 

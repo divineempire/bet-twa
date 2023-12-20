@@ -12,21 +12,22 @@
  */
 
 import ApiClient from '../ApiClient';
+import SportRatedLeagueEntryReadWithLeague from './SportRatedLeagueEntryReadWithLeague';
 
 /**
- * The User model module.
- * @module model/User
+ * The UserReadWithLeagueEntries model module.
+ * @module model/UserReadWithLeagueEntries
  * @version 0.1.0
  */
-class User {
+class UserReadWithLeagueEntries {
     /**
-     * Constructs a new <code>User</code>.
-     * @alias module:model/User
+     * Constructs a new <code>UserReadWithLeagueEntries</code>.
+     * @alias module:model/UserReadWithLeagueEntries
      * @param telegram_user_id {Number} 
      */
     constructor(telegram_user_id) { 
         
-        User.initialize(this, telegram_user_id);
+        UserReadWithLeagueEntries.initialize(this, telegram_user_id);
     }
 
     /**
@@ -39,21 +40,21 @@ class User {
     }
 
     /**
-     * Constructs a <code>User</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>UserReadWithLeagueEntries</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/User} obj Optional instance to populate.
-     * @return {module:model/User} The populated <code>User</code> instance.
+     * @param {module:model/UserReadWithLeagueEntries} obj Optional instance to populate.
+     * @return {module:model/UserReadWithLeagueEntries} The populated <code>UserReadWithLeagueEntries</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new User();
+            obj = obj || new UserReadWithLeagueEntries();
 
             if (data.hasOwnProperty('telegram_user_id')) {
                 obj['telegram_user_id'] = ApiClient.convertToType(data['telegram_user_id'], 'Number');
             }
-            if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
+            if (data.hasOwnProperty('rated_league_entries')) {
+                obj['rated_league_entries'] = ApiClient.convertToType(data['rated_league_entries'], [SportRatedLeagueEntryReadWithLeague]);
             }
             if (data.hasOwnProperty('balance')) {
                 obj['balance'] = ApiClient.convertToType(data['balance'], 'Number');
@@ -81,16 +82,26 @@ class User {
     }
 
     /**
-     * Validates the JSON data with respect to <code>User</code>.
+     * Validates the JSON data with respect to <code>UserReadWithLeagueEntries</code>.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>User</code>.
+     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>UserReadWithLeagueEntries</code>.
      */
     static validateJSON(data) {
         // check to make sure all required properties are present in the JSON string
-        for (const property of User.RequiredProperties) {
+        for (const property of UserReadWithLeagueEntries.RequiredProperties) {
             if (!data[property]) {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
+        }
+        if (data['rated_league_entries']) { // data not null
+            // ensure the json data is an array
+            if (!Array.isArray(data['rated_league_entries'])) {
+                throw new Error("Expected the field `rated_league_entries` to be an array in the JSON data but got " + data['rated_league_entries']);
+            }
+            // validate the optional field `rated_league_entries` (array)
+            for (const item of data['rated_league_entries']) {
+                SportRatedLeagueEntryReadWithLeague.validateJSON(item);
+            };
         }
 
         return true;
@@ -99,57 +110,57 @@ class User {
 
 }
 
-User.RequiredProperties = ["telegram_user_id"];
+UserReadWithLeagueEntries.RequiredProperties = ["telegram_user_id"];
 
 /**
  * @member {Number} telegram_user_id
  */
-User.prototype['telegram_user_id'] = undefined;
+UserReadWithLeagueEntries.prototype['telegram_user_id'] = undefined;
 
 /**
- * @member {Number} id
+ * @member {Array.<module:model/SportRatedLeagueEntryReadWithLeague>} rated_league_entries
  */
-User.prototype['id'] = undefined;
+UserReadWithLeagueEntries.prototype['rated_league_entries'] = undefined;
 
 /**
  * @member {Number} balance
  */
-User.prototype['balance'] = undefined;
+UserReadWithLeagueEntries.prototype['balance'] = undefined;
 
 /**
  * @member {Number} next_fantasy_reward
  */
-User.prototype['next_fantasy_reward'] = undefined;
+UserReadWithLeagueEntries.prototype['next_fantasy_reward'] = undefined;
 
 /**
  * @member {Number} total_bets
  */
-User.prototype['total_bets'] = undefined;
+UserReadWithLeagueEntries.prototype['total_bets'] = undefined;
 
 /**
  * @member {Number} total_win_bets
  */
-User.prototype['total_win_bets'] = undefined;
+UserReadWithLeagueEntries.prototype['total_win_bets'] = undefined;
 
 /**
  * @member {Number} total_earned_tons
  */
-User.prototype['total_earned_tons'] = undefined;
+UserReadWithLeagueEntries.prototype['total_earned_tons'] = undefined;
 
 /**
  * @member {Number} total_earned_balance
  */
-User.prototype['total_earned_balance'] = undefined;
+UserReadWithLeagueEntries.prototype['total_earned_balance'] = undefined;
 
 /**
  * @member {Boolean} notifications_enabled
  */
-User.prototype['notifications_enabled'] = undefined;
+UserReadWithLeagueEntries.prototype['notifications_enabled'] = undefined;
 
 
 
 
 
 
-export default User;
+export default UserReadWithLeagueEntries;
 

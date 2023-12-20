@@ -25,6 +25,11 @@
 					:key="index"
 					:card="item"
 				/>
+				<li class="empty-card"
+					v-if="filterUncalculated.length === 0"
+				>
+					<p class="empty-text">У вас нет нерассчитанных ставок</p>
+				</li>
 			</ul>
 			<ul class="history__list"
 				v-if="historyMode === 'CALCULATED'"
@@ -34,6 +39,11 @@
 					:key="index"
 					:card="item"
 				/>
+				<li class="empty-card"
+					v-if="filterCalculated.length === 0"
+				>
+					<p class="empty-text">У вас нет рассчитанных ставок</p>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -222,6 +232,15 @@ export default {
 	display: flex;
 	flex-direction: column;
 	gap: 8px 0;
+}
+
+.empty-card {
+	padding: 50px 0;
+}
+
+.empty-text {
+	font-size: 20px;
+	text-align: center;
 }
 
 </style>

@@ -17,9 +17,7 @@
 		<div class="events"
 			 v-show="showMore"
 		>
-			<ul class="events__list event-list"
-				v-if="league === 'REGULAR'"
-			>
+			<ul class="events__list event-list">
 				<EventCard
 					v-for="(event, index) in filteredEvents"
 					:key="index"
@@ -28,17 +26,17 @@
 					:showMore="showMore"
 				/>
 			</ul>
-			<ul class="events__list event-list"
-				v-if="league === 'FANTASY'"
-			>
-				<EventCard
-					v-for="(event, index) in filteredEvents"
-					:key="index"
-					:event="event"
-					:league="league"
-					:showMore="showMore"
-				/>
-			</ul>
+<!--			<ul class="events__list event-list"-->
+<!--				v-if="league === 'FANTASY'"-->
+<!--			>-->
+<!--				<EventCard-->
+<!--					v-for="(event, index) in filteredEvents"-->
+<!--					:key="index"-->
+<!--					:event="event"-->
+<!--					:league="league"-->
+<!--					:showMore="showMore"-->
+<!--				/>-->
+<!--			</ul>-->
 		</div>
 <!--		<transition name="fade">-->
 <!--			<Coupon-->
@@ -64,7 +62,7 @@ export default {
 	},
 	data() {
 		return {
-			showMore: false,
+			showMore: true,
 			events: []
 			// activeBet: '',
 			// showPopup: false,
@@ -101,11 +99,7 @@ export default {
 			return this.events.sort((a, b) => a.match_start_time - b.match_start_time)
 		},
 		filteredEvents() {
-			if (this.league === 'REGULAR') {
-				return this.sortEventsByTime.filter((item) => item?.fantasy === false && item?.finished === false)
-			} else if (this.league === 'FANTASY') {
-				return this.sortEventsByTime.filter((item) => item?.fantasy === true && item?.finished === false)
-			}
+			return this.sortEventsByTime.filter((item) => item?.finished === false)
 		}
 	},
 	methods: {
@@ -119,13 +113,18 @@ export default {
 				return `${ value.sum }` + ' Ф'
 			}
 		},
-		async getMatches() {
+		async getMatches(size) {
 			let opts = {
 				page: 1,
-				size: 5
+				size: 5,
+				tournament_id: this.item.id
+			}
+			if (size) {
+				opts.size = size
+				opts.tournament_id = 1
 			}
 			try {
-				let result = await this.matchesApi.getMatchesByTournament(this.item.id, opts)
+				let result = await this.matchesApi.getMatches(opts)
 				this.events = result.items
 			} catch(err) {
 				console.log(err)
@@ -149,14 +148,26 @@ export default {
 			},
 			deep: true
 		},
+		league: {
+			handler: function() {
+				if (this.league) {
+					this.events = []
+					if (this.league === 'REGULAR') {
+						this.getMatches(3)
+					} else {
+						this.getMatches()
+					}
+				}
+			}
+		},
 	},
 	mounted() {
 		this.getMatches()
-		setTimeout(() => {
-			if (this.index === 0) {
-				this.showMore = true
-			}
-		}, 1000)
+		// setTimeout(() => {
+		// 	if (this.index === 0) {
+		// 		this.showMore = true
+		// 	}
+		// }, 1000)
 	}
 }
 </script>

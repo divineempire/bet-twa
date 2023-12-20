@@ -24,13 +24,12 @@ class SportRatedLeagueEntry {
      * @alias module:model/SportRatedLeagueEntry
      * @param user_id {Number} 
      * @param rated_league_id {Number} 
-     * @param reward_id {Number} 
      * @param score {Number} 
      * @param place {Number} 
      */
-    constructor(user_id, rated_league_id, reward_id, score, place) { 
+    constructor(user_id, rated_league_id, score, place) { 
         
-        SportRatedLeagueEntry.initialize(this, user_id, rated_league_id, reward_id, score, place);
+        SportRatedLeagueEntry.initialize(this, user_id, rated_league_id, score, place);
     }
 
     /**
@@ -38,10 +37,9 @@ class SportRatedLeagueEntry {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, user_id, rated_league_id, reward_id, score, place) { 
+    static initialize(obj, user_id, rated_league_id, score, place) { 
         obj['user_id'] = user_id;
         obj['rated_league_id'] = rated_league_id;
-        obj['reward_id'] = reward_id;
         obj['score'] = score;
         obj['place'] = place;
     }
@@ -62,9 +60,6 @@ class SportRatedLeagueEntry {
             }
             if (data.hasOwnProperty('rated_league_id')) {
                 obj['rated_league_id'] = ApiClient.convertToType(data['rated_league_id'], 'Number');
-            }
-            if (data.hasOwnProperty('reward_id')) {
-                obj['reward_id'] = ApiClient.convertToType(data['reward_id'], 'Number');
             }
             if (data.hasOwnProperty('score')) {
                 obj['score'] = ApiClient.convertToType(data['score'], 'Number');
@@ -101,7 +96,7 @@ class SportRatedLeagueEntry {
 
 }
 
-SportRatedLeagueEntry.RequiredProperties = ["user_id", "rated_league_id", "reward_id", "score", "place"];
+SportRatedLeagueEntry.RequiredProperties = ["user_id", "rated_league_id", "score", "place"];
 
 /**
  * @member {Number} user_id
@@ -112,11 +107,6 @@ SportRatedLeagueEntry.prototype['user_id'] = undefined;
  * @member {Number} rated_league_id
  */
 SportRatedLeagueEntry.prototype['rated_league_id'] = undefined;
-
-/**
- * @member {Number} reward_id
- */
-SportRatedLeagueEntry.prototype['reward_id'] = undefined;
 
 /**
  * @member {Number} score

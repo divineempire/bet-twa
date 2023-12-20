@@ -137,12 +137,7 @@ export default {
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		height: 72vh;
-		//position: absolute;
-		//top: 0;
-		//bottom: 0;
-		//left: 0;
-		//right: 0;
+		height: calc(100vh - 270px);
 	}
 
 	.empty-promo__caption {

@@ -15,8 +15,10 @@
 import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
 import PageSportMatchBet from '../model/PageSportMatchBet';
+import PageSportMatchBetRead from '../model/PageSportMatchBetRead';
 import SportMatchBet from '../model/SportMatchBet';
 import SportMatchBetCreate from '../model/SportMatchBetCreate';
+import SportMatchBetRead from '../model/SportMatchBetRead';
 import SportMatchBetUpdate from '../model/SportMatchBetUpdate';
 
 /**
@@ -43,7 +45,7 @@ export default class BetsApi {
      * Create Bet
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {module:model/SportMatchBetCreate} SportMatchBetCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchBet} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchBetRead} and HTTP response
      */
     createFantasyBetWithHttpInfo(X_Init_Data, SportMatchBetCreate) {
       let postBody = SportMatchBetCreate;
@@ -69,7 +71,7 @@ export default class BetsApi {
       let authNames = [];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = SportMatchBet;
+      let returnType = SportMatchBetRead;
       return this.apiClient.callApi(
         '/api/v1/bets/fantasy', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -81,7 +83,7 @@ export default class BetsApi {
      * Create Bet
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {module:model/SportMatchBetCreate} SportMatchBetCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchBet}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchBetRead}
      */
     createFantasyBet(X_Init_Data, SportMatchBetCreate) {
       return this.createFantasyBetWithHttpInfo(X_Init_Data, SportMatchBetCreate)
@@ -140,13 +142,13 @@ export default class BetsApi {
     /**
      * Get Bet
      * @param {Number} bet_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchBet} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportMatchBetRead} and HTTP response
      */
-    getBetApiV1BetsBetIdGetWithHttpInfo(bet_id) {
+    getBetWithHttpInfo(bet_id) {
       let postBody = null;
       // verify the required parameter 'bet_id' is set
       if (bet_id === undefined || bet_id === null) {
-        throw new Error("Missing the required parameter 'bet_id' when calling getBetApiV1BetsBetIdGet");
+        throw new Error("Missing the required parameter 'bet_id' when calling getBet");
       }
 
       let pathParams = {
@@ -162,7 +164,7 @@ export default class BetsApi {
       let authNames = ['HTTPBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = SportMatchBet;
+      let returnType = SportMatchBetRead;
       return this.apiClient.callApi(
         '/api/v1/bets/{bet_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -173,10 +175,10 @@ export default class BetsApi {
     /**
      * Get Bet
      * @param {Number} bet_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchBet}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportMatchBetRead}
      */
-    getBetApiV1BetsBetIdGet(bet_id) {
-      return this.getBetApiV1BetsBetIdGetWithHttpInfo(bet_id)
+    getBet(bet_id) {
+      return this.getBetWithHttpInfo(bet_id)
         .then(function(response_and_data) {
           return response_and_data.data;
         });
@@ -242,10 +244,10 @@ export default class BetsApi {
      * Get Bets By User
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {Object} opts Optional parameters
-     * @param {Boolean} [fantasy = false)] 
+     * @param {Boolean} [fantasy] 
      * @param {Number} [page = 1)] Page number
      * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchBet} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchBetRead} and HTTP response
      */
     getUserBetsWithHttpInfo(X_Init_Data, opts) {
       opts = opts || {};
@@ -271,7 +273,7 @@ export default class BetsApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = PageSportMatchBet;
+      let returnType = PageSportMatchBetRead;
       return this.apiClient.callApi(
         '/api/v1/bets/user', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -283,10 +285,10 @@ export default class BetsApi {
      * Get Bets By User
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {Object} opts Optional parameters
-     * @param {Boolean} opts.fantasy  (default to false)
+     * @param {Boolean} opts.fantasy 
      * @param {Number} opts.page Page number (default to 1)
      * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchBet}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchBetRead}
      */
     getUserBets(X_Init_Data, opts) {
       return this.getUserBetsWithHttpInfo(X_Init_Data, opts)

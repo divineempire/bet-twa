@@ -2,7 +2,8 @@
 	<li class="event-list__item">
 		<div class="event-list__teams">
 			<div class="event-list__team first-team">
-				<img :src="event.team1?.icon_url" alt="" class="event-list__logo">
+<!--				<img :src="event.team1?.icon_url" alt="" class="event-list__logo">-->
+				<div class="event-list__logo" :class="getSportCategory"></div>
 				<p class="event-list__team-name">{{ event.team1?.name }}</p>
 			</div>
 			<div class="event-list__date"
@@ -18,7 +19,8 @@
 				<p class="event-list__score">{{ getScore }}</p>
 			</div>
 			<div class="event-list__team second-team">
-				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">
+<!--				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">-->
+				<div class="event-list__logo" :class="getSportCategory"></div>
 				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
 		</div>
@@ -145,29 +147,31 @@ export default {
 			return this.event.team1_score + ':' + this.event.team2_score
 		},
 		getMatchTime() {
-			return '00:45'
+			if (this.event.matchTime !== null) {
+				return (this.event?.match_time / (1000 * 60)).toFixed(0) + `'`
+			}
 		},
 		getDate() {
 			return getFullDate(this.event.match_start_time)
-			// let matchDate = new Date(this.event.match_start_time * 1000)
-			// let now = new Date(Date.now())
-			// if (matchDate.getFullYear() > now.getFullYear() || matchDate.getMonth() > now.getMonth()) {
-			// 	return matchDate.toLocaleDateString()
-			// } else if (matchDate.getFullYear() === now.getFullYear() && matchDate.getMonth() === now.getMonth()) {
-			// 	if (matchDate.getDate() === now.getDate()) {
-			// 		return 'Сегодня'
-			// 	} else if (matchDate.getDate() - now.getDate() === 1) {
-			// 		return 'Завтра'
-			// 	} else {
-			// 		return matchDate.toLocaleDateString()
-			// 	}
-			// }
 		},
 		getDatetime() {
 			return getDateTime(this.event.match_start_time)
-			// let matchDate = new Date(this.event.match_start_time * 1000)
-			// return matchDate.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})
 		},
+		getSportCategory() {
+			let path = this.$route.path
+			return path.replaceAll('/sport/', '')
+			// if (path === '/sport/football') {
+			// 	return 'Спорт/Футбол'
+			// } else if (path === '/sport/hockey') {
+			// 	return 'Спорт/Хоккей'
+			// } else if (path === '/sport/basketball') {
+			// 	return 'Спорт/Баскетбол'
+			// } else if (path === '/sport/volleyball') {
+			// 	return 'Спорт/Волейбол'
+			// } else if (path === '/sport/tennis') {
+			// 	return 'Спорт/Теннис'
+			// }
+		}
 	},
 	methods: {
 		getCoefficient(value) {
@@ -253,7 +257,7 @@ export default {
 
 <style scoped>
 .event-list__item {
-	margin-top: 6px;
+	margin-top: 4px;
 	padding: 6px;
 	border-radius: 8px;
 	background: #28272B;
@@ -264,7 +268,7 @@ export default {
 	display: flex;
 	gap: 0 10px;
 	flex-direction: row;
-	align-items: center;
+	align-items: start;
 	justify-content: space-between;
 }
 
@@ -280,12 +284,34 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	flex: 33.3%;
+	margin-top: 12px;
 }
 
 .event-list__logo {
 	margin-bottom: 8px;
 	width: 26px;
 	height: 26px;
+	opacity: .3;
+}
+
+.football {
+	background: url('~@/assets/sport/football.svg') no-repeat;
+}
+
+.hockey {
+	background: url('~@/assets/sport/hockey.svg') no-repeat;
+}
+
+.basketball {
+	background: url('~@/assets/sport/basketball.svg') no-repeat;
+}
+
+.tennis {
+	background: url('~@/assets/sport/tennis.svg') no-repeat;
+}
+
+.volleyball {
+	background: url('~@/assets/sport/volleyball.svg') no-repeat;
 }
 
 .event-list__team-name {

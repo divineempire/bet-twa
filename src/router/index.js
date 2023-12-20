@@ -35,26 +35,26 @@ const routes = [
                         name: 'Football',
                         component: Football,
                     },
-                    {
-                        path: 'hockey',
-                        name: 'Hockey',
-                        component: Hockey,
-                    },
-                    {
-                        path: 'basketball',
-                        name: 'Basketball',
-                        component: Basketball,
-                    },
-                    {
-                        path: 'tennis',
-                        name: 'Tennis',
-                        component: Tennis,
-                    },
-                    {
-                        path: 'volleyball',
-                        name: 'Volleyball',
-                        component: Volleyball,
-                    },
+                    // {
+                    //     path: 'hockey',
+                    //     name: 'Hockey',
+                    //     component: Hockey,
+                    // },
+                    // {
+                    //     path: 'basketball',
+                    //     name: 'Basketball',
+                    //     component: Basketball,
+                    // },
+                    // {
+                    //     path: 'tennis',
+                    //     name: 'Tennis',
+                    //     component: Tennis,
+                    // },
+                    // {
+                    //     path: 'volleyball',
+                    //     name: 'Volleyball',
+                    //     component: Volleyball,
+                    // },
                 ]
             },
             {
@@ -82,11 +82,11 @@ const routes = [
                         name: 'History',
                         component: BetsHistory,
                     },
-                    {
-                        path: 'bonus',
-                        name: 'Bonus',
-                        component: Bonus,
-                    },
+                    // {
+                    //     path: 'bonus',
+                    //     name: 'Bonus',
+                    //     component: Bonus,
+                    // },
                     // {
                     //     path: 'referal',
                     //     name: 'Referal',
@@ -97,11 +97,11 @@ const routes = [
                         name: 'Notice',
                         component: Notice,
                     },
-                    {
-                        path: 'support',
-                        name: 'Support',
-                        component: Support,
-                    },
+                    // {
+                    //     path: 'support',
+                    //     name: 'Support',
+                    //     component: Support,
+                    // },
                 ]
             },
         ],
