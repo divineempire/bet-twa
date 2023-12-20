@@ -7,7 +7,7 @@
 				<div class="line-icon"></div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
-					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType}}</p>
+					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType }}</p>
 				</div>
 				<div class="coupon__info">
 					<div class="bet-info">
@@ -97,7 +97,6 @@ export default {
 	name: "Coupon",
 	data() {
 		return {
-			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
 			activeFreeBet: null,
 			betAmount: null,
 			type: '',
@@ -188,7 +187,7 @@ export default {
 		},
 		getActualBalance() {
 			if (this.league === 'REGULAR') {
-				return this.GET_WALLET_INFO?.balance
+				return (this.GET_WALLET_INFO?.balance / Math.pos(10, 9)).toFixed(2)
 			} else if (this.league === 'FANTASY') {
 				return this.GET_USER_INFO?.balance
 			}
@@ -295,8 +294,12 @@ export default {
 			}
 		},
 		fantasyBet() {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
 			let obj = this.setFantasyData
-			this.betsApi.createFantasyBet(this.testInitData, obj)
+			this.betsApi.createFantasyBet(initData, obj)
 				.then((res) => {
 					console.log(res)
 					this.closePopup()

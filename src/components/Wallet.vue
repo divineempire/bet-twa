@@ -53,11 +53,10 @@ export default {
 		return {
 			connected: true,
 			timeToFantasy: '',
-			gift: {
-				ready: false,
-				time: '23:45:34'
-			},
-			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
+			// gift: {
+			// 	ready: false,
+			// 	time: '23:45:34'
+			// },
 		}
 	},
 	props: {
@@ -100,7 +99,7 @@ export default {
 			return this.GET_USER_INFO?.balance
 		},
 		getBalance() {
-			return this.GET_WALLET_INFO?.balance
+			return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
 		},
 		getReadyReward() {
 			let toRewardTime = this.GET_USER_INFO?.next_fantasy_reward * 1000
@@ -136,8 +135,11 @@ export default {
 			}
 		},
 		grabReward() {
-			// let initData = this.webApp.initData
-			this.usersApi.grabReward(this.testInitData)
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.usersApi.grabReward(this.initData)
 				.then((res) => {
 					console.log(res)
 					this.updateUserInfo()
@@ -147,8 +149,11 @@ export default {
 				})
 		},
 		updateUserInfo() {
-			// let initData = this.webApp.initData
-			this.usersApi.getCurrentUser(this.testInitData)
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					console.log(res)
 					this.SAVE_USER_INFO(res)

@@ -23,8 +23,6 @@ export default {
 				}
 			},
 			unsubscribe: null,
-			testUserId: 614891587,
-			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
 		}
 	},
 	computed: {
@@ -112,7 +110,11 @@ export default {
 			}
 		},
 		getCurrentUser() {
-			this.usersApi.getCurrentUser(this.testInitData)
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					// console.log(res)
 					this.SAVE_USER_INFO(res)
@@ -123,13 +125,21 @@ export default {
 					}
 					console.error(err)
 				})
+
 		},
 		setNewUser() {
-			// let userId = this.webApp.initDataUnsafe?.user?.id
-			let obj = {
-				telegram_user_id: this.testUserId
+			let initData = null
+			let userId = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
 			}
-			this.usersApi.createUser(this.testInitData, obj)
+			if (this.webApp.initDataUnsafe?.user) {
+				userId = this.webApp.initDataUnsafe?.user?.id
+			}
+			let obj = {
+				telegram_user_id: userId
+			}
+			this.usersApi.createUser(initData, obj)
 				.then((res) => {
 					console.log(res)
 				})
@@ -146,21 +156,6 @@ export default {
 				console.log(err)
 			}
 		},
-		// async getUserInFantasy() {
-		// 	let opts = {
-		// 		page: 1,
-		// 		size: 2
-		// 	}
-		// 	let initData = this.webApp.initData
-		// 	this.ratingApi.getLeagueEntriesByUser(opts, this.testInitData)
-		// 		.then((res) => {
-		// 			console.log(res)
-		// 			this.SAVE_USER_FANTASY_INFO(res.items)
-		// 		})
-		// 		.catch((err) => {
-		// 			console.log(err)
-		// 		})
-		// },
 		setTwaOptions() {
 			if (!this.webApp.isExpanded) {
 				this.webApp.expand()
@@ -175,9 +170,9 @@ export default {
 		},
 	},
 	async created() {
-		// if (this.webApp.initData) {
+		if (this.webApp.initData) {
 			this.getCurrentUser()
-		// }
+		}
 		this.subscribeConnector()
 		await this.getFootballTournaments()
 		await this.getAllLeagues()

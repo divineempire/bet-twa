@@ -76,7 +76,6 @@ export default {
 	data() {
 		return {
 			active: [],
-			testInitData: 'query_id=AAFDgKYkAAAAAEOApiSVumT0&user=%7B%22id%22%3A614891587%2C%22first_name%22%3A%22Andrey%22%2C%22last_name%22%3A%22Fedyaev%22%2C%22username%22%3A%22Rampagka%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1703019267&hash=73357e7877fa7a66c2a42d84d976d34d5c03accc753065abf5226a44fedeb21e',
 		}
 	},
 	computed: {
@@ -118,28 +117,35 @@ export default {
 			}
 		},
 		updateUserNotice(value) {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
 			let object = {}
 			if (this.active.includes(value)) {
 				object.notifications_enabled = true
 			} else {
 				object.notifications_enabled = false
 			}
-			if (this.webApp.initData) {
-				this.initData = this.webApp.initData
+			// console.log(this.active, 'active')
+			// console.log(object)
+			if (initData) {
+				this.usersApi.updateUser(initData, object)
+					.then((res) => {
+						console.log(res)
+						this.updateUserInfo()
+					})
+					.catch((err) => {
+						console.log(err)
+					})
 			}
-			console.log(this.active, 'active')
-			console.log(object)
-			this.usersApi.updateUser(this.testInitData, object)
-				.then((res) => {
-					console.log(res)
-					this.updateUserInfo()
-				})
-				.catch((err) => {
-					console.log(err)
-				})
 		},
 		updateUserInfo() {
-			this.usersApi.getCurrentUser(this.testInitData)
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					this.SAVE_USER_INFO(res)
 				})
