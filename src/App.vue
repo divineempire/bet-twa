@@ -114,6 +114,7 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
+			console.log(initData, 'getCurrentUser App.vue')
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					// console.log(res)
@@ -133,9 +134,10 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
-			if (this.webApp.initDataUnsafe?.user) {
+			if (this.webApp.initDataUnsafe.user) {
 				userId = this.webApp.initDataUnsafe?.user?.id
 			}
+			console.log(userId, initData, 'setNewUser App.vue')
 			let obj = {
 				telegram_user_id: userId
 			}
@@ -151,7 +153,6 @@ export default {
 			try {
 				let result = await this.ratingApi.getLeagues({page: 1, size: 10})
 				this.SAVE_LEAGUES(result)
-				// await this.getUserInFantasy()
 			} catch(err) {
 				console.log(err)
 			}
@@ -170,6 +171,7 @@ export default {
 		},
 	},
 	async created() {
+		console.log(this.webApp.initData)
 		if (this.webApp.initData) {
 			this.getCurrentUser()
 		}

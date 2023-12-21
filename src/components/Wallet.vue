@@ -141,7 +141,7 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
-			this.usersApi.grabReward(this.initData)
+			this.usersApi.grabReward(initData)
 				.then((res) => {
 					console.log(res)
 					this.updateUserInfo()
