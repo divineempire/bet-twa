@@ -102,7 +102,7 @@ export default {
 			return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
 		},
 		getReadyReward() {
-			let toRewardTime = this.GET_USER_INFO?.next_fantasy_reward * 1000
+			let toRewardTime = (this.GET_USER_INFO?.next_fantasy_reward || 0) * 1000
 			let now = new Date(Date.now()).getTime()
 			if (now >= toRewardTime) {
 				return true
