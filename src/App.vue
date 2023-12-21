@@ -167,13 +167,13 @@ export default {
 				this.webApp.MainButton.hide()
 			}
 			this.tonConnectUi.uiOptions = {
-				twaReturnUrl: 'https://t.me/bettygames_bot'
+				twaReturnUrl: 'https://t.me/bettygames_bot/betty'
 			};
 			this.webApp.ready()
 		},
 	},
 	async created() {
-		console.log(this.webApp.initData)
+		// console.log(this.webApp.initData)
 		if (this.webApp.initData) {
 			this.getCurrentUser()
 		}
@@ -183,9 +183,8 @@ export default {
 		console.log('Турниры загружены')
 		this.setTwaOptions()
 	},
-	mounted() {
-
-	},
+	// mounted() {
+	// },
 	unmounted() {
 		if (this.unsubscribe !== null) {
 			this.unsubscribe()
