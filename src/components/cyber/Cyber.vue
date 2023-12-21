@@ -78,7 +78,18 @@ export default {
 			name: 'soon',
 			path: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/coming-soon.json'
 		});
-	}
+	},
+	watch: {
+		// league: {
+		// 	handler: function() {
+		// 		if  (this.league === '') {
+		// 			document.documentElement.style.overflow = 'hidden'
+		// 			return
+		// 		}
+		// 		document.documentElement.style.overflow = 'auto'
+		// 	}
+		// }
+	},
 }
 </script>
 

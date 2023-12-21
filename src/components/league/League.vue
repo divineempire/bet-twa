@@ -61,7 +61,7 @@
 					</div>
 				</li>
 			</ul>
-			<button class="show-more-btn">Показать ещё</button>
+<!--			<button class="show-more-btn">Показать ещё</button>-->
 		</div>
 		<div class="league__leaderboard leaderboard"
 			 v-if="league === 'FANTASY'"
@@ -117,36 +117,36 @@ export default {
 			fantasyPlacement: null,
 			// userInFantasy: null,
 			regularLeaders: [
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 101,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 10,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 24,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 15,
-					rising: 'down'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 33,
-					rising: 'up'
-				},
-				{
-					account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-					winAmount: 80,
-					rising: 'up'
-				},
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 101,
+				// 	rising: 'up'
+				// },
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 10,
+				// 	rising: 'down'
+				// },
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 24,
+				// 	rising: 'up'
+				// },
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 15,
+				// 	rising: 'down'
+				// },
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 33,
+				// 	rising: 'up'
+				// },
+				// {
+				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
+				// 	winAmount: 80,
+				// 	rising: 'up'
+				// },
 			],
 			fantasyLeaders: [],
 			fantasyTotal: null,
@@ -240,7 +240,18 @@ export default {
 			name: 'soon',
 			path: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/coming-soon.json'
 		});
-	}
+	},
+	watch: {
+		league: {
+			handler: function() {
+				if  (this.league === 'REGULAR') {
+					document.documentElement.style.overflow = 'hidden'
+					return
+				}
+				document.documentElement.style.overflow = 'auto'
+			}
+		}
+	},
 }
 </script>
 
@@ -251,6 +262,7 @@ export default {
 
 .soon {
 	position: relative;
+	padding-bottom: calc(100vh - (530px));
 }
 
 .coming-soon {

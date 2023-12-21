@@ -82,7 +82,8 @@ export default {
 				if (this.league === 'FANTASY') {
 					return this.GET_FOOTBALL_TOURNAMENTS.items.filter((item) => item?.fantasy === true)
 				} else {
-					return this.championships
+					return []
+					// return this.championships
 					// return this.GET_FOOTBALL_TOURNAMENTS.items.filter((item) => item?.fantasy === false)
 				}
 			} else {

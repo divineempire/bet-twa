@@ -3,6 +3,7 @@
 		v-show="filteredEvents.length > 0"
 	>
 		<div class="championship-card__main"
+			 :class="{active_card: showMore === true}"
 			 @click="showMore = !showMore"
 		>
 			<div class="championship-card__info">
@@ -189,6 +190,10 @@ export default {
 	justify-content: space-between;
 	padding: 8px 10px;
 	border-radius: 8px;
+	background: #2D2B32;
+}
+
+.active_card {
 	background: linear-gradient(89deg, #3C3943 0%, #2D2B32 100%);
 }
 

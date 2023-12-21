@@ -165,7 +165,7 @@ export default {
 			let total = this.event.team1_summary + this.event.draw_summary + this.event.team2_summary
 			if (value === 'TEAM1') {
 				if (this.event.team1_summary > 0 && total > 0) {
-					return `${(this.event.team1_summary / total) * 100}` + '%'
+					return `${((this.event.team1_summary / total) * 100).toFixed(1)}` + '%'
 				} else if (this.event.draw_summary > 0 || this.event.team2_summary) {
 					return '0%'
 				} else {
@@ -173,7 +173,7 @@ export default {
 				}
 			} else if (value === 'DRAW') {
 				if (this.event.draw_summary > 0 && total > 0) {
-					return `${(this.event.draw_summary / total) * 100}` + '%'
+					return `${((this.event.draw_summary / total) * 100).toFixed(1)}` + '%'
 				} else if (this.event.team1_summary > 0 || this.event.team2_summary) {
 					return '0%'
 				} else {
@@ -181,7 +181,7 @@ export default {
 				}
 			} else if (value === 'TEAM2') {
 				if (this.event.team2_summary > 0 && total > 0) {
-					return `${(this.event.team2_summary / total) * 100}` + '%'
+					return `${((this.event.team2_summary / total) * 100).toFixed(1)}` + '%'
 				} else if (this.event.team1_summary > 0 || this.event.draw_summary) {
 					return '0%'
 				} else {
@@ -245,6 +245,7 @@ export default {
 	gap: 0 10px;
 	flex-direction: row;
 	align-items: start;
+	align-content: start;
 	justify-content: space-between;
 }
 
@@ -252,7 +253,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	flex: 33.3%;
+	flex: 33.3% 1 1;
 }
 
 .event-list__date {
@@ -402,15 +403,17 @@ export default {
 .reverse_flex .choose-bet__coefficient {
 	margin-bottom: 4px;
 	font-size: 14px;
-	font-family: Roboto-Bold, sans-serif;
-	font-weight: 700;
+	font-family: Roboto-Medium, sans-serif;
+	//font-family: Roboto-Bold, sans-serif;
+	//font-weight: 700;
 }
 
 .reverse_flex .choose-bet__percent {
 	margin-bottom: 4px;
 	font-size: 14px;
-	font-family: Roboto-Bold, sans-serif;
-	font-weight: 700;
+	font-family: Roboto-Medium, sans-serif;
+	//font-family: Roboto-Bold, sans-serif;
+	//font-weight: 700;
 }
 
 .event-list__progress-bar {
@@ -418,6 +421,7 @@ export default {
 	display: flex;
 	align-items: center;
 	gap: 0 3px;
+	opacity: 0.8;
 }
 
 .progress-line {

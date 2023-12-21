@@ -276,6 +276,18 @@ export default {
 			},
 			deep: true
 		},
+		league: {
+			handler: function() {
+				console.log(this.league)
+				if  (this.league === 'REGULAR') {
+					// console.log()
+					document.documentElement.style.overflow = 'hidden'
+					return
+				}
+				document.documentElement.style.overflow = 'auto'
+			},
+			deep: true
+		}
 	}
 }
 </script>
@@ -351,6 +363,7 @@ export default {
 
 .soon {
 	position: relative;
+	padding-bottom: calc(100vh - (390px));
 }
 
 .coming-soon {

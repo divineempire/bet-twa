@@ -90,8 +90,7 @@ export default {
 				{
 					link: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/fifth-lottie.json',
 					title: 'Удачи!',
-					text: 'Надеюсь ты всё понял, тебе осталось привязать свой кошелек и начать зарабатывать\n' +
-						'на любимом спорте с Betty!'
+					text: `Надеюсь ты всё понял, тебе осталось привязать свой кошелек и начать зарабатывать \n на любимом спорте с Betty!`
 				}
 			]
 		}
@@ -217,6 +216,7 @@ export default {
 		font-size: 15px;
 		line-height: 18px;
 		height: 72px;
+		white-space: pre-wrap;
 	}
 
 	.item__second-text {
