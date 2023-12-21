@@ -25,11 +25,13 @@ const moveSettings = {
 }
 
 function touchStart(event) {
+    console.log(event)
     touchStartData.time = event.timeStamp
     touchStartData.x = event.changedTouches[0].pageX
     touchStartData.y = event.changedTouches[0].pageY
 }
 function touchMove(event) {
+    console.log(event)
     let screenHeight = window.innerHeight
     if (touchStartData.y < event.changedTouches[0].pageY && (screenHeight - touchStartData.y) > 350) {
         let transformValue = event.changedTouches[0].pageY - touchStartData.y
@@ -37,6 +39,7 @@ function touchMove(event) {
     }
 }
 function touchEnd(event) {
+    console.log(event)
     touchEndData.time = event.timeStamp
     touchEndData.x = event.changedTouches[0].pageX
     touchEndData.y = event.changedTouches[0].pageY

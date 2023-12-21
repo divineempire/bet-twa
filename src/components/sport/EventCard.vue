@@ -217,13 +217,13 @@ export default {
 	watch: {
 		showPopup: {
 			handler: function() {
-				// if (this.call !== 'SEARCH') {
-				// 	if  (this.showPopup) {
-				// 		document.documentElement.style.overflow = 'hidden'
-				// 		return
-				// 	}
-				// 	document.documentElement.style.overflow = 'auto'
-				// }
+				if (this.call !== 'SEARCH') {
+					if  (this.showPopup) {
+						document.documentElement.style.overflow = 'hidden'
+						return
+					}
+					document.documentElement.style.overflow = 'auto'
+				}
 			},
 			deep: true
 		},
