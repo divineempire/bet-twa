@@ -2,7 +2,7 @@
 	<div class="search">
 		<div class="search__input-container">
 			<label for="" class="search__label">
-				<input type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue" @input="searchInput" id="search-input">
+				<input inputmode='text' type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue" @input="searchInput" id="search-input">
 			</label>
 			<button class="search__cancel-btn"
 					@click="searchValue = ''"
@@ -140,6 +140,9 @@ export default {
 					this.getMatches()
 				}
 			}, 700)
+			if (this.searchValue.length === 0) {
+				this.events = []
+			}
 		},
 		getMatches() {
 			let opts = {

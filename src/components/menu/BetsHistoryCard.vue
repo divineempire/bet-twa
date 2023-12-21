@@ -12,7 +12,7 @@
 		<div class="match-info">
 			<div class="match-info__row">
 				<div class="match-info__title">
-					<div class="match-info__category"></div>
+					<div class="match-info__category" :class="getSportType"></div>
 					<p class="match-info__name bet-type">{{ getBetType }}</p>
 				</div>
 				<div class="match-info__coefficient">
@@ -90,6 +90,11 @@ export default {
 		}
 	},
 	computed: {
+		getSportType() {
+			if (this.card?.match?.sportId === 18) {
+				return 'football'
+			}
+		},
 		getBetType() {
 			if (this.card?.bet_team === 'team1') {
 				return 'Исход: П1'
@@ -229,8 +234,12 @@ export default {
 	margin-right: 6px;
 	width: 14px;
 	height: 14px;
-	background: url('~@/assets/menu/category/dota.png') no-repeat;
+	//background: url('~@/assets/menu/category/dota.png') no-repeat;
 	background-size: cover;
+}
+
+.football {
+	background: url('~@/assets/sport/football.svg') no-repeat;
 }
 
 .match-info__name:not(.bet-type) {

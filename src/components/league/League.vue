@@ -30,7 +30,7 @@
 			<h2 class="league__heading">{{ getHeading }}</h2>
 			<h4 class="league__title">Присоединяйтесь к зимнему сезону лиги ставок, с призовым фондом 100 000 TON.</h4>
 			<p class="league__text">Дата проведения акции: с 25.12.2023 по 31.02.2024 </p>
-			<a href="" class="league__link">Подробнее об условиях акции</a>
+<!--			<a href="" class="league__link">Подробнее об условиях акции</a>-->
 		</div>
 		<div class="league__leaderboard"
 			 v-if="league === 'REGULAR'"
@@ -68,11 +68,11 @@
 		>
 			<h3 class="league__caption">Таблица лидеров</h3>
 			<div class="your-placement"
-				 :class="{member: fantasyPlacement !== null}"
+				 :class="{member: userInFantasy !== null}"
 			>
 				<p class="your-placement__text">{{ getYourPlacement }}</p>
 				<div class="your-placement__arrow-icon"
-					 v-if="fantasyPlacement !== null"
+					 v-if="userInFantasy !== null"
 				></div>
 			</div>
 			<ul class="leaderboard__list">
@@ -114,7 +114,7 @@ export default {
 		return {
 			league: 'FANTASY',
 			regularPlacement: null,
-			fantasyPlacement: null,
+			// fantasyPlacement: null,
 			// userInFantasy: null,
 			regularLeaders: [
 				// {
@@ -176,7 +176,7 @@ export default {
 			if (this.league === 'REGULAR') {
 				return 'Winter Betting League'
 			} else if (this.league === 'FANTASY') {
-				return `Winter Fantasy Betting League`
+				return `Winter Fantasy\nBetting League`
 			}
 		},
 		getYourPlacement() {
@@ -225,8 +225,9 @@ export default {
 			}
 		},
 		showMoreFantasy() {
+			let staticValue = 20
 			if (this.fantasyTotal > this.opts.size) {
-				this.opts.size = 40
+				this.opts.size = this.opts.size + staticValue
 			}
 		}
 	},
@@ -240,6 +241,9 @@ export default {
 			name: 'soon',
 			path: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/coming-soon.json'
 		});
+	},
+	unmounted() {
+		document.documentElement.style.overflow = 'auto'
 	},
 	watch: {
 		league: {
@@ -331,6 +335,7 @@ export default {
 	font-size: 36px;
 	line-height: 42px;
 	font-family: Roboto-Bold, sans-serif;
+	white-space: pre-wrap;
 }
 
 .league__title {
@@ -348,6 +353,10 @@ export default {
 	font-size: 13px;
 	text-decoration: underline;
 	color: #00F59B;
+}
+
+.league__leaderboard {
+	padding: 14px 0;
 }
 
 .league__caption {

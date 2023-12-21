@@ -24,52 +24,61 @@
 				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
 		</div>
-		<div class="event-list__bet-names">
-			<p class="event-list__bet-text">П1</p>
-			<p class="event-list__bet-text">Х</p>
-			<p class="event-list__bet-text">П2</p>
-		</div>
+<!--		<div class="event-list__bet-names">-->
+<!--			<p class="event-list__bet-text">П1</p>-->
+<!--			<p class="event-list__bet-text">Х</p>-->
+<!--			<p class="event-list__bet-text">П2</p>-->
+<!--		</div>-->
 		<div class="event-list__bets choose-bet">
+<!--			reverse_flex: league === 'FANTASY'-->
 			<div class="choose-bet__card first-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'FIRST_WIN', disabled: getCoefficient('TEAM1') === 0}"
+				 :class="{active_bet: activeBet === 'FIRST_WIN', disabled: getCoefficient('TEAM1') === 0}"
 				 @click="chooseBet('FIRST_WIN')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event?.team1_summary) }}</p>
-				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM1") + ' - ' }}</p>
-					<p class="choose-bet__percent">{{ getPercent("TEAM1") }}</p>
-				</div>
+				<p class="choose-bet__bet-type">П1</p>
+				<p class="choose-bet__coefficient">{{ getCoefficient('TEAM1') }}</p>
+<!--				<p class="choose-bet__sum">{{ getSum(event?.team1_summary) }}</p>-->
+<!--				<div class="choose-bet__odds">-->
+<!--					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM1") + ' - ' }}</p>-->
+<!--					<p class="choose-bet__percent">{{ getPercent("TEAM1") }}</p>-->
+<!--				</div>-->
 			</div>
+<!--			reverse_flex: league === 'FANTASY'-->
 			<div class="choose-bet__card second-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'DRAW', disabled: getCoefficient('DRAW') === 0}"
+				 :class="{active_bet: activeBet === 'DRAW', disabled: getCoefficient('DRAW') === 0}"
 				 @click="chooseBet('DRAW')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event?.draw_summary) }}</p>
-				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("DRAW") + ' - ' }}</p>
-					<p class="choose-bet__percent">{{ getPercent("DRAW") }}</p>
-				</div>
+				<p class="choose-bet__bet-type">X</p>
+				<p class="choose-bet__coefficient">{{ getCoefficient('DRAW') }}</p>
+<!--				<p class="choose-bet__sum">{{ getSum(event?.draw_summary) }}</p>-->
+<!--				<div class="choose-bet__odds">-->
+<!--					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("DRAW") + ' - ' }}</p>-->
+<!--					<p class="choose-bet__percent">{{ getPercent("DRAW") }}</p>-->
+<!--				</div>-->
 			</div>
+<!--			reverse_flex: league === 'FANTASY'-->
 			<div class="choose-bet__card third-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'SECOND_WIN', disabled: getCoefficient('TEAM2') === 0}"
+				 :class="{active_bet: activeBet === 'SECOND_WIN', disabled: getCoefficient('TEAM2') === 0}"
 				 @click="chooseBet('SECOND_WIN')"
 			>
-				<p class="choose-bet__sum">{{ getSum(event?.team2_summary) }}</p>
-				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM2") + ' - ' }}</p>
-					<p class="choose-bet__percent">{{ getPercent("TEAM2") }}</p>
-				</div>
+				<p class="choose-bet__bet-type">П2</p>
+				<p class="choose-bet__coefficient">{{ getCoefficient('TEAM2') }}</p>
+<!--				<p class="choose-bet__sum">{{ getSum(event?.team2_summary) }}</p>-->
+<!--				<div class="choose-bet__odds">-->
+<!--					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM2") + ' - ' }}</p>-->
+<!--					<p class="choose-bet__percent">{{ getPercent("TEAM2") }}</p>-->
+<!--				</div>-->
 			</div>
 		</div>
 		<div class="event-list__progress-bar">
 			<div class="progress-line first-line"
-				 :style="{flexBasis: getPercent('TEAM1') > '0%' ? getPercent('TEAM1') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('TEAM1') > '0%' ? getPercentFromCoefficient('TEAM1') : '2%'}"
 			></div>
 			<div class="progress-line second-line"
-				 :style="{flexBasis: getPercent('DRAW') > '0%' ? getPercent('DRAW') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('DRAW') > '0%' ? getPercentFromCoefficient('DRAW') : '2%'}"
 			></div>
 			<div class="progress-line third-line"
-				 :style="{flexBasis: getPercent('TEAM2') > '0%' ? getPercent('TEAM2') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('TEAM2') > '0%' ? getPercentFromCoefficient('TEAM2') : '2%'}"
 			></div>
 		</div>
 		<transition name="fade">
@@ -152,6 +161,22 @@ export default {
 		}
 	},
 	methods: {
+		getPercentFromCoefficient(value) {
+			let total = this.event.team1_ratio + this.event.draw_ratio + this.event.team2_ratio
+			if (value === 'TEAM1') {
+				if (this.event.team1_ratio > 0) {
+					return `${((this.event.team1_ratio / total) * 100).toFixed(1)}` + '%'
+				}
+			} else if (value === 'DRAW') {
+				if (this.event.draw_ratio > 0) {
+					return `${((this.event.draw_ratio / total) * 100).toFixed(1)}` + '%'
+				}
+			} else if (value === 'TEAM2') {
+				if (this.event.team2_ratio > 0) {
+					return `${((this.event.team2_ratio / total) * 100).toFixed(1)}` + '%'
+				}
+			}
+		},
 		getCoefficient(value) {
 			if (value === 'TEAM1') {
 				return this.event.team1_ratio
@@ -161,41 +186,41 @@ export default {
 				return this.event.team2_ratio
 			}
 		},
-		getPercent(value) {
-			let total = this.event.team1_summary + this.event.draw_summary + this.event.team2_summary
-			if (value === 'TEAM1') {
-				if (this.event.team1_summary > 0 && total > 0) {
-					return `${((this.event.team1_summary / total) * 100).toFixed(1)}` + '%'
-				} else if (this.event.draw_summary > 0 || this.event.team2_summary) {
-					return '0%'
-				} else {
-					return '33.3%'
-				}
-			} else if (value === 'DRAW') {
-				if (this.event.draw_summary > 0 && total > 0) {
-					return `${((this.event.draw_summary / total) * 100).toFixed(1)}` + '%'
-				} else if (this.event.team1_summary > 0 || this.event.team2_summary) {
-					return '0%'
-				} else {
-					return '33.3%'
-				}
-			} else if (value === 'TEAM2') {
-				if (this.event.team2_summary > 0 && total > 0) {
-					return `${((this.event.team2_summary / total) * 100).toFixed(1)}` + '%'
-				} else if (this.event.team1_summary > 0 || this.event.draw_summary) {
-					return '0%'
-				} else {
-					return '33.3%'
-				}
-			}
-		},
-		getSum(value) {
-			if (this.league === 'REGULAR') {
-				return `${value}` + ' TON'
-			} else {
-				return `${value}` + ' Ф'
-			}
-		},
+		// getPercent(value) {
+		// 	let total = this.event.team1_summary + this.event.draw_summary + this.event.team2_summary
+		// 	if (value === 'TEAM1') {
+		// 		if (this.event.team1_summary > 0 && total > 0) {
+		// 			return `${((this.event.team1_summary / total) * 100).toFixed(1)}` + '%'
+		// 		} else if (this.event.draw_summary > 0 || this.event.team2_summary) {
+		// 			return '0%'
+		// 		} else {
+		// 			return '33.3%'
+		// 		}
+		// 	} else if (value === 'DRAW') {
+		// 		if (this.event.draw_summary > 0 && total > 0) {
+		// 			return `${((this.event.draw_summary / total) * 100).toFixed(1)}` + '%'
+		// 		} else if (this.event.team1_summary > 0 || this.event.team2_summary) {
+		// 			return '0%'
+		// 		} else {
+		// 			return '33.3%'
+		// 		}
+		// 	} else if (value === 'TEAM2') {
+		// 		if (this.event.team2_summary > 0 && total > 0) {
+		// 			return `${((this.event.team2_summary / total) * 100).toFixed(1)}` + '%'
+		// 		} else if (this.event.team1_summary > 0 || this.event.draw_summary) {
+		// 			return '0%'
+		// 		} else {
+		// 			return '33.3%'
+		// 		}
+		// 	}
+		// },
+		// getSum(value) {
+		// 	if (this.league === 'REGULAR') {
+		// 		return `${value}` + ' TON'
+		// 	} else {
+		// 		return `${value}` + ' Ф'
+		// 	}
+		// },
 		chooseBet(value) {
 			// this.$emit('chooseBet', value, index)
 			this.activeBet = value
@@ -206,7 +231,7 @@ export default {
 			}
 		},
 		closePopup() {
-			console.log('event card coupon close')
+			// console.log('event card coupon close')
 			// this.$emit('closePopup')
 			this.activeBet = ''
 			this.showPopup = false
@@ -237,6 +262,7 @@ export default {
 	padding: 6px;
 	border-radius: 8px;
 	background: #28272B;
+	overflow: hidden;
 }
 
 .event-list__teams {
@@ -244,8 +270,7 @@ export default {
 	display: flex;
 	gap: 0 10px;
 	flex-direction: row;
-	align-items: start;
-	align-content: start;
+	align-items: stretch;
 	justify-content: space-between;
 }
 
@@ -253,7 +278,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	flex: 33.3% 1 1;
+	flex: 33.3%;
 }
 
 .event-list__date {
@@ -268,6 +293,7 @@ export default {
 	margin-bottom: 8px;
 	width: 26px;
 	height: 26px;
+	min-height: 26px;
 	opacity: .3;
 }
 
@@ -292,6 +318,10 @@ export default {
 }
 
 .event-list__team-name {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
 	max-width: 70%;
 	text-align: center;
 	font-size: 10px;
@@ -320,20 +350,6 @@ export default {
 	color: #F5EB00;
 }
 
-.event-list__bet-names {
-	margin-bottom: 8px;
-	display: flex;
-	gap: 0 10px;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.event-list__bet-text {
-	font-size: 10px;
-	flex: 33.3%;
-	text-align: center;
-}
-
 .choose-bet {
 	margin-bottom: 6px;
 	display: flex;
@@ -351,10 +367,6 @@ export default {
 	background: #3F3C42;
 }
 
-.reverse_flex {
-	flex-direction: column-reverse;
-}
-
 .active_bet {
 	background-color: #00F59B;
 }
@@ -368,6 +380,38 @@ export default {
 	color: #000;
 }
 
+.choose-bet__bet-type {
+	margin-bottom: 4px;
+	font-size: 11px;
+	//font-family: Roboto-Medium, sans-serif;
+	//font-weight: 500;
+}
+
+.choose-bet__coefficient {
+	font-size: 14px;
+	line-height: 16px;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+}
+
+.reverse_flex {
+	flex-direction: column-reverse;
+}
+
+.event-list__bet-names {
+	margin-bottom: 8px;
+	display: flex;
+	gap: 0 10px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.event-list__bet-text {
+	font-size: 10px;
+	flex: 33.3%;
+	text-align: center;
+}
+
 .choose-bet__odds {
 	display: flex;
 	align-items: center;
@@ -378,12 +422,6 @@ export default {
 	font-size: 14px;
 	font-family: Roboto-Bold, sans-serif;
 	font-weight: 700;
-}
-
-.choose-bet__coefficient {
-	font-size: 11px;
-	font-family: Roboto-Medium, sans-serif;
-	font-weight: 500;
 }
 
 .choose-bet__percent {

@@ -14,12 +14,12 @@
 				<p class="stats__text">Всего выиграно фентези</p>
 				<p class="stats__value">{{ totalWinFantasyBets || 0 }} Ф</p>
 			</div>
-			<div class="stats__row fee-lose"
-				v-if="getRouteName === 'Profile'"
-			>
-				<p class="stats__text">Потеряно на комиссии</p>
-				<p class="stats__value">0 TON</p>
-			</div>
+<!--			<div class="stats__row fee-lose"-->
+<!--				v-if="getRouteName === 'Profile'"-->
+<!--			>-->
+<!--				<p class="stats__text">Потеряно на комиссии</p>-->
+<!--				<p class="stats__value">0 TON</p>-->
+<!--			</div>-->
 <!--			<div class="stats__row your-fee">-->
 <!--				<p class="stats__text">{{ yourFeeText }}</p>-->
 <!--				<p class="stats__value">10%</p>-->

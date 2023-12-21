@@ -126,7 +126,6 @@ export default {
 					}
 					console.error(err)
 				})
-
 		},
 		setNewUser() {
 			let initData = null
@@ -162,6 +161,7 @@ export default {
 				this.webApp.expand()
 				this.webApp.setHeaderColor('#151317')
 				this.webApp.setBackgroundColor('#151317')
+				this.webApp.enableClosingConfirmation()
 			}
 			if (this.webApp.MainButton.isVisible) {
 				this.webApp.MainButton.hide()

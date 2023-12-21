@@ -102,13 +102,14 @@ export default {
 
 <style scoped>
 	.sport__navigation {
-		padding: 14px 0;
+		padding: 14px 0 0 0;
 	}
 
 	.navigation__list {
 		display: flex;
 		gap: 0 18px;
 		overflow: auto;
+		padding-bottom: 14px;
 		//justify-content: space-between;
 	}
 

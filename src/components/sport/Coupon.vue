@@ -1,13 +1,19 @@
 <template>
-	<div class="popup">
+	<div class="popup"
+		@click.self="closePopup"
+	>
 		<transition name="slide">
 			<div class="coupon" :id="'coupon_' + event?.id"
 				 v-if="showPopup"
 			>
-				<div class="line-icon"></div>
+				<div class="close_btn"
+					@click="closePopup"
+				>
+					<div class="line-icon"></div>
+				</div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
-					<p class="balance__value">{{ this.getActualBalance || 0 + ' ' + this.getValueType }}</p>
+					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType }}</p>
 				</div>
 				<div class="coupon__info">
 					<div class="bet-info">
@@ -79,6 +85,7 @@
 <!--				</ul>-->
 				<div class="coupon__make-bet">
 					<button class="coupon__main-btn"
+							:disabled="disabledButton"
 							@click="makeBet"
 					>
 						Сделать ставку
@@ -93,7 +100,7 @@
 <script>
 import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
 import BetsApi from "/src/api/src/api/BetsApi.js";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
 	name: "Coupon",
@@ -177,6 +184,15 @@ export default {
 			'GET_WALLET_INFO',
 			'GET_USER_INFO'
 		]),
+		disabledButton() {
+			if (this.getActualBalance < this.betAmount || this.betAmount === 0 || this.betAmount === null || this.betAmount === '') {
+				console.log(true)
+				return true
+			} else {
+				console.log(false)
+				return false
+			}
+		},
 		webApp() {
 			return window.Telegram.WebApp
 		},
@@ -192,9 +208,17 @@ export default {
 		},
 		getActualBalance() {
 			if (this.league === 'REGULAR') {
-				return (this.GET_WALLET_INFO?.balance / Math.pos(10, 9)).toFixed(2)
+				if (this.GET_WALLET_INFO.balance) {
+					return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
+				} else {
+					return 0
+				}
 			} else if (this.league === 'FANTASY') {
-				return this.GET_USER_INFO?.balance
+				if (this.GET_USER_INFO.balance) {
+					return this.GET_USER_INFO?.balance
+				} else {
+					return 0
+				}
 			}
 		},
 		getPossibleWin() {
@@ -282,6 +306,9 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'SAVE_USER_INFO',
+		]),
 		activeSwitch(value) {
 			if (this.active.includes(value)) {
 				let index = this.active.indexOf(value)
@@ -292,6 +319,7 @@ export default {
 		},
 		closePopup() {
 			this.$emit('closePopup')
+			console.log(111)
 		},
 		makeBet() {
 			if (this.league === 'FANTASY') {
@@ -307,7 +335,22 @@ export default {
 			this.betsApi.createFantasyBet(initData, obj)
 				.then((res) => {
 					console.log(res)
+					this.updateUserInfo()
 					this.closePopup()
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+		updateUserInfo() {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			console.log(initData, 'getCurrentUser App.vue')
+			this.usersApi.getCurrentUser(initData)
+				.then((res) => {
+					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {
 					console.error(err)
@@ -321,7 +364,7 @@ export default {
 		},
 		setAmount(value) {
 			this.betAmount = value
-			this.focusInput()
+			// this.focusInput()
 		},
 		focusInput() {
 			console.log('focus')
@@ -330,25 +373,23 @@ export default {
 		}
 	},
 	watch: {
-		showPopup: {
-			handler: function () {
-				if (this.showPopup === true) {
-					setTimeout(() => {
-						let coupon = document.getElementById('coupon_' + this.event?.id)
-						subscribeTouchEvents(coupon, this)
-					}, 300)
-				} else {
-					// setTimeout(() => {
-					let coupon = document.getElementById('coupon_' + this.event?.id)
-					unsubscribeTouchEvents(coupon)
-					// }, 300)
-				}
-			}
-		}
+		// showPopup: {
+		// 	handler: function () {
+		// 		if (this.showPopup === true) {
+		// 			setTimeout(() => {
+		// 				let coupon = document.getElementById('coupon_' + this.event?.id)
+		// 				subscribeTouchEvents(coupon, this)
+		// 			}, 300)
+		// 		} else {
+		// 			let coupon = document.getElementById('coupon_' + this.event?.id)
+		// 			unsubscribeTouchEvents(coupon)
+		// 		}
+		// 	}
+		// }
 	},
 	// mounted() {
-	// 	let coupon = document.getElementById('coupon_' + this.event?.id)
-	// 	subscribeTouchEvents(coupon, this)
+		// let coupon = document.getElementById('coupon_' + this.event?.id)
+		// subscribeTouchEvents(coupon, this)
 	// },
 	// unmounted() {
 	// 	let coupon = document.getElementById('coupon' + this.event?.id)
@@ -383,13 +424,18 @@ export default {
 .coupon {
 //position: fixed; //left: 0; //right: 0; //bottom: 0;
 	width: 100%;
-	padding: 10px 14px 28px 14px;
+	padding: 0 14px 28px 14px;
 	border-radius: 14px 14px 0 0;
 	background: #151317;
 }
 
+.close_btn {
+	padding: 10px 0 14px 0;
+	width: 100%;
+}
+
 .line-icon {
-	margin: 0 auto 14px auto;
+	margin: 0 auto;
 	width: 34px;
 	height: 4px;
 	border-radius: 3px;
@@ -628,8 +674,9 @@ export default {
 }
 
 .coupon__main-btn {
+	transition: .2s;
 	width: 100%;
-	padding: 13px 0 14px 0;
+	padding: 16px 0 16px 0;
 	outline: none;
 	border: none;
 	border-radius: 10px;
@@ -637,6 +684,10 @@ export default {
 	color: #141414;
 	font-size: 15px;
 	font-family: Roboto-Medium, sans-serif;
+}
+
+.coupon__main-btn:disabled {
+	opacity: 0.6;
 }
 
 .coupon__notice {

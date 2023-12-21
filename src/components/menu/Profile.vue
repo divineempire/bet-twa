@@ -3,12 +3,12 @@
 		<div class="league-placement">
 			<h3 class="profile__caption">Ваше положение в лиге</h3>
 			<div class="regular-league" :class="{active_league: regularPlacement !== null}">
-				<p class="regular-league__text">Вы занимаете 6 место в зимней лиге</p>
+				<p class="regular-league__text">{{ getYourPlacement }}</p>
 				<div class="arrow-icon" v-if="regularPlacement !== null"></div>
 			</div>
-			<div class="fantasy-league" :class="{active_league: fantasyPlacement !== null}">
-				<p class="fantasy-league__text">Вы ещё не участвовали в фентези лиге</p>
-				<div class="arrow-icon" v-if="fantasyPlacement !== null"></div>
+			<div class="fantasy-league" :class="{active_league: userInFantasy !== null}">
+				<p class="fantasy-league__text">{{ getYourFantasyPlacement }}</p>
+				<div class="arrow-icon" v-if="userInFantasy !== null"></div>
 			</div>
 		</div>
 		<BetStats />
@@ -45,14 +45,38 @@ export default {
 	components: {BetStats},
 	data() {
 		return {
-			regularPlacement: 1,
-			fantasyPlacement: null
+			regularPlacement: null,
+			// fantasyPlacement: null
 		}
 	},
 	computed: {
 		...mapGetters([
 			'GET_LEAGUES',
+			'GET_USER_INFO'
 		]),
+		getYourPlacement() {
+			if (this.regularPlacement !== null) {
+				return `Вы занимаете ${this.regularPlacement} место в зимней лиге`
+			} else {
+				return `Вы ещё не участвовали в зимней лиге`
+			}
+		},
+		getYourFantasyPlacement() {
+			if (this.userInFantasy !== null) {
+				return `Вы занимаете ${this.userInFantasy} место в фентези лиге`
+			} else {
+				return `Вы ещё не участвовали в фентези лиге`
+			}
+		},
+		userInFantasy() {
+			if (this.GET_USER_INFO.rated_league_entries) {
+				let meFantasy = this.GET_USER_INFO?.rated_league_entries.find((item) => item?.rated_league?.fantasy === true)
+				console.log(meFantasy?.place)
+				return meFantasy?.place
+			} else {
+				return null
+			}
+		},
 	}
 }
 </script>
@@ -72,7 +96,7 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: 8px;
-		padding: 14px 16px;
+		padding: 12px 16px;
 		border-radius: 8px;
 		background: rgba(63, 60, 66, 0.50);
 	}
@@ -81,7 +105,7 @@ export default {
 		display:  flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 14px 16px;
+		padding: 12px 16px;
 		border-radius: 8px;
 		background: rgba(63, 60, 66, 0.50);
 	}
@@ -93,6 +117,7 @@ export default {
 	.regular-league__text,
 	.fantasy-league__text {
 		font-size: 14px;
+		line-height: 20px;
 	}
 
 	.arrow-icon {
