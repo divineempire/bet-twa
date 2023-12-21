@@ -91,7 +91,7 @@ export default {
 	},
 	computed: {
 		getSportType() {
-			if (this.card?.match?.sportId === 18) {
+			if (this.card?.match?.sport_id === 18) {
 				return 'football'
 			}
 		},
