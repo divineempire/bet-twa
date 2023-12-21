@@ -8,7 +8,7 @@
     "refresh-api": "npx @openapitools/openapi-generator-cli generate -i https://api.betty.games/openapi.json -g javascript -c api-config.json -o src/api/ --skip-validate-spec --global-property=apiTests=false,apiDocs=false,modelDocs=false,modelTests=false"
   },
   "dependencies": {
-    "@tonconnect/ui": "^2.0.0-beta.6",
+    "@tonconnect/ui": "^2.0.0-beta.10",
     "core-js": "^3.8.3",
     "lottie-web": "^5.12.2",
     "querystring": "^0.2.1",
