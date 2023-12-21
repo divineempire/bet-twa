@@ -183,7 +183,7 @@ export default {
 		getValueType() {
 			if (this.league === 'REGULAR') {
 				return 'TON'
-			} else {
+			} else if (this.league === 'FANTASY') {
 				return 'Ф'
 			}
 		},
