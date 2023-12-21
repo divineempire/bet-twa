@@ -319,7 +319,6 @@ export default {
 		},
 		closePopup() {
 			this.$emit('closePopup')
-			console.log(111)
 		},
 		makeBet() {
 			if (this.league === 'FANTASY') {

@@ -198,7 +198,7 @@ export default {
 			return this.regularLeaders.sort((a, b) => b.winAmount - a.winAmount )
 		},
 		sortFantasyLeaders() {
-			return this.fantasyLeaders.sort((a, b) => b.place - a.place )
+			return this.fantasyLeaders.sort((a, b) => a.place - b.place )
 		},
 		userInFantasy() {
 			if (this.GET_USER_INFO.rated_league_entries) {

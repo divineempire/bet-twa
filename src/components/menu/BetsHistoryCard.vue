@@ -235,11 +235,11 @@ export default {
 	width: 14px;
 	height: 14px;
 	//background: url('~@/assets/menu/category/dota.png') no-repeat;
-	background-size: cover;
 }
 
 .football {
 	background: url('~@/assets/sport/football.svg') no-repeat;
+	background-size: cover;
 }
 
 .match-info__name:not(.bet-type) {
