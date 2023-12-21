@@ -169,6 +169,7 @@ export default {
 
 <style scoped>
 	.wallet-container {
+		position: relative;
 		height: auto;
 		max-width: 100%;
 		width: 100%;
@@ -177,15 +178,15 @@ export default {
 	}
 
 	.wallet-connect {
-		min-height: 600px;
-		height: 91vh;
+		//min-height: 600px;
+		//height: 91vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
 
 	.wallet-connect__slider {
-		margin-bottom: 20px;
+		margin-bottom: 80px;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -196,15 +197,15 @@ export default {
 	}
 
 	.lottie-image {
-		margin: 0 auto 14px auto;
-		max-width: 332px;
-		max-height: 332px;
+		margin: 0 auto 0 auto;
+		max-width: 320px;
+		max-height: 320px;
 		width: 100%;
 		height: calc(100vw - 28px);
 	}
 
 	.item__title {
-		margin-bottom: 18px;
+		margin-bottom: 16px;
 		text-align: center;
 		font-size: 24px;
 		font-family: Roboto-Medium, sans-serif;
@@ -239,8 +240,12 @@ export default {
 	}
 
 	.wallet-connect__btn {
-		width: 100%;
-		padding: 16px;
+		position: fixed;
+		z-index: 100;
+		bottom: 20px;
+		left: 10px;
+		width: calc(100% - 20px);
+		padding: 13px;
 		outline: none;
 		border: none;
 		border-radius: 10px;

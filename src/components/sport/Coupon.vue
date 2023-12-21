@@ -346,7 +346,7 @@ export default {
 					if (err.error.status === 400) {
 						console.log('status 400')
 						let message = err?.body?.detail + '. Закрыть купон?'
-						this.webApp.showConfirm(err?.detail, this.closePopup)
+						this.webApp.showConfirm(message, this.closePopup)
 					}
 				})
 		},
