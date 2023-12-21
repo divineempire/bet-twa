@@ -87,7 +87,7 @@
 					<div class="leaderboard__amount">
 						<p class="leaderboard__win-amount">{{ item.score + ' Побед' }}</p>
 						<div class="leaderboard__arrow-icon"
-							 :class="item.place <= item.previous_place ? 'up' : 'down'"
+							 :class="item.place >= item.previous_place ? 'up' : 'down'"
 						></div>
 					</div>
 				</li>
