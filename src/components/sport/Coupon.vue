@@ -343,6 +343,10 @@ export default {
 				})
 				.catch((err) => {
 					console.error(err)
+					if (err.status === 400) {
+						let message = err?.detail + '. Закрыть купон?'
+						this.webApp.showConfirm(err?.detail, this.closePopup)
+					}
 				})
 		},
 		updateUserInfo() {

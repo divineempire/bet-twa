@@ -326,6 +326,13 @@ body {
 	//border: 1px solid #fff;
 	padding: 0 10px;
 }
+// отключает цвет выделенного текста, контента
+::selection {
+	background: transparent;
+}
+::-moz-selection {
+	background: transparent;
+}
 
 @media screen and (max-width: 600px) {
 	.container {
