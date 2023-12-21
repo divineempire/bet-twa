@@ -323,10 +323,9 @@ body {
 	max-width: 100%;
 	width: 100%;
 	margin: 0 auto;
-	//border: 1px solid #fff;
 	padding: 0 10px;
 }
-// отключает цвет выделенного текста, контента
+
 ::selection {
 	background: transparent;
 }
