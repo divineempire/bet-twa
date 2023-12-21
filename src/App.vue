@@ -244,6 +244,7 @@ export default {
 	box-sizing: border-box;
 	color: #fff;
 	font-family: sans-serif;
+	-webkit-tap-highlight-color: transparent;
 }
 
 ul {
