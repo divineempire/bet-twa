@@ -101,6 +101,7 @@
 import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
 import BetsApi from "/src/api/src/api/BetsApi.js";
 import {mapActions, mapGetters} from "vuex";
+import UsersApi from "/src/api/src/api/UsersApi.js";
 
 export default {
 	name: "Coupon",
@@ -198,6 +199,9 @@ export default {
 		},
 		betsApi() {
 			return new BetsApi()
+		},
+		usersApi() {
+			return new UsersApi()
 		},
 		getValueType() {
 			if (this.league === 'REGULAR') {
