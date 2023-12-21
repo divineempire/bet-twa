@@ -42,12 +42,12 @@
 				<p class="match-info__name">Потенциальный выйгрыш (Fee 5%)</p>
 				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
-			<button type="button" class="match-info__cancel-btn"
-					v-if="status === 'WAIT'"
-					@click="cancelBet"
-			>
-				Отменить ставку
-			</button>
+<!--			<button type="button" class="match-info__cancel-btn"-->
+<!--					v-if="status === 'WAIT'"-->
+<!--					@click="cancelBet"-->
+<!--			>-->
+<!--				Отменить ставку-->
+<!--			</button>-->
 		</div>
 		<div class="hidden-info"
 			 v-show="showMore"

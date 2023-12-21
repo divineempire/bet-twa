@@ -7,7 +7,7 @@
 				<div class="line-icon"></div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
-					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType }}</p>
+					<p class="balance__value">{{ this.getActualBalance || 0 + ' ' + this.getValueType }}</p>
 				</div>
 				<div class="coupon__info">
 					<div class="bet-info">
@@ -41,6 +41,7 @@
 				>
 					<button class="coupon__choose-btn"
 							v-for="(item, index) in offers"
+							:key="index"
 							@click="setAmount(item.regular)"
 					>
 						{{ item.regular + ' ' + getValueType }}
@@ -51,6 +52,7 @@
 				>
 					<button class="coupon__choose-btn"
 							v-for="(item, index) in offers"
+							:key="index"
 							@click="setAmount(item.fantasy)"
 					>
 						{{ item.fantasy + ' ' + getValueType }}
@@ -375,18 +377,11 @@ export default {
 	background: rgba(0, 0, 0, 0.8);
 }
 
-.popup-container {
-	position: relative;
-	max-width: 390px;
-	width: 390px;
-	margin: 0 auto;
-	padding: 0 10px;
-}
-
 .coupon {
-//position: fixed; //left: 0; //right: 0; //bottom: 0; width: 100%;
+//position: fixed; //left: 0; //right: 0; //bottom: 0;
+	width: 100%;
 	padding: 10px 14px 28px 14px;
-	border-radius: 14px 14px 0px 0px;
+	border-radius: 14px 14px 0 0;
 	background: #151317;
 }
 

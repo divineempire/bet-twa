@@ -52,7 +52,7 @@ export default {
 	data() {
 		return {
 			connected: true,
-			timeToFantasy: '',
+			timeToFantasy: null,
 			// gift: {
 			// 	ready: false,
 			// 	time: '23:45:34'
@@ -92,7 +92,7 @@ export default {
 			if (this.getReadyReward) {
 				return 'Забрать ежедневную награду'
 			} else {
-				return `Время до следующей награды ${this.timeToFantasy}`
+				return `Время до следующей награды ${this.timeToFantasy || 0}ч`
 			}
 		},
 		fantasyBalance() {
@@ -108,7 +108,9 @@ export default {
 				return true
 			} else {
 				let time = toRewardTime - now
-				this.timeToFantasy = (time / 3600000).toFixed(0) + 'ч'
+				if (time) {
+					this.timeToFantasy = (time / 3600000).toFixed(0)
+				}
 				return false
 			}
 		},

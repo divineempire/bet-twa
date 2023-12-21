@@ -36,6 +36,8 @@
 		</div>
 		<SearchPopup
 			v-show="showSearch"
+			:sportId="sportId"
+			:league="league"
 		/>
 	</div>
 </template>
@@ -51,6 +53,7 @@ export default {
 		return {
 			league: 'FANTASY',
 			showSearch: '',
+			sportId: 18,
 			// championships: [
 			// 	{
 			// 		name: 'Аргентина. Кубок Профессиональной Лиги',

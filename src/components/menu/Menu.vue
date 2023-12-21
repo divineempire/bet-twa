@@ -62,9 +62,9 @@ export default {
 		},
 	},
 	created() {
-		// if (this.webApp.initData)  {
+		if (this.webApp.initData)  {
 			this.getBetsHistory()
-		// }
+		}
 	},
 }
 </script>

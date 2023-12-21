@@ -12,7 +12,7 @@
 			</div>
 			<div class="stats__row total-win">
 				<p class="stats__text">Всего выиграно фентези</p>
-				<p class="stats__value">{{ totalWinFantasyBets || 0 }} TON</p>
+				<p class="stats__value">{{ totalWinFantasyBets || 0 }} Ф</p>
 			</div>
 			<div class="stats__row fee-lose"
 				v-if="getRouteName === 'Profile'"

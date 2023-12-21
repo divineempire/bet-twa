@@ -62,7 +62,7 @@ export default {
 	},
 	data() {
 		return {
-			showMore: true,
+			showMore: false,
 			events: []
 			// activeBet: '',
 			// showPopup: false,
@@ -163,11 +163,9 @@ export default {
 	},
 	mounted() {
 		this.getMatches()
-		// setTimeout(() => {
-		// 	if (this.index === 0) {
-		// 		this.showMore = true
-		// 	}
-		// }, 1000)
+		if (this.index === 0) {
+			this.showMore = true
+		}
 	}
 }
 </script>

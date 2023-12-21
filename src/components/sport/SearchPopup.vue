@@ -2,14 +2,14 @@
 	<div class="search">
 		<div class="search__input-container">
 			<label for="" class="search__label">
-				<input type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue">
+				<input type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue" @input="searchInput">
 			</label>
 			<button class="search__cancel-btn"
 					@click="searchValue = ''"
 			></button>
 		</div>
 		<p class="search__empty"
-		   v-if="filteredEvents.length === 0"
+		   v-if="events.length === 0"
 		>
 			Поиск не дал результатов
 		</p>
@@ -28,74 +28,80 @@
 <script>
 import EventCard from "@/components/sport/EventCard.vue";
 import Coupon from "@/components/sport/Coupon.vue";
+import MatchesApi from "/src/api/src/api/MatchesApi.js";
 
 export default {
 	name: "SearchPopup",
-	components: {Coupon, EventCard},
+	components: {
+		Coupon,
+		EventCard
+	},
 	data() {
 		return {
 			searchValue: '',
 			activeBet: '',
 			successSearch: false,
-			events: [
-				{
-					firstTeam: {
-						name: 'Реал Мадрид',
-						logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-					},
-					secondTeam: {
-						name: 'Барселона',
-						logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-					},
-					date: 'Завтра',
-					dateTime: '02:25',
-					started: false,
-					p1: {
-						sum: 1500,
-						coefficient: 1.34,
-						percent: 43,
-					},
-					draw: {
-						sum: 500,
-						coefficient: 8.2,
-						percent: 7,
-					},
-					p2: {
-						sum: 2000,
-						coefficient: 1.28,
-						percent: 50
-					}
-				},
-				{
-					firstTeam: {
-						name: 'Сан Лоренцо',
-						logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-					},
-					secondTeam: {
-						name: 'Сентраль Кордоба СдЕ',
-						logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-					},
-					date: 'Завтра',
-					dateTime: '04:45',
-					started: false,
-					p1: {
-						sum: 240,
-						coefficient: 3.6,
-						percent: 17,
-					},
-					draw: {
-						sum: 1000,
-						coefficient: 1.2,
-						percent: 70,
-					},
-					p2: {
-						sum: 190,
-						coefficient: 4.7,
-						percent: 13
-					}
-				}
-			],
+			events: [],
+			// events: [
+			// 	{
+			// 		firstTeam: {
+			// 			name: 'Реал Мадрид',
+			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
+			// 		},
+			// 		secondTeam: {
+			// 			name: 'Барселона',
+			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
+			// 		},
+			// 		date: 'Завтра',
+			// 		dateTime: '02:25',
+			// 		started: false,
+			// 		p1: {
+			// 			sum: 1500,
+			// 			coefficient: 1.34,
+			// 			percent: 43,
+			// 		},
+			// 		draw: {
+			// 			sum: 500,
+			// 			coefficient: 8.2,
+			// 			percent: 7,
+			// 		},
+			// 		p2: {
+			// 			sum: 2000,
+			// 			coefficient: 1.28,
+			// 			percent: 50
+			// 		}
+			// 	},
+			// 	{
+			// 		firstTeam: {
+			// 			name: 'Сан Лоренцо',
+			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
+			// 		},
+			// 		secondTeam: {
+			// 			name: 'Сентраль Кордоба СдЕ',
+			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
+			// 		},
+			// 		date: 'Завтра',
+			// 		dateTime: '04:45',
+			// 		started: false,
+			// 		p1: {
+			// 			sum: 240,
+			// 			coefficient: 3.6,
+			// 			percent: 17,
+			// 		},
+			// 		draw: {
+			// 			sum: 1000,
+			// 			coefficient: 1.2,
+			// 			percent: 70,
+			// 		},
+			// 		p2: {
+			// 			sum: 190,
+			// 			coefficient: 4.7,
+			// 			percent: 13
+			// 		}
+			// 	}
+			// ],
 			showPopup: false,
+			debounce: null,
 		}
 	},
 	props: {
@@ -104,21 +110,52 @@ export default {
 			default() {
 				return ''
 			}
+		},
+		sportId: {
+			type: Number,
+			default() {
+				return null
+			}
 		}
 	},
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
 		},
+		matchesApi() {
+			return new MatchesApi()
+		},
+		sortEventsByTime() {
+			return this.events.sort((a, b) => a.match_start_time - b.match_start_time)
+		},
 		filteredEvents() {
-			if (this.searchValue.length === 0) {
-				return []
-			} else {
-				return this.events.filter((item) => item.firstTeam.name.toUpperCase().includes(this.searchValue.toUpperCase()) || item.secondTeam.name.toUpperCase().includes(this.searchValue.toUpperCase()))
-			}
+			return this.sortEventsByTime.filter((item) => item.finished === false)
 		}
 	},
 	methods: {
+		searchInput() {
+			clearTimeout(this.debounce);
+			this.debounce = setTimeout(() => {
+				if (this.searchValue.length > 0) {
+					this.getMatches()
+				}
+			}, 700)
+		},
+		getMatches() {
+			let opts = {
+				page: 1,
+				size: 20,
+				search: this.searchValue,
+				sport_id: this.sportId
+			}
+			this.matchesApi.getMatches(opts)
+				.then((res) => {
+					this.events = res.items
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		},
 		// closePopup() {
 		// 	this.showPopup = false
 		// 	this.activeBet = ''
@@ -133,6 +170,9 @@ export default {
 		// 		this.webApp.BackButton.onClick(this.closePopup)
 		// 	}
 		// },
+	},
+	unmounted() {
+		clearTimeout(this.debounce);
 	}
 }
 </script>

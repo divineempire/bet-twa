@@ -31,42 +31,45 @@
 		</div>
 		<div class="event-list__bets choose-bet">
 			<div class="choose-bet__card first-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'FIRST_WIN'}"
+				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'FIRST_WIN', disabled: getCoefficient('TEAM1') === 0}"
 				 @click="chooseBet('FIRST_WIN')"
 			>
 				<p class="choose-bet__sum">{{ getSum(event?.team1_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient("TEAM1") }}</p>
+					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM1") + ' - ' }}</p>
+					<p class="choose-bet__percent">{{ getPercent("TEAM1") }}</p>
 				</div>
 			</div>
 			<div class="choose-bet__card second-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'DRAW'}"
+				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'DRAW', disabled: getCoefficient('DRAW') === 0}"
 				 @click="chooseBet('DRAW')"
 			>
 				<p class="choose-bet__sum">{{ getSum(event?.draw_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient("DRAW") }}</p>
+					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("DRAW") + ' - ' }}</p>
+					<p class="choose-bet__percent">{{ getPercent("DRAW") }}</p>
 				</div>
 			</div>
 			<div class="choose-bet__card third-bet"
-				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'SECOND_WIN'}"
+				 :class="{reverse_flex: league === 'FANTASY', active_bet: activeBet === 'SECOND_WIN', disabled: getCoefficient('TEAM2') === 0}"
 				 @click="chooseBet('SECOND_WIN')"
 			>
 				<p class="choose-bet__sum">{{ getSum(event?.team2_summary) }}</p>
 				<div class="choose-bet__odds">
-					<p class="choose-bet__coefficient">{{ getCoefficient("TEAM2") }}</p>
+					<p class="choose-bet__coefficient">{{ 'x' + getCoefficient("TEAM2") + ' - ' }}</p>
+					<p class="choose-bet__percent">{{ getPercent("TEAM2") }}</p>
 				</div>
 			</div>
 		</div>
 		<div class="event-list__progress-bar">
 			<div class="progress-line first-line"
-				 :style="{flexBasis: '33%'}"
+				 :style="{flexBasis: getPercent('TEAM1') > '0%' ? getPercent('TEAM1') : '2%'}"
 			></div>
 			<div class="progress-line second-line"
-				 :style="{flexBasis: '33%'}"
+				 :style="{flexBasis: getPercent('DRAW') > '0%' ? getPercent('DRAW') : '2%'}"
 			></div>
 			<div class="progress-line third-line"
-				 :style="{flexBasis: '33%'}"
+				 :style="{flexBasis: getPercent('TEAM2') > '0%' ? getPercent('TEAM2') : '2%'}"
 			></div>
 		</div>
 		<transition name="fade">
@@ -94,8 +97,6 @@ export default {
 		return {
 			showPopup: false,
 			activeBet: '',
-			// firstTeam: null,
-			// secondTeam: null
 		}
 	},
 	props: {
@@ -123,26 +124,14 @@ export default {
 				return false
 			}
 		}
-		// activeBet: {
-		// 	type: String,
-		// 	default() {
-		// 		return ''
-		// 	}
-		// },
-		// index: {
-		// 	type: Number,
-		// 	default() {
-		// 		return 0
-		// 	}
-		// }
 	},
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
 		},
-		teamsApi() {
-			return new TeamsApi()
-		},
+		// teamsApi() {
+		// 	return new TeamsApi()
+		// },
 		getScore() {
 			return this.event.team1_score + ':' + this.event.team2_score
 		},
@@ -160,27 +149,44 @@ export default {
 		getSportCategory() {
 			let path = this.$route.path
 			return path.replaceAll('/sport/', '')
-			// if (path === '/sport/football') {
-			// 	return 'Спорт/Футбол'
-			// } else if (path === '/sport/hockey') {
-			// 	return 'Спорт/Хоккей'
-			// } else if (path === '/sport/basketball') {
-			// 	return 'Спорт/Баскетбол'
-			// } else if (path === '/sport/volleyball') {
-			// 	return 'Спорт/Волейбол'
-			// } else if (path === '/sport/tennis') {
-			// 	return 'Спорт/Теннис'
-			// }
 		}
 	},
 	methods: {
 		getCoefficient(value) {
 			if (value === 'TEAM1') {
-				return 'x' + `${this.event.team1_ratio}` + ' - ' + '33%'
+				return this.event.team1_ratio
 			} else if (value === 'DRAW') {
-				return 'x' + `${this.event.draw_ratio}` + ' - ' + '33%'
+				return this.event.draw_ratio
 			} else if (value === 'TEAM2') {
-				return 'x' + `${this.event.team2_ratio}` + ' - ' + '33%'
+				return this.event.team2_ratio
+			}
+		},
+		getPercent(value) {
+			let total = this.event.team1_summary + this.event.draw_summary + this.event.team2_summary
+			if (value === 'TEAM1') {
+				if (this.event.team1_summary > 0 && total > 0) {
+					return `${(this.event.team1_summary / total) * 100}` + '%'
+				} else if (this.event.draw_summary > 0 || this.event.team2_summary) {
+					return '0%'
+				} else {
+					return '33.3%'
+				}
+			} else if (value === 'DRAW') {
+				if (this.event.draw_summary > 0 && total > 0) {
+					return `${(this.event.draw_summary / total) * 100}` + '%'
+				} else if (this.event.team1_summary > 0 || this.event.team2_summary) {
+					return '0%'
+				} else {
+					return '33.3%'
+				}
+			} else if (value === 'TEAM2') {
+				if (this.event.team2_summary > 0 && total > 0) {
+					return `${(this.event.team2_summary / total) * 100}` + '%'
+				} else if (this.event.team1_summary > 0 || this.event.draw_summary) {
+					return '0%'
+				} else {
+					return '33.3%'
+				}
 			}
 		},
 		getSum(value) {
@@ -207,50 +213,20 @@ export default {
 			this.webApp.BackButton.offClick(this.closePopup)
 			this.webApp.BackButton.hide()
 		},
-		// getTeam(type, teamId) {
-		// 	this.teamsApi.getTeam(teamId)
-		// 		.then((res) => {
-		// 			if (type === 'FIRST') {
-		// 				this.firstTeam = res
-		// 			} else if (type === 'SECOND') {
-		// 				this.secondTeam = res
-		// 			}
-		// 			console.log(res)
-		// 		})
-		// 		.catch((err) => {
-		// 			console.log(err)
-		// 		})
-		// }
-	},
-	created() {
-		// this.getTeam('FIRST', this.event.team1_id)
-		// this.getTeam('SECOND', this.event.team2_id)
 	},
 	watch: {
 		showPopup: {
 			handler: function() {
-				if (this.call !== 'SEARCH') {
-					if  (this.showPopup) {
-						document.documentElement.style.overflow = 'hidden'
-						return
-					}
-					document.documentElement.style.overflow = 'auto'
-				}
+				// if (this.call !== 'SEARCH') {
+				// 	if  (this.showPopup) {
+				// 		document.documentElement.style.overflow = 'hidden'
+				// 		return
+				// 	}
+				// 	document.documentElement.style.overflow = 'auto'
+				// }
 			},
 			deep: true
 		},
-		// showMore: {
-		// 	handler: function() {
-		// 		if (this.showMore === true) {
-		// 			if (this.firstTeam === null) {
-		// 				this.getTeam('FIRST', this.event.team1_id)
-		// 			}
-		// 			if (this.secondTeam === null) {
-		// 				this.getTeam('SECOND', this.event.team2_id)
-		// 			}
-		// 		}
-		// 	}
-		// }
 	}
 }
 </script>
@@ -382,8 +358,18 @@ export default {
 	background-color: #00F59B;
 }
 
+.disabled {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
 .active_bet p {
 	color: #000;
+}
+
+.choose-bet__odds {
+	display: flex;
+	align-items: center;
 }
 
 .choose-bet__sum {
@@ -399,6 +385,13 @@ export default {
 	font-weight: 500;
 }
 
+.choose-bet__percent {
+	margin-left: 4px;
+	font-size: 11px;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+}
+
 .reverse_flex .choose-bet__sum {
 	margin: 0;
 	font-size: 11px;
@@ -407,6 +400,13 @@ export default {
 }
 
 .reverse_flex .choose-bet__coefficient {
+	margin-bottom: 4px;
+	font-size: 14px;
+	font-family: Roboto-Bold, sans-serif;
+	font-weight: 700;
+}
+
+.reverse_flex .choose-bet__percent {
 	margin-bottom: 4px;
 	font-size: 14px;
 	font-family: Roboto-Bold, sans-serif;

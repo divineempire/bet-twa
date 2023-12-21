@@ -107,9 +107,9 @@ export default {
 
 	.navigation__list {
 		display: flex;
-		//gap: 0 18px;
+		gap: 0 18px;
 		overflow: auto;
-		justify-content: space-between;
+		//justify-content: space-between;
 	}
 
 	.navigation__item {
