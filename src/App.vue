@@ -160,6 +160,8 @@ export default {
 		setTwaOptions() {
 			if (!this.webApp.isExpanded) {
 				this.webApp.expand()
+				this.webApp.setHeaderColor('#151317')
+				this.webApp.setBackgroundColor('#151317')
 			}
 			if (this.webApp.MainButton.isVisible) {
 				this.webApp.MainButton.hide()
@@ -306,7 +308,7 @@ body {
 	bottom: 0;
 	top: 0;
 	background-color: #fff;
-	animation: 3.5s forwards linear Progress;
+	animation: 6.5s forwards linear Progress;
 }
 
 @keyframes Progress {

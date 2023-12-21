@@ -35,7 +35,7 @@
 			</transition>
 		</div>
 		<SearchPopup
-			v-show="showSearch"
+			v-if="showSearch"
 			:sportId="sportId"
 			:league="league"
 		/>

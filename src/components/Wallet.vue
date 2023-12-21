@@ -99,7 +99,12 @@ export default {
 			return this.GET_USER_INFO?.balance
 		},
 		getBalance() {
-			return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
+			if (this.GET_WALLET_INFO.balance) {
+				console.log((this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2))
+				return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
+			} else {
+				return 0
+			}
 		},
 		getReadyReward() {
 			let toRewardTime = (this.GET_USER_INFO?.next_fantasy_reward || 0) * 1000

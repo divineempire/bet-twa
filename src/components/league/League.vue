@@ -106,6 +106,7 @@
 <script>
 import RatingApi from "/src/api/src/api/RatingApi.js";
 import { mapGetters } from "vuex";
+import lottie from "lottie-web";
 
 export default {
 	name: "League",
@@ -231,6 +232,14 @@ export default {
 	},
 	mounted() {
 		this.getFantasyRating()
+		lottie.loadAnimation({
+			container: document.getElementById('coming-soon'), // the dom element that will contain the animation
+			renderer: 'svg',
+			loop: true,
+			autoplay: true,
+			name: 'soon',
+			path: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/coming-soon.json'
+		});
 	}
 }
 </script>

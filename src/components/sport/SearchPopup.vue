@@ -2,7 +2,7 @@
 	<div class="search">
 		<div class="search__input-container">
 			<label for="" class="search__label">
-				<input type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue" @input="searchInput">
+				<input type="search" class="search__input" placeholder="Поиск событий" v-model="searchValue" @input="searchInput" id="search-input">
 			</label>
 			<button class="search__cancel-btn"
 					@click="searchValue = ''"
@@ -170,6 +170,11 @@ export default {
 		// 		this.webApp.BackButton.onClick(this.closePopup)
 		// 	}
 		// },
+	},
+	mounted() {
+		let input = document.getElementById('search-input')
+		console.log(input)
+		input.focus()
 	},
 	unmounted() {
 		clearTimeout(this.debounce);

@@ -33,7 +33,7 @@
 					<p class="input-fee">{{ event?.match?.fee }}</p>
 					<label for="bet-amount" class="coupon__label">
 						<p class="label-text" :class="{message_red: inputMessage === 'Недостаточно средств'}" v-if="betAmount !== null && betAmount !== ''">{{ inputMessage }}</p>
-						<input type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount" @input="inputBetAmount" id="bet-amount">
+						<input inputmode="numeric" type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount" @input="inputBetAmount" id="bet-amount">
 					</label>
 				</div>
 				<div class="coupon__button-block"
@@ -177,6 +177,9 @@ export default {
 			'GET_WALLET_INFO',
 			'GET_USER_INFO'
 		]),
+		webApp() {
+			return window.Telegram.WebApp
+		},
 		betsApi() {
 			return new BetsApi()
 		},
