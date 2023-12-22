@@ -136,6 +136,7 @@ export default {
 				.catch((err) => {
 					console.error(err)
 					if (err.error.status === 409) {
+						localStorage.setItem('userAuth', JSON.stringify(true))
 						this.$router.push({name: 'Main'})
 					}
 				})
