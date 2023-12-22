@@ -129,16 +129,29 @@ export default {
 			}
 			this.usersApi.createUser(initData, obj)
 				.then((res) => {
-					console.log(res)
+					this.getCurrentUser()
+				})
+				.catch((err) => {
+					console.error(err)
+					if (err.error.status === 409) {
+						this.getCurrentUser()
+					}
+				})
+		},
+		getCurrentUser() {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			console.log(initData, 'getCurrentUser App.vue')
+			this.usersApi.getCurrentUser(initData)
+				.then((res) => {
+					this.SAVE_USER_INFO(res)
 					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					console.error(err)
-					if (err.error.status === 409) {
-						localStorage.setItem('userAuth', JSON.stringify(true))
-						this.$router.push({name: 'Main'})
-					}
 				})
 		},
 		// connectWallet() {

@@ -35,6 +35,7 @@
 			<button class="wallet__gift-btn"
 					:class="{ready_btn: getReadyReward}"
 					v-if="getRouteName === 'Menu'"
+					:disabled="!getReadyReward"
 					@click="grabReward"
 			>
 				{{ btnText }}
