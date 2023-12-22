@@ -58,14 +58,14 @@
 				<p class="hidden-info__name">Комиссия с выигрыша</p>
 				<p class="hidden-info__value">{{ getFeeWithWin + '%' }}</p>
 			</div>
-<!--			<div class="hidden-info__row"-->
-<!--				v-if="league === 'REGULAR'-->
-<!--			>-->
-<!--				<p class="hidden-info__name">Смарт-контракт</p>-->
-<!--				<a href="" class="hidden-info__link">-->
-<!--					<p class="link-text">{{ card?.match?.contract_address }}</p>-->
-<!--				</a>-->
-<!--			</div>-->
+			<div class="hidden-info__row"
+				v-if="card?.match.fantasy === false"
+			>
+				<p class="hidden-info__name">Смарт-контракт</p>
+				<a href="" class="hidden-info__link">
+					<p class="link-text">{{ card?.match?.contract_address }}</p>
+				</a>
+			</div>
 		</div>
 	</li>
 </template>

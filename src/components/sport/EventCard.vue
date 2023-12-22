@@ -84,7 +84,7 @@
 		<transition name="fade">
 			<Coupon
 				@closePopup="closePopup"
-				v-if="showPopup"
+				v-show="showPopup"
 				:event="event"
 				:activeBet="activeBet"
 				:showPopup="showPopup"

@@ -30,18 +30,28 @@
 					<div class="additional-value"
 						@click="focusInput"
 					>
-						<p class="hidden_value" v-show="betAmount !== null && betAmount !== ''">{{ betAmount + ' ' + getValueType }}</p>
+						<p class="hidden_value"
+						   v-show="betAmount !== null && betAmount !== '' && betAmount > 0">
+							{{ betAmount + ' ' + getValueType }}
+						</p>
 						<svg class="additional-value__arrow-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none"
-							v-show="betAmount !== null && betAmount !== ''"
+							v-show="betAmount !== null && betAmount !== '' && betAmount > 0"
 						>
 							<path d="M10.3846 13.7404L9.59422 12.9269L12.4587 10.0625H3.375V8.93753H12.4587L9.59422 6.07309L10.3846 5.25964L14.625 9.50001L10.3846 13.7404Z" fill="white"/>
 						</svg>
-						<p class="win-value" v-show="betAmount !== null && betAmount !== ''">{{ getPossibleWin + ' ' + getValueType }}</p>
+						<p class="win-value"
+						   v-show="betAmount !== null && betAmount !== '' && betAmount > 0">
+							{{ getPossibleWin + ' ' + getValueType }}
+						</p>
 					</div>
 <!--					v-if="event?.match?.fee > 0"-->
 					<p class="input-fee">{{ event?.match?.fee }}</p>
 					<label for="bet-amount" class="coupon__label">
-						<p class="label-text" :class="{message_red: inputMessage === 'Недостаточно средств'}" v-if="betAmount !== null && betAmount !== ''">{{ inputMessage }}</p>
+						<p class="label-text"
+						   :class="{message_red: inputMessage === 'Недостаточно средств'}"
+						   v-if="betAmount !== null && betAmount !== '' && betAmount > 0">
+							{{ inputMessage }}
+						</p>
 						<input inputmode="numeric" type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount" @input="inputBetAmount" id="bet-amount">
 					</label>
 				</div>
@@ -439,32 +449,34 @@ export default {
 			input.focus()
 		}
 	},
-	// watch: {
-		// showPopup: {
-		// 	handler: function () {
-		// 		if (this.showPopup === true) {
-		// 			setTimeout(() => {
-		// 				let coupon = document.getElementById('coupon_' + this.event?.id)
-		// 				subscribeTouchEvents(coupon, this)
-		// 			}, 300)
-		// 		} else {
-		// 			let coupon = document.getElementById('coupon_' + this.event?.id)
-		// 			unsubscribeTouchEvents(coupon)
-		// 		}
-		// 	}
-		// }
-	// },
-	mounted() {
-		this.interval = setInterval(() => {
-			if (this.event.id) {
-				this.updateCoefficient()
+	watch: {
+		showPopup: {
+			handler: function () {
+				if (this.showPopup === true) {
+					this.interval = setInterval(() => {
+						if (this.event.id) {
+							this.updateCoefficient()
+						}
+					},5000)
+					// setTimeout(() => {
+					// 	let coupon = document.getElementById('coupon_' + this.event?.id)
+					// 	subscribeTouchEvents(coupon, this)
+					// }, 300)
+				} else {
+					clearInterval(this.interval)
+					this.betAmount = null
+					// let coupon = document.getElementById('coupon_' + this.event?.id)
+					// unsubscribeTouchEvents(coupon)
+				}
 			}
-		},5000)
+		}
+	},
+	mounted() {
 		// let coupon = document.getElementById('coupon_' + this.event?.id)
 		// subscribeTouchEvents(coupon, this)
 	},
 	unmounted() {
-		clearInterval(this.interval)
+		// clearInterval(this.interval)
 		// let coupon = document.getElementById('coupon' + this.event?.id)
 		// unsubscribeTouchEvents(coupon)
 	}
@@ -473,7 +485,7 @@ export default {
 <style scoped>
 .slide-enter-active, .slide-leave-active {
 	transition: .2s linear;
-	transform-origin: right;
+	transform-origin: bottom;
 }
 
 .slide-enter-from, .slide-leave-to {
