@@ -480,7 +480,7 @@ export default {
 			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
 				height = viewport.height;
 			}
-			coupon.style.bottom = `${height - viewport.height + 10}px`;
+			coupon.style.bottom = `${window.innerHeight - viewport.height - viewport.offsetTop}px`;
 		}
 	},
 	watch: {
