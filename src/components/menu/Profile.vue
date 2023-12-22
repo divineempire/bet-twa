@@ -71,8 +71,11 @@ export default {
 		userInFantasy() {
 			if (this.GET_USER_INFO.rated_league_entries) {
 				let meFantasy = this.GET_USER_INFO?.rated_league_entries.find((item) => item?.rated_league?.fantasy === true)
-				console.log(meFantasy?.place)
-				return meFantasy?.place
+				if (meFantasy) {
+					return meFantasy?.place
+				} else {
+					return null
+				}
 			} else {
 				return null
 			}

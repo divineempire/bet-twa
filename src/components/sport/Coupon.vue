@@ -21,7 +21,10 @@
 						<p class="bet-info__teams">{{ getTeamNames }}</p>
 						<p class="bet-info__category">{{ category }}</p>
 					</div>
-					<p class="coupon__coefficient">{{ 'x' + getCoefficient }}</p>
+					<p class="coupon__coefficient"
+					   :class="{up: upped === true, down: downed === true}">
+						{{ 'x' + getCoefficient }}
+					</p>
 				</div>
 				<div class="coupon__input-container">
 					<div class="additional-value"
@@ -102,11 +105,16 @@ import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-e
 import BetsApi from "/src/api/src/api/BetsApi.js";
 import {mapActions, mapGetters} from "vuex";
 import UsersApi from "/src/api/src/api/UsersApi.js";
+import {MatchesApi} from "@/api/src";
 
 export default {
 	name: "Coupon",
 	data() {
 		return {
+			interval: null,
+			updatedMatchInfo: null,
+			upped: false,
+			downed: false,
 			activeFreeBet: null,
 			betAmount: null,
 			type: '',
@@ -203,6 +211,9 @@ export default {
 		usersApi() {
 			return new UsersApi()
 		},
+		matchesApi() {
+			return new MatchesApi()
+		},
 		getValueType() {
 			if (this.league === 'REGULAR') {
 				return 'TON'
@@ -289,11 +300,23 @@ export default {
 		},
 		getCoefficient() {
 			if (this.activeBet === 'FIRST_WIN') {
-				return this.event.team1_ratio
+				if (this.updatedMatchInfo !== null) {
+					return this.updatedMatchInfo.team1_ratio
+				} else {
+					return this.event.team1_ratio
+				}
 			} else if (this.activeBet === 'DRAW') {
-				return this.event.draw_ratio
+				if (this.updatedMatchInfo !== null) {
+					return this.updatedMatchInfo.draw_ratio
+				} else {
+					return this.event.draw_ratio
+				}
 			} else if (this.activeBet === 'SECOND_WIN') {
-				return this.event.team2_ratio
+				if (this.updatedMatchInfo !== null) {
+					return this.updatedMatchInfo.team2_ratio
+				} else {
+					return this.event.team2_ratio
+				}
 			}
 		},
 		setFantasyData() {
@@ -345,7 +368,7 @@ export default {
 					console.error(err)
 					if (err.error.status === 400) {
 						console.log('status 400')
-						let message = err?.body?.detail + '. Закрыть купон?'
+						let message = `${err?.body?.detail}.\nЗакрыть купон?`
 						this.webApp.showConfirm(message, this.closePopup)
 					}
 				})
@@ -364,6 +387,42 @@ export default {
 					console.error(err)
 				})
 		},
+		updateCoefficient() {
+			this.matchesApi.getMatch(this.event.id)
+				.then((res) => {
+					// this.updatedMatchInfo = res
+					this.compareCoefficient(res)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+		compareCoefficient(value) {
+			if (this.activeBet === 'FIRST_WIN') {
+				if (value.team1_ratio > this.getCoefficient) {
+					this.upped = true
+				} else if (value.team1_ratio < this.getCoefficient) {
+					this.downed = true
+				}
+			} else if (this.activeBet === 'DRAW') {
+				if (value.draw_ratio > this.getCoefficient) {
+					this.upped = true
+				} else if (value.draw_ratio < this.getCoefficient) {
+					this.downed = true
+				}
+			} else if (this.activeBet === 'SECOND_WIN') {
+				if (value.team2_ratio > this.getCoefficient) {
+					this.upped = true
+				} else if (value.team2_ratio < this.getCoefficient) {
+					this.downed = true
+				}
+			}
+			setTimeout(() => {
+				this.upped = false
+				this.downed = false
+			}, 1000)
+			this.updatedMatchInfo = value
+		},
 		inputBetAmount() {
 			let maxValue = 100000
 			if (this.betAmount > maxValue) {
@@ -380,7 +439,7 @@ export default {
 			input.focus()
 		}
 	},
-	watch: {
+	// watch: {
 		// showPopup: {
 		// 	handler: function () {
 		// 		if (this.showPopup === true) {
@@ -394,15 +453,21 @@ export default {
 		// 		}
 		// 	}
 		// }
-	},
-	// mounted() {
+	// },
+	mounted() {
+		this.interval = setInterval(() => {
+			if (this.event.id) {
+				this.updateCoefficient()
+			}
+		},5000)
 		// let coupon = document.getElementById('coupon_' + this.event?.id)
 		// subscribeTouchEvents(coupon, this)
-	// },
-	// unmounted() {
-	// 	let coupon = document.getElementById('coupon' + this.event?.id)
-	// 	unsubscribeTouchEvents(coupon)
-	// }
+	},
+	unmounted() {
+		clearInterval(this.interval)
+		// let coupon = document.getElementById('coupon' + this.event?.id)
+		// unsubscribeTouchEvents(coupon)
+	}
 }
 </script>
 <style scoped>
@@ -497,6 +562,14 @@ export default {
 .coupon__coefficient {
 	font-size: 15px;
 	font-family: Roboto-Medium, sans-serif;
+}
+
+.up {
+	color: #00F59B;
+}
+
+.down {
+	color: #F06159;
 }
 
 .coupon__input-container {
