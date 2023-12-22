@@ -534,15 +534,18 @@ export default {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	display: flex;
-	align-items: flex-end;
+	//display: flex;
+	//align-items: flex-end;
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.8);
 }
 
 .coupon {
-//position: fixed; //left: 0; //right: 0; //bottom: 0;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	width: 100%;
 	padding: 0 0 28px 0;
 	border-radius: 14px 14px 0 0;
