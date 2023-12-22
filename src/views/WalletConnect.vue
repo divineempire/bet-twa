@@ -42,6 +42,8 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import lottie from 'lottie-web'
 import UsersApi from "/src/api/src/api/UsersApi.js";
+import { mapActions } from "vuex";
+
 export default {
 	name: "WalletConnect",
 	setup() {
@@ -115,6 +117,9 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'SAVE_USER_INFO',
+		]),
 		setNewUser() {
 			let initData = null
 			let userId = null
@@ -129,12 +134,17 @@ export default {
 			}
 			this.usersApi.createUser(initData, obj)
 				.then((res) => {
+					console.log(res)
 					this.getCurrentUser()
+					localStorage.setItem('userAuth', JSON.stringify(true))
+					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					console.error(err)
 					if (err.error.status === 409) {
 						this.getCurrentUser()
+						localStorage.setItem('userAuth', JSON.stringify(true))
+						this.$router.push({name: 'Main'})
 					}
 				})
 		},
@@ -147,8 +157,6 @@ export default {
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					this.SAVE_USER_INFO(res)
-					localStorage.setItem('userAuth', JSON.stringify(true))
-					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					console.error(err)
