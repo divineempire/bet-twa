@@ -5,7 +5,7 @@
 
 <script>
 import { TonConnectUI, THEME , toUserFriendlyAddress} from '@tonconnect/ui'
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import TournamentsApi from '/src/api/src/api/TournamentsApi.js'
 import MatchesApi from "/src/api/src/api/MatchesApi.js";
 import UsersApi from "/src/api/src/api/UsersApi.js";
@@ -26,6 +26,9 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'GET_USER_INFO',
+		]),
 		webApp() {
 			return window.Telegram.WebApp
 		},
@@ -116,10 +119,10 @@ export default {
 			console.log(initData, 'getCurrentUser App.vue')
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
-					// console.log(res)
+					this.SAVE_USER_INFO(res)
+					console.log(this.GET_USER_INFO)
 					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.router.push({name: 'Main'})
-					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {
 					// if (err.error.status === 404) {

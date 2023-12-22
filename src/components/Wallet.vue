@@ -96,6 +96,7 @@ export default {
 			}
 		},
 		fantasyBalance() {
+			console.log(this.GET_USER_INFO, 'GET_USER_INFO')
 			return this.GET_USER_INFO?.balance
 		},
 		getBalance() {
