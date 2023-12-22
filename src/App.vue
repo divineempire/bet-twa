@@ -125,9 +125,10 @@ export default {
 					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
-					// if (err.error.status === 404) {
-					// 	this.setNewUser()
-					// }
+					 if (err.error.status === 404) {
+						 this.$router.push({name: 'WalletConnect'})
+					 	// this.setNewUser()
+					 }
 					console.error(err)
 				})
 		},

@@ -118,12 +118,12 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach((to, from, next) => {
-    let isAuthenticated = JSON.parse(localStorage.getItem('userAuth'))
+// router.beforeEach((to, from, next) => {
+    // let isAuthenticated = JSON.parse(localStorage.getItem('userAuth'))
     // let isAuthenticated = JSON.parse(localStorage.getItem('walletConnected'))
-    if (to.name !== 'WalletConnect' && !isAuthenticated) {
-        next({name: 'WalletConnect'})
-    } else next()
-})
+    // if (to.name !== 'WalletConnect' && !isAuthenticated) {
+    //     next({name: 'WalletConnect'})
+    // } else next()
+// })
 
 export default router
