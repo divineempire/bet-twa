@@ -471,6 +471,16 @@ export default {
 			console.log('focus')
 			let input = document.getElementById('bet-amount')
 			input.focus()
+		},
+		resizeHandler() {
+			let height = window.visualViewport.height;
+			const viewport = window.visualViewport;
+			let coupon = document.getElementById('coupon_' + this.event?.id)
+
+			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
+				height = viewport.height;
+			}
+			coupon.style.bottom = `${height - viewport.height + 10}px`;
 		}
 	},
 	watch: {
@@ -482,6 +492,7 @@ export default {
 							this.updateCoefficient()
 						}
 					},5000)
+					window.visualViewport.addEventListener('resize', this.resizeHandler)
 					// setTimeout(() => {
 					// 	let coupon = document.getElementById('coupon_' + this.event?.id)
 					// 	subscribeTouchEvents(coupon, this)

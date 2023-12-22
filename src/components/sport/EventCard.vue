@@ -233,7 +233,7 @@ export default {
 			// this.$emit('chooseBet', value, index)
 			this.activeBet = value
 			this.showPopup = true
-			if (!this.webApp.BackButton.isVisible) {
+			if (!this.webApp.BackButton.isVisible && this.call !== 'SEARCH') {
 				this.webApp.BackButton.show()
 				this.webApp.BackButton.onClick(this.closePopup)
 			}
@@ -243,8 +243,10 @@ export default {
 			// this.$emit('closePopup')
 			this.activeBet = ''
 			this.showPopup = false
-			this.webApp.BackButton.offClick(this.closePopup)
-			this.webApp.BackButton.hide()
+			if (this.call !== 'SEARCH') {
+				this.webApp.BackButton.offClick(this.closePopup)
+				this.webApp.BackButton.hide()
+			}
 		},
 	},
 	watch: {
