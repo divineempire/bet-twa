@@ -118,6 +118,7 @@ export default {
 				.then((res) => {
 					// console.log(res)
 					localStorage.setItem('userAuth', JSON.stringify(true))
+					this.router.push({name: 'Main'})
 					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {

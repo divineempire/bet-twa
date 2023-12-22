@@ -128,10 +128,13 @@ export default {
 			this.usersApi.createUser(initData, obj)
 				.then((res) => {
 					console.log(res)
-					this.$router.push('/')
+					this.router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					console.error(err)
+					if (err.error.status === 409) {
+						this.router.push({name: 'Main'})
+					}
 				})
 		},
 		// connectWallet() {

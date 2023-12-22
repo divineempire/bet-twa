@@ -29,7 +29,8 @@
 			></div>
 			<h2 class="league__heading">{{ getHeading }}</h2>
 			<h4 class="league__title">{{ getTitle }}</h4>
-			<p class="league__text">Дата проведения акции: с 25.12.2023 по 31.02.2024 </p>
+			<p class="league__text">Дата проведения акции: с 22.12.2023 по 31.12.2023 <br> 00:00 GMT </p>
+			<p class="league__link" @click="openLink('https://t.me/betty_games/15')">Призовой фонд. Подробности тут.</p>
 <!--			<a href="" class="league__link">Подробнее об условиях акции</a>-->
 		</div>
 		<div class="league__leaderboard"
@@ -162,6 +163,9 @@ export default {
 			'GET_LEAGUES',
 			'GET_USER_INFO'
 		]),
+		webApp() {
+			return window.Telegram.WebApp
+		},
 		ratingApi() {
 			return new RatingApi()
 		},
@@ -218,6 +222,9 @@ export default {
 		},
 	},
 	methods: {
+		openLink(url) {
+			this.webApp.openLink(url)
+		},
 		getFantasyRating() {
 			if (this.getFantasyLeague.id) {
 				this.ratingApi.getLeagueEntries(this.getFantasyLeague?.id, this.opts)
