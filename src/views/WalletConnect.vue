@@ -28,7 +28,9 @@
 <!--			</button>-->
 				<button class="wallet-connect__btn"
 					@click="setNewUser"
-				>Начать</button>
+				>
+					Начать
+				</button>
 		</div>
 	</div>
 </template>
@@ -95,7 +97,7 @@ export default {
 				{
 					link: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/fifth-lottie.json',
 					title: 'Удачи!',
-					text: `Надеюсь ты все понял, осталось лишь нажать кнопку "Начать" и погрузится в мир Betty!!`
+					text: `Надеюсь ты все понял,\nосталось лишь нажать кнопку "Начать"\nи погрузится в мир Betty!`
 				}
 			]
 		}
@@ -128,6 +130,7 @@ export default {
 			this.usersApi.createUser(initData, obj)
 				.then((res) => {
 					console.log(res)
+					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.router.push({name: 'Main'})
 				})
 				.catch((err) => {
