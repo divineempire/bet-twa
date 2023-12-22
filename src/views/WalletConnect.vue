@@ -131,12 +131,12 @@ export default {
 				.then((res) => {
 					console.log(res)
 					localStorage.setItem('userAuth', JSON.stringify(true))
-					this.router.push({name: 'Main'})
+					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					console.error(err)
 					if (err.error.status === 409) {
-						this.router.push({name: 'Main'})
+						this.$router.push({name: 'Main'})
 					}
 				})
 		},

@@ -22,7 +22,7 @@ export default {
 			// 		theme: THEME.DARK,
 			// 	}
 			// },
-			unsubscribe: null,
+			// unsubscribe: null,
 		}
 	},
 	computed: {
@@ -122,7 +122,7 @@ export default {
 					this.SAVE_USER_INFO(res)
 					console.log(this.GET_USER_INFO)
 					localStorage.setItem('userAuth', JSON.stringify(true))
-					this.router.push({name: 'Main'})
+					this.$router.push({name: 'Main'})
 				})
 				.catch((err) => {
 					// if (err.error.status === 404) {
@@ -189,10 +189,10 @@ export default {
 	// mounted() {
 	// },
 	unmounted() {
-		if (this.unsubscribe !== null) {
-			this.unsubscribe()
-		}
-		localStorage.removeItem('userAuth')
+		// if (this.unsubscribe !== null) {
+		// 	this.unsubscribe()
+		// }
+		// localStorage.removeItem('userAuth')
 		// localStorage.removeItem('walletConnected')
 	},
 	watch: {
