@@ -28,7 +28,7 @@
 				 :class="{fantasy_banner: league === 'FANTASY'}"
 			></div>
 			<h2 class="league__heading">{{ getHeading }}</h2>
-			<h4 class="league__title">Присоединяйтесь к зимнему сезону лиги ставок, с призовым фондом 100 000 TON.</h4>
+			<h4 class="league__title">{{ getTitle }}</h4>
 			<p class="league__text">Дата проведения акции: с 25.12.2023 по 31.02.2024 </p>
 <!--			<a href="" class="league__link">Подробнее об условиях акции</a>-->
 		</div>
@@ -178,6 +178,9 @@ export default {
 			} else if (this.league === 'FANTASY') {
 				return `Winter Fantasy\nBetting League`
 			}
+		},
+		getTitle() {
+			return 'Присоединяйтесь к зимнему сезону лиги ставок,\nс призовым фондом 100 000 TON.'
 		},
 		getYourPlacement() {
 			if (this.league === 'REGULAR') {
@@ -344,6 +347,7 @@ export default {
 .league__title {
 	margin-bottom: 4px;
 	font-family: Roboto-Regular, sans-serif;
+	white-space: pre-wrap;
 }
 
 .league__text {

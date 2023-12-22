@@ -39,7 +39,7 @@
 			<div class="match-info__row"
 				 v-if="status !== 'LOSE'"
 			>
-				<p class="match-info__name">Потенциальный выйгрыш (Fee 5%)</p>
+				<p class="match-info__name">Потенциальный выигрыш (Fee 5%)</p>
 				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
 <!--			<button type="button" class="match-info__cancel-btn"-->
@@ -55,17 +55,17 @@
 			<div class="hidden-info__row"
 				 v-if="status !== 'LOSE'"
 			>
-				<p class="hidden-info__name">Комиссия с выйгрыша</p>
+				<p class="hidden-info__name">Комиссия с выигрыша</p>
 				<p class="hidden-info__value">{{ getFeeWithWin + '%' }}</p>
 			</div>
-			<div class="hidden-info__row"
-				v-if="league === 'REGULAR'"
-			>
-				<p class="hidden-info__name">Смарт-контракт</p>
-				<a href="" class="hidden-info__link">
-					<p class="link-text">{{ card?.match?.contract_address }}</p>
-				</a>
-			</div>
+<!--			<div class="hidden-info__row"-->
+<!--				v-if="league === 'REGULAR'-->
+<!--			>-->
+<!--				<p class="hidden-info__name">Смарт-контракт</p>-->
+<!--				<a href="" class="hidden-info__link">-->
+<!--					<p class="link-text">{{ card?.match?.contract_address }}</p>-->
+<!--				</a>-->
+<!--			</div>-->
 		</div>
 	</li>
 </template>
