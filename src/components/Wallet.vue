@@ -12,16 +12,16 @@
 		<div class="wallet__connected"
 			 v-if="connected"
 		>
-			<div class="wallet__info"
-				v-if="getRouteName === 'Profile'"
-			>
-				<p class="wallet__address">Connected: {{ GET_WALLET_INFO?.userFriendlyAddress }}</p>
-				<button class="wallet__disconnect-btn"
-					@click="disconnect"
-				>
-					Disconnect Wallet
-				</button>
-			</div>
+<!--			<div class="wallet__info"-->
+<!--				v-if="getRouteName === 'Profile'"-->
+<!--			>-->
+<!--				<p class="wallet__address">Connected: {{ GET_WALLET_INFO?.userFriendlyAddress }}</p>-->
+<!--				<button class="wallet__disconnect-btn"-->
+<!--					@click="disconnect"-->
+<!--				>-->
+<!--					Disconnect Wallet-->
+<!--				</button>-->
+<!--			</div>-->
 			<div class="wallet__balance">
 				<div class="wallet__main-balance">
 					<p class="wallet__text">Основной счёт:</p>
@@ -132,15 +132,15 @@ export default {
 		...mapActions([
 			'SAVE_USER_INFO',
 		]),
-		async disconnect() {
-			try {
-				await this.tonConnectUi.disconnect()
-			} catch(err) {
-				console.log(err)
-				localStorage.removeItem('walletConnected')
-				this.$router.push('/')
-			}
-		},
+		// async disconnect() {
+		// 	try {
+		// 		await this.tonConnectUi.disconnect()
+		// 	} catch(err) {
+		// 		console.log(err)
+		// 		localStorage.removeItem('walletConnected')
+		// 		this.$router.push('/')
+		// 	}
+		// },
 		grabReward() {
 			let initData = null
 			if (this.webApp.initData) {

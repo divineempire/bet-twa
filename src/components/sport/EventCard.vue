@@ -3,6 +3,7 @@
 		<div class="event-list__teams">
 			<div class="event-list__team first-team">
 <!--				<img :src="event.team1?.icon_url" alt="" class="event-list__logo">-->
+<!--				<img :src="getFirstTeamLogo" alt="team_logo" class="event-list__logo">-->
 				<div class="event-list__logo" :class="getSportCategory"></div>
 				<p class="event-list__team-name">{{ event.team1?.name }}</p>
 			</div>
@@ -20,6 +21,7 @@
 			</div>
 			<div class="event-list__team second-team">
 <!--				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">-->
+<!--				<img :src="getFirstTeamLogo" alt="team_logo" class="event-list__logo">-->
 				<div class="event-list__logo" :class="getSportCategory"></div>
 				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
@@ -138,6 +140,12 @@ export default {
 		webApp() {
 			return window.Telegram.WebApp
 		},
+		// getFirstTeamLogo() {
+		// 	return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team1_id}.png`
+		// },
+		// getSecondTeamLogo() {
+		// 	return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team2_id}.png`
+		// },
 		// teamsApi() {
 		// 	return new TeamsApi()
 		// },

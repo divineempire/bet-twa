@@ -13,18 +13,37 @@
 				</div>
 				<div class="coupon__balance balance">
 					<p class="balance__name">Баланс:</p>
-					<p class="balance__value">{{ this.getActualBalance + ' ' + this.getValueType }}</p>
+					<div class="value-group">
+						<p class="balance__value">{{ this.getActualBalance }}</p>
+						<p class="balance__value">{{ ' ' + this.getValueType }}</p>
+					</div>
 				</div>
 				<div class="coupon__info">
-					<div class="bet-info">
-						<p class="bet-info__name">{{ betType }}</p>
-						<p class="bet-info__teams">{{ getTeamNames }}</p>
-						<p class="bet-info__category">{{ category }}</p>
+					<div class="match-info">
+						<div class="match-info__flex">
+							<p class="match-info__name">{{ betType }}</p>
+							<p class="match-info__teams">{{ getTeamNames }}</p>
+							<p class="match-info__category">{{ category }}</p>
+						</div>
+						<p class="coupon__coefficient"
+						   :class="{up: upped === true, down: downed === true}">
+							{{ 'x' + getCoefficient }}
+						</p>
 					</div>
-					<p class="coupon__coefficient"
-					   :class="{up: upped === true, down: downed === true}">
-						{{ 'x' + getCoefficient }}
-					</p>
+					<div class="bet-info first-row">
+						<p class="bet-info__name">Сумма ставки</p>
+						<div class="value-group">
+							<p class="bet-info__value">{{ betAmount || 0}}</p>
+							<p class="bet-info__value">{{ ' ' + getValueType }}</p>
+						</div>
+					</div>
+					<div class="bet-info">
+						<p class="bet-info__name">Потенциальный выигрыш</p>
+						<div class="value-group">
+							<p class="bet-info__value">{{ getPossibleWin || 0 }}</p>
+							<p class="bet-info__value">{{ ' ' + getValueType }}</p>
+						</div>
+					</div>
 				</div>
 				<div class="coupon__input-container">
 					<div class="additional-value"
@@ -204,7 +223,7 @@ export default {
 			'GET_USER_INFO'
 		]),
 		disabledButton() {
-			if (this.getActualBalance < this.betAmount || this.betAmount === 0 || this.betAmount === null || this.betAmount === '') {
+			if (this.getActualBalance < this.betAmount || this.betAmount === 0 || this.betAmount === null || this.betAmount === '' || this.getCoefficient <= 1) {
 				console.log(true)
 				return true
 			} else {
@@ -514,18 +533,20 @@ export default {
 .coupon {
 //position: fixed; //left: 0; //right: 0; //bottom: 0;
 	width: 100%;
-	padding: 0 14px 28px 14px;
+	padding: 0 0 28px 0;
 	border-radius: 14px 14px 0 0;
 	background: #151317;
 }
 
 .close_btn {
-	padding: 10px 0 14px 0;
-	width: 100%;
+	padding: 14px 0;
+	width: min-content;
+	margin: 0 auto;
 }
 
 .line-icon {
-	margin: 0 auto;
+	//padding-top: 14px;
+
 	width: 34px;
 	height: 4px;
 	border-radius: 3px;
@@ -533,6 +554,7 @@ export default {
 }
 
 .balance {
+	padding: 0 14px;
 	margin-bottom: 22px;
 	display: flex;
 	align-items: center;
@@ -545,6 +567,12 @@ export default {
 	line-height: 19px;
 }
 
+.value-group {
+	display: flex;
+	align-items: center;
+	gap: 0 3px;
+}
+
 .balance__value {
 	font-size: 16px;
 	font-family: Roboto-Medium, sans-serif;
@@ -554,24 +582,35 @@ export default {
 .coupon__info {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 8px;
+	flex-direction: column;
+	//margin-bottom: 8px;
 	padding: 12px;
+	margin: 0 14px 8px 14px;
 	border-radius: 8px;
 	background: #28272B;
 }
 
-.bet-info__name {
+.match-info {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(255, 255, 255, .2);
+}
+
+.match-info__name {
 	margin-bottom: 4px;
 	font-size: 15px;
 	font-family: Roboto-Medium, sans-serif;
 }
 
-.bet-info__teams {
+.match-info__teams {
 	margin-bottom: 4px;
 	font-size: 13px;
 }
 
-.bet-info__category {
+.match-info__category {
 	font-size: 11px;
 	opacity: 0.8;
 }
@@ -579,6 +618,25 @@ export default {
 .coupon__coefficient {
 	font-size: 15px;
 	font-family: Roboto-Medium, sans-serif;
+}
+
+.bet-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.first-row {
+	margin-bottom: 4px;
+}
+
+.bet-info__name {
+	font-size: 13px;
+	opacity: .7;
+}
+
+.bet-info__value {
+	font-size: 13px;
 }
 
 .up {
@@ -596,6 +654,7 @@ export default {
 .coupon__label {
 	display: block;
 	margin-bottom: 8px;
+	padding: 0 14px;
 }
 
 .coupon__input {
@@ -660,7 +719,7 @@ export default {
 	display: flex;
 	align-items: center;
 	gap: 0 2px;
-	padding-left: 15px;
+	padding-left: 29px;
 	transform: translateY(26px);
 }
 
@@ -681,7 +740,7 @@ export default {
 	display: flex;
 	align-items: center;
 	gap: 0 6px;
-	padding-bottom: 8px;
+	padding: 0 14px 8px 14px;
 	overflow-x: auto;
 }
 
@@ -768,7 +827,7 @@ export default {
 }
 
 .coupon__make-bet {
-	padding: 14px 0;
+	padding: 14px;
 }
 
 .coupon__main-btn {
@@ -785,7 +844,8 @@ export default {
 }
 
 .coupon__main-btn:disabled {
-	opacity: 0.6;
+	background: #3F3C42;
+	color: rgba(255, 255, 255, .5);
 }
 
 .coupon__notice {

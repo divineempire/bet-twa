@@ -39,7 +39,7 @@
 			<div class="match-info__row"
 				 v-if="status !== 'LOSE'"
 			>
-				<p class="match-info__name">Потенциальный выигрыш (Fee 5%)</p>
+				<p class="match-info__name">Потенциальный выигрыш</p>
 				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
 <!--			<button type="button" class="match-info__cancel-btn"-->

@@ -15,13 +15,13 @@ import TonAPIApi from "/src/api/src/api/TonAPIApi.js";
 export default {
 	data() {
 		return {
-			tonConnectSettings: {
-				manifestUrl: 'https://app.betty.games/tonconnect-manifest.json',
-				uiPreferences: {
-					// borderRadius: 'm',
-					theme: THEME.DARK,
-				}
-			},
+			// tonConnectSettings: {
+			// 	manifestUrl: 'https://app.betty.games/tonconnect-manifest.json',
+			// 	uiPreferences: {
+			// 		// borderRadius: 'm',
+			// 		theme: THEME.DARK,
+			// 	}
+			// },
 			unsubscribe: null,
 		}
 	},
@@ -32,9 +32,9 @@ export default {
 		getRouteName() {
 			return this.$route.name
 		},
-		tonConnectUi() {
-			return new TonConnectUI(this.tonConnectSettings)
-		},
+		// tonConnectUi() {
+		// 	return new TonConnectUI(this.tonConnectSettings)
+		// },
 		tournamentsApi() {
 			return new TournamentsApi()
 		},
@@ -62,39 +62,38 @@ export default {
 		callback(e) {
 			window.history.back()
 		},
-		subscribeConnector: function () {
-			this.unsubscribe = this.tonConnectUi.onStatusChange(walletInfo => {
-				if (walletInfo === null) {
-					// console.log('disconnected wallet')
-					localStorage.removeItem('walletConnected')
-					this.$router.push({name: 'WalletConnect'})
-					return
-				}
-				if (walletInfo) {
-					console.log(walletInfo)
-					this.$router.push({name: 'Main'})
-					this.saveWalletInfo(walletInfo)
-				}
-			})
-		},
-		async saveWalletInfo(walletInfo) {
-			try {
-				walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
-				localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
-				let info = await this.getWalletBalance(walletInfo?.account?.address)
-				walletInfo.balance = info?.balance
-				this.SAVE_WALLET_INFO(walletInfo)
-			} catch(err) {
-				console.error(err)
-			}
-		},
-		async getWalletBalance(address) {
-			try {
-				return await this.tonApi.accountInfo(address)
-			} catch(err) {
-				throw(err)
-			}
-		},
+		// subscribeConnector: function () {
+		// 	this.unsubscribe = this.tonConnectUi.onStatusChange(walletInfo => {
+		// 		if (walletInfo === null) {
+		// 			localStorage.removeItem('walletConnected')
+		// 			this.$router.push({name: 'WalletConnect'})
+		// 			return
+		// 		}
+		// 		if (walletInfo) {
+		// 			console.log(walletInfo)
+		// 			this.$router.push({name: 'Main'})
+		// 			this.saveWalletInfo(walletInfo)
+		// 		}
+		// 	})
+		// },
+		// async saveWalletInfo(walletInfo) {
+		// 	try {
+		// 		walletInfo.userFriendlyAddress = toUserFriendlyAddress(walletInfo.account.address)
+		// 		localStorage.setItem('walletConnected', JSON.stringify(walletInfo.userFriendlyAddress))
+		// 		let info = await this.getWalletBalance(walletInfo?.account?.address)
+		// 		walletInfo.balance = info?.balance
+		// 		this.SAVE_WALLET_INFO(walletInfo)
+		// 	} catch(err) {
+		// 		console.error(err)
+		// 	}
+		// },
+		// async getWalletBalance(address) {
+		// 	try {
+		// 		return await this.tonApi.accountInfo(address)
+		// 	} catch(err) {
+		// 		throw(err)
+		// 	}
+		// },
 		async getFootballTournaments() {
 			try {
 				let opts = {
@@ -118,36 +117,36 @@ export default {
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					// console.log(res)
+					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {
-					if (err.error.status === 404) {
-						this.setNewUser()
-					}
+					// if (err.error.status === 404) {
+					// 	this.setNewUser()
+					// }
 					console.error(err)
 				})
 		},
-		setNewUser() {
-			let initData = null
-			let userId = null
-			if (this.webApp.initData) {
-				initData = this.webApp.initData
-			}
-			if (this.webApp.initDataUnsafe.user) {
-				userId = this.webApp.initDataUnsafe?.user?.id
-			}
-			console.log(userId, initData, 'setNewUser App.vue')
-			let obj = {
-				telegram_user_id: userId
-			}
-			this.usersApi.createUser(initData, obj)
-				.then((res) => {
-					console.log(res)
-				})
-				.catch((err) => {
-					console.error(err)
-				})
-		},
+		// setNewUser() {
+		// 	let initData = null
+		// 	let userId = null
+		// 	if (this.webApp.initData) {
+		// 		initData = this.webApp.initData
+		// 	}
+		// 	if (this.webApp.initDataUnsafe.user) {
+		// 		userId = this.webApp.initDataUnsafe?.user?.id
+		// 	}
+		// 	let obj = {
+		// 		telegram_user_id: userId
+		// 	}
+		// 	this.usersApi.createUser(initData, obj)
+		// 		.then((res) => {
+		// 			console.log(res)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.error(err)
+		// 		})
+		// },
 		async getAllLeagues() {
 			try {
 				let result = await this.ratingApi.getLeagues({page: 1, size: 10})
@@ -166,9 +165,9 @@ export default {
 			if (this.webApp.MainButton.isVisible) {
 				this.webApp.MainButton.hide()
 			}
-			this.tonConnectUi.uiOptions = {
-				twaReturnUrl: 'https://t.me/bettygames_bot/betty'
-			};
+			// this.tonConnectUi.uiOptions = {
+			// 	twaReturnUrl: 'https://t.me/bettygames_bot/betty'
+			// };
 			this.webApp.ready()
 		},
 	},
@@ -177,10 +176,10 @@ export default {
 		if (this.webApp.initData) {
 			this.getCurrentUser()
 		}
-		this.subscribeConnector()
+		// this.subscribeConnector()
 		await this.getFootballTournaments()
-		await this.getAllLeagues()
 		console.log('Турниры загружены')
+		await this.getAllLeagues()
 		this.setTwaOptions()
 	},
 	// mounted() {
@@ -189,7 +188,8 @@ export default {
 		if (this.unsubscribe !== null) {
 			this.unsubscribe()
 		}
-		localStorage.removeItem('walletConnected')
+		localStorage.removeItem('userAuth')
+		// localStorage.removeItem('walletConnected')
 	},
 	watch: {
 		getRouteName: {

@@ -85,7 +85,7 @@
 						<p class="leaderboard__account">{{ item?.user?.telegram_user_id }}</p>
 					</div>
 					<div class="leaderboard__amount">
-						<p class="leaderboard__win-amount">{{ item.score + ' Побед' }}</p>
+						<p class="leaderboard__win-amount">{{ item.score + ' Фентези' }}</p>
 						<div class="leaderboard__arrow-icon"
 							 :class="item.place >= item.previous_place ? 'up' : 'down'"
 						></div>
@@ -112,6 +112,7 @@ export default {
 	name: "League",
 	data() {
 		return {
+			interval: null,
 			league: 'FANTASY',
 			regularPlacement: null,
 			// fantasyPlacement: null,
@@ -239,6 +240,9 @@ export default {
 	},
 	mounted() {
 		this.getFantasyRating()
+		this.interval = setInterval(() => {
+			this.getFantasyRating()
+		}, 15000)
 		lottie.loadAnimation({
 			container: document.getElementById('coming-soon'), // the dom element that will contain the animation
 			renderer: 'svg',
@@ -249,6 +253,7 @@ export default {
 		});
 	},
 	unmounted() {
+		clearInterval(this.interval)
 		document.documentElement.style.overflow = 'auto'
 	},
 	watch: {

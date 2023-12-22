@@ -21,11 +21,14 @@
 					<p class="item__second-text">{{ item?.secondText }}</p>
 				</swiper-slide>
 			</swiper>
-			<button class="wallet-connect__btn"
-				@click="connectWallet"
-			>
-				Подключить кошелёк
-			</button>
+<!--			<button class="wallet-connect__btn"-->
+<!--				@click="connectWallet"-->
+<!--			>-->
+<!--				Подключить кошелёк-->
+<!--			</button>-->
+				<button class="wallet-connect__btn"
+					@click="setNewUser"
+				>Начать</button>
 		</div>
 	</div>
 </template>
@@ -36,6 +39,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import lottie from 'lottie-web'
+import UsersApi from "/src/api/src/api/UsersApi.js";
 export default {
 	name: "WalletConnect",
 	setup() {
@@ -71,7 +75,8 @@ export default {
 				{
 					link: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/second-lottie.json',
 					title: 'Betty это безопасно ',
-					text: 'Betty работает полностью на смартконтрактах, поэтому вам не надо пополнять свой кошелек, просто привяжите свой кошелек и делайте ставки из удобного интерфейса, получая удовольствие.'
+					text: 'Betty работает полностью на смарт-контрактах. Пополняете свой баланс и делайте ставки из удобного интерфейса, получая удовольствие.'
+					// text: 'Betty работает полностью на смартконтрактах, поэтому вам не надо пополнять свой кошелек, просто привяжите свой кошелек и делайте ставки из удобного интерфейса, получая удовольствие.'
 				},
 				{
 					link: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/third-lottie.json',
@@ -90,7 +95,7 @@ export default {
 				{
 					link: 'https://raw.githubusercontent.com/divineempire/twa-image/master/lottie/fifth-lottie.json',
 					title: 'Удачи!',
-					text: `Надеюсь ты всё понял, тебе осталось привязать свой кошелек и начать зарабатывать \n на любимом спорте с Betty!`
+					text: `Надеюсь ты все понял, осталось лишь нажать кнопку "Начать" и погрузится в мир Betty!!`
 				}
 			]
 		}
@@ -102,21 +107,45 @@ export default {
 	computed: {
 		webApp() {
 			return window.Telegram.WebApp
+		},
+		usersApi() {
+			return new UsersApi()
 		}
 	},
 	methods: {
-		connectWallet() {
-			this.tonConnectUi.openModal()
-			if (!this.webApp.BackButton.isVisible) {
-				this.webApp.BackButton.show()
-				this.webApp.BackButton.onClick(this.closeModal)
+		setNewUser() {
+			let initData = null
+			let userId = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
 			}
+			if (this.webApp.initDataUnsafe.user) {
+				userId = this.webApp.initDataUnsafe?.user?.id
+			}
+			let obj = {
+				telegram_user_id: userId
+			}
+			this.usersApi.createUser(initData, obj)
+				.then((res) => {
+					console.log(res)
+					this.$router.push('/')
+				})
+				.catch((err) => {
+					console.error(err)
+				})
 		},
-		closeModal() {
-			this.tonConnectUi.closeModal()
-			this.webApp.BackButton.offClick(this.closeModal)
-			this.webApp.BackButton.hide()
-		}
+		// connectWallet() {
+		// 	this.tonConnectUi.openModal()
+		// 	if (!this.webApp.BackButton.isVisible) {
+		// 		this.webApp.BackButton.show()
+		// 		this.webApp.BackButton.onClick(this.closeModal)
+		// 	}
+		// },
+		// closeModal() {
+		// 	this.tonConnectUi.closeModal()
+		// 	this.webApp.BackButton.offClick(this.closeModal)
+		// 	this.webApp.BackButton.hide()
+		// }
 	},
 	mounted() {
 		lottie.loadAnimation({
