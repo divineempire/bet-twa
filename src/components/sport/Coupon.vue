@@ -357,6 +357,11 @@ export default {
 		closePopup() {
 			this.$emit('closePopup')
 		},
+		checkUserChoose(value) {
+			if (value) {
+				this.closePopup()
+			}
+		},
 		makeBet() {
 			if (this.league === 'FANTASY') {
 				this.fantasyBet()
@@ -379,7 +384,7 @@ export default {
 					if (err.error.status === 400) {
 						console.log('status 400')
 						let message = `${err?.body?.detail}.\nЗакрыть купон?`
-						this.webApp.showConfirm(message, this.closePopup)
+						this.webApp.showConfirm(message, this.checkUserChoose)
 					}
 				})
 		},
