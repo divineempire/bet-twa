@@ -185,7 +185,7 @@ export default {
 			}
 		},
 		getTitle() {
-			return 'Присоединяйтесь к зимнему сезону лиги ставок,\nс призовым фондом 100 000 TON.'
+			return 'Присоединяйтесь к зимнему сезону лиги ставок,\nс призовым фондом 500 TON.'
 		},
 		getYourPlacement() {
 			if (this.league === 'REGULAR') {
