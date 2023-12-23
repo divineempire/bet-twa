@@ -147,8 +147,6 @@ All URIs are relative to *http://localhost*
 
 [//]: # (*BetCoffeeApi.RatingApi* | [**getLeagues**]&#40;docs/RatingApi.md#getLeagues&#41; | **GET** /api/v1/rating/ | Get Leagues)
 
-[//]: # (*BetCoffeeApi.RewardsApi* | [**createRewardApiV1RewardsPost**]&#40;docs/RewardsApi.md#createRewardApiV1RewardsPost&#41; | **POST** /api/v1/rewards/ | Create Reward)
-
 [//]: # (*BetCoffeeApi.RewardsApi* | [**getLeagueRewardsApiV1RewardsLeagueLeagueIdGet**]&#40;docs/RewardsApi.md#getLeagueRewardsApiV1RewardsLeagueLeagueIdGet&#41; | **GET** /api/v1/rewards/league/{league_id} | Get League Rewards)
 
 [//]: # (*BetCoffeeApi.RewardsApi* | [**getRewardApiV1RewardsRewardIdGet**]&#40;docs/RewardsApi.md#getRewardApiV1RewardsRewardIdGet&#41; | **GET** /api/v1/rewards/{reward_id} | Get Reward)
@@ -163,7 +161,7 @@ All URIs are relative to *http://localhost*
 
 [//]: # (*BetCoffeeApi.TonAPIApi* | [**accountInfo**]&#40;docs/TonAPIApi.md#accountInfo&#41; | **GET** /api/v1/tonapi/info/{account_id} | Account Info)
 
-[//]: # (*BetCoffeeApi.TonAPIApi* | [**accountNfts**]&#40;docs/TonAPIApi.md#accountNfts&#41; | **GET** /api/v1/tonapinfts/{account_id} | Account Nfts)
+[//]: # (*BetCoffeeApi.TonAPIApi* | [**accountNfts**]&#40;docs/TonAPIApi.md#accountNfts&#41; | **GET** /api/v1/tonapi/nfts/{account_id} | Account Nfts)
 
 [//]: # (*BetCoffeeApi.TournamentsApi* | [**getTournament**]&#40;docs/TournamentsApi.md#getTournament&#41; | **GET** /api/v1/tournaments/{tournament_id} | Get Tournament)
 
@@ -180,7 +178,7 @@ All URIs are relative to *http://localhost*
 
 ## Documentation for Models
 
- - [BetCoffeeApi.Account](docs/Account.md)
+ - [BetCoffeeApi.AccountInfoShorten](docs/AccountInfoShorten.md)
  - [BetCoffeeApi.BetOutcome](docs/BetOutcome.md)
  - [BetCoffeeApi.BetType](docs/BetType.md)
  - [BetCoffeeApi.HTTPValidationError](docs/HTTPValidationError.md)
@@ -197,7 +195,6 @@ All URIs are relative to *http://localhost*
  - [BetCoffeeApi.PageSportRatedLeagueEntryRead](docs/PageSportRatedLeagueEntryRead.md)
  - [BetCoffeeApi.PageSportReward](docs/PageSportReward.md)
  - [BetCoffeeApi.PageSportTeam](docs/PageSportTeam.md)
- - [BetCoffeeApi.PageSportTournament](docs/PageSportTournament.md)
  - [BetCoffeeApi.PhaseType](docs/PhaseType.md)
  - [BetCoffeeApi.RewardType](docs/RewardType.md)
  - [BetCoffeeApi.SportFreeBetNft](docs/SportFreeBetNft.md)
@@ -211,9 +208,9 @@ All URIs are relative to *http://localhost*
  - [BetCoffeeApi.SportRatedLeagueEntryRead](docs/SportRatedLeagueEntryRead.md)
  - [BetCoffeeApi.SportRatedLeagueEntryReadWithLeague](docs/SportRatedLeagueEntryReadWithLeague.md)
  - [BetCoffeeApi.SportReward](docs/SportReward.md)
- - [BetCoffeeApi.SportRewardCreate](docs/SportRewardCreate.md)
  - [BetCoffeeApi.SportTeam](docs/SportTeam.md)
  - [BetCoffeeApi.SportTournament](docs/SportTournament.md)
+ - [BetCoffeeApi.SportTournamentRead](docs/SportTournamentRead.md)
  - [BetCoffeeApi.User](docs/User.md)
  - [BetCoffeeApi.UserCreate](docs/UserCreate.md)
  - [BetCoffeeApi.UserNftItems](docs/UserNftItems.md)

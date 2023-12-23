@@ -14,8 +14,8 @@
 
 import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
-import PageSportTournament from '../model/PageSportTournament';
 import SportTournament from '../model/SportTournament';
+import SportTournamentRead from '../model/SportTournamentRead';
 
 /**
 * Tournaments service.
@@ -96,10 +96,7 @@ export default class TournamentsApi {
      * @param {Number} [sport_id] 
      * @param {Number} [bookmaker_tournament_id] 
      * @param {Boolean} [fantasy] 
-     * @param {String} [order_by] 
-     * @param {Number} [page = 1)] Page number
-     * @param {Number} [size = 50)] Page size
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportTournament} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link Array.<module:model/SportTournamentRead>} and HTTP response
      */
     getTournamentsWithHttpInfo(opts) {
       opts = opts || {};
@@ -117,10 +114,7 @@ export default class TournamentsApi {
         'e_sport': opts['e_sport'],
         'sport_id': opts['sport_id'],
         'bookmaker_tournament_id': opts['bookmaker_tournament_id'],
-        'fantasy': opts['fantasy'],
-        'order_by': opts['order_by'],
-        'page': opts['page'],
-        'size': opts['size']
+        'fantasy': opts['fantasy']
       };
       let headerParams = {
       };
@@ -130,7 +124,7 @@ export default class TournamentsApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = PageSportTournament;
+      let returnType = [SportTournamentRead];
       return this.apiClient.callApi(
         '/api/v1/tournaments/', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -151,10 +145,7 @@ export default class TournamentsApi {
      * @param {Number} opts.sport_id 
      * @param {Number} opts.bookmaker_tournament_id 
      * @param {Boolean} opts.fantasy 
-     * @param {String} opts.order_by 
-     * @param {Number} opts.page Page number (default to 1)
-     * @param {Number} opts.size Page size (default to 50)
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportTournament}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link Array.<module:model/SportTournamentRead>}
      */
     getTournaments(opts) {
       return this.getTournamentsWithHttpInfo(opts)

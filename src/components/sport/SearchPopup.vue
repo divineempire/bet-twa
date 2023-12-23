@@ -176,7 +176,6 @@ export default {
 	},
 	mounted() {
 		let input = document.getElementById('search-input')
-		console.log(input)
 		input.focus()
 	},
 	unmounted() {

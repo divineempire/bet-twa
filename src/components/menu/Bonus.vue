@@ -35,6 +35,7 @@
 		>
 			<li class="bonus__item bonus-card"
 				v-for="(item, index) in bonuses"
+				:key="index"
 			>
 				<p class="bonus-card__amount">{{ item.amount }}</p>
 				<p class="bonus-card__type">{{ item.type }}</p>
@@ -62,7 +63,7 @@ export default {
 	},
 	methods: {
 		applyPromocode() {
-			console.log(this.newPromocode)
+			// console.log(this.newPromocode)
 		}
 	}
 }

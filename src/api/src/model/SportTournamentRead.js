@@ -22,11 +22,19 @@ class SportTournamentRead {
     /**
      * Constructs a new <code>SportTournamentRead</code>.
      * @alias module:model/SportTournamentRead
+     * @param icon_url {String} 
      * @param name {String} 
+     * @param sport_id {Number} 
+     * @param e_sport {Boolean} 
+     * @param top {Boolean} 
+     * @param fantasy {Boolean} 
+     * @param bookmaker_category_id {Number} 
+     * @param bookmaker_tournament_id {Number} 
+     * @param id {Number} 
      */
-    constructor(name) { 
+    constructor(icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id, id) { 
         
-        SportTournamentRead.initialize(this, name);
+        SportTournamentRead.initialize(this, icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id, id);
     }
 
     /**
@@ -34,8 +42,16 @@ class SportTournamentRead {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, name) { 
+    static initialize(obj, icon_url, name, sport_id, e_sport, top, fantasy, bookmaker_category_id, bookmaker_tournament_id, id) { 
+        obj['icon_url'] = icon_url;
         obj['name'] = name;
+        obj['sport_id'] = sport_id;
+        obj['e_sport'] = e_sport;
+        obj['top'] = top;
+        obj['fantasy'] = fantasy;
+        obj['bookmaker_category_id'] = bookmaker_category_id;
+        obj['bookmaker_tournament_id'] = bookmaker_tournament_id;
+        obj['id'] = id;
     }
 
     /**
@@ -49,8 +65,38 @@ class SportTournamentRead {
         if (data) {
             obj = obj || new SportTournamentRead();
 
+            if (data.hasOwnProperty('icon_url')) {
+                obj['icon_url'] = ApiClient.convertToType(data['icon_url'], 'String');
+            }
             if (data.hasOwnProperty('name')) {
                 obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            }
+            if (data.hasOwnProperty('sport_id')) {
+                obj['sport_id'] = ApiClient.convertToType(data['sport_id'], 'Number');
+            }
+            if (data.hasOwnProperty('e_sport')) {
+                obj['e_sport'] = ApiClient.convertToType(data['e_sport'], 'Boolean');
+            }
+            if (data.hasOwnProperty('top')) {
+                obj['top'] = ApiClient.convertToType(data['top'], 'Boolean');
+            }
+            if (data.hasOwnProperty('fantasy')) {
+                obj['fantasy'] = ApiClient.convertToType(data['fantasy'], 'Boolean');
+            }
+            if (data.hasOwnProperty('prize_fund')) {
+                obj['prize_fund'] = ApiClient.convertToType(data['prize_fund'], 'Number');
+            }
+            if (data.hasOwnProperty('bookmaker_category_id')) {
+                obj['bookmaker_category_id'] = ApiClient.convertToType(data['bookmaker_category_id'], 'Number');
+            }
+            if (data.hasOwnProperty('bookmaker_tournament_id')) {
+                obj['bookmaker_tournament_id'] = ApiClient.convertToType(data['bookmaker_tournament_id'], 'Number');
+            }
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
+            }
+            if (data.hasOwnProperty('matches_count')) {
+                obj['matches_count'] = ApiClient.convertToType(data['matches_count'], 'Number');
             }
         }
         return obj;
@@ -69,6 +115,10 @@ class SportTournamentRead {
             }
         }
         // ensure the json data is a string
+        if (data['icon_url'] && !(typeof data['icon_url'] === 'string' || data['icon_url'] instanceof String)) {
+            throw new Error("Expected the field `icon_url` to be a primitive type in the JSON string but got " + data['icon_url']);
+        }
+        // ensure the json data is a string
         if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
             throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
         }
@@ -79,12 +129,63 @@ class SportTournamentRead {
 
 }
 
-SportTournamentRead.RequiredProperties = ["name"];
+SportTournamentRead.RequiredProperties = ["icon_url", "name", "sport_id", "e_sport", "top", "fantasy", "bookmaker_category_id", "bookmaker_tournament_id", "id"];
+
+/**
+ * @member {String} icon_url
+ */
+SportTournamentRead.prototype['icon_url'] = undefined;
 
 /**
  * @member {String} name
  */
 SportTournamentRead.prototype['name'] = undefined;
+
+/**
+ * @member {Number} sport_id
+ */
+SportTournamentRead.prototype['sport_id'] = undefined;
+
+/**
+ * @member {Boolean} e_sport
+ */
+SportTournamentRead.prototype['e_sport'] = undefined;
+
+/**
+ * @member {Boolean} top
+ */
+SportTournamentRead.prototype['top'] = undefined;
+
+/**
+ * @member {Boolean} fantasy
+ */
+SportTournamentRead.prototype['fantasy'] = undefined;
+
+/**
+ * @member {Number} prize_fund
+ */
+SportTournamentRead.prototype['prize_fund'] = undefined;
+
+/**
+ * @member {Number} bookmaker_category_id
+ */
+SportTournamentRead.prototype['bookmaker_category_id'] = undefined;
+
+/**
+ * @member {Number} bookmaker_tournament_id
+ */
+SportTournamentRead.prototype['bookmaker_tournament_id'] = undefined;
+
+/**
+ * @member {Number} id
+ */
+SportTournamentRead.prototype['id'] = undefined;
+
+/**
+ * @member {Number} matches_count
+ * @default 0
+ */
+SportTournamentRead.prototype['matches_count'] = 0;
 
 
 

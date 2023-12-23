@@ -16,7 +16,6 @@ import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
 import PageSportReward from '../model/PageSportReward';
 import SportReward from '../model/SportReward';
-import SportRewardCreate from '../model/SportRewardCreate';
 
 /**
 * Rewards service.
@@ -36,51 +35,6 @@ export default class RewardsApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
-
-
-    /**
-     * Create Reward
-     * @param {module:model/SportRewardCreate} SportRewardCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/SportReward} and HTTP response
-     */
-    createRewardApiV1RewardsPostWithHttpInfo(SportRewardCreate) {
-      let postBody = SportRewardCreate;
-      // verify the required parameter 'SportRewardCreate' is set
-      if (SportRewardCreate === undefined || SportRewardCreate === null) {
-        throw new Error("Missing the required parameter 'SportRewardCreate' when calling createRewardApiV1RewardsPost");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['HTTPBearer'];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = SportReward;
-      return this.apiClient.callApi(
-        '/api/v1/rewards/', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * Create Reward
-     * @param {module:model/SportRewardCreate} SportRewardCreate 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/SportReward}
-     */
-    createRewardApiV1RewardsPost(SportRewardCreate) {
-      return this.createRewardApiV1RewardsPostWithHttpInfo(SportRewardCreate)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
 
 
     /**

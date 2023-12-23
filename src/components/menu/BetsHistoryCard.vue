@@ -131,7 +131,7 @@ export default {
 	},
 	methods: {
 		cancelBet() {
-			console.log('cancel')
+			// console.log('cancel')
 		}
 	}
 }

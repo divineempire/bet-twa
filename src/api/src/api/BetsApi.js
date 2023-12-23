@@ -245,6 +245,7 @@ export default class BetsApi {
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {Object} opts Optional parameters
      * @param {Boolean} [fantasy] 
+     * @param {Number} [match_id] 
      * @param {Number} [page = 1)] Page number
      * @param {Number} [size = 50)] Page size
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PageSportMatchBetRead} and HTTP response
@@ -261,6 +262,7 @@ export default class BetsApi {
       };
       let queryParams = {
         'fantasy': opts['fantasy'],
+        'match_id': opts['match_id'],
         'page': opts['page'],
         'size': opts['size']
       };
@@ -286,6 +288,7 @@ export default class BetsApi {
      * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
      * @param {Object} opts Optional parameters
      * @param {Boolean} opts.fantasy 
+     * @param {Number} opts.match_id 
      * @param {Number} opts.page Page number (default to 1)
      * @param {Number} opts.size Page size (default to 50)
      * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PageSportMatchBetRead}

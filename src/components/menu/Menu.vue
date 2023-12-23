@@ -53,7 +53,6 @@ export default {
 			}
 			this.betsApi.getUserBets(initData, opts)
 				.then((res) => {
-					console.log(res)
 					this.SAVE_BETS_HISTORY(res)
 				})
 				.catch((err) => {

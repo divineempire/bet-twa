@@ -14,7 +14,6 @@
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
 import { mapGetters } from "vuex";
 import MatchesApi from "/src/api/src/api/MatchesApi.js";
-import lottie from "lottie-web";
 
 export default {
 	name: "Football",
@@ -78,9 +77,9 @@ export default {
 			return new MatchesApi()
 		},
 		footballTournaments() {
-			if (this.GET_FOOTBALL_TOURNAMENTS.items) {
+			if (this.GET_FOOTBALL_TOURNAMENTS.length > 0) {
 				if (this.league === 'FANTASY') {
-					return this.GET_FOOTBALL_TOURNAMENTS.items.filter((item) => item?.fantasy === true)
+					return this.GET_FOOTBALL_TOURNAMENTS.filter((item) => item?.fantasy === true)
 				} else {
 					return []
 					// return this.championships

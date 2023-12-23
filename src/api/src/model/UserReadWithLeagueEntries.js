@@ -24,10 +24,11 @@ class UserReadWithLeagueEntries {
      * Constructs a new <code>UserReadWithLeagueEntries</code>.
      * @alias module:model/UserReadWithLeagueEntries
      * @param telegram_user_id {Number} 
+     * @param id {Number} 
      */
-    constructor(telegram_user_id) { 
+    constructor(telegram_user_id, id) { 
         
-        UserReadWithLeagueEntries.initialize(this, telegram_user_id);
+        UserReadWithLeagueEntries.initialize(this, telegram_user_id, id);
     }
 
     /**
@@ -35,8 +36,9 @@ class UserReadWithLeagueEntries {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, telegram_user_id) { 
+    static initialize(obj, telegram_user_id, id) { 
         obj['telegram_user_id'] = telegram_user_id;
+        obj['id'] = id;
     }
 
     /**
@@ -52,6 +54,9 @@ class UserReadWithLeagueEntries {
 
             if (data.hasOwnProperty('telegram_user_id')) {
                 obj['telegram_user_id'] = ApiClient.convertToType(data['telegram_user_id'], 'Number');
+            }
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'Number');
             }
             if (data.hasOwnProperty('rated_league_entries')) {
                 obj['rated_league_entries'] = ApiClient.convertToType(data['rated_league_entries'], [SportRatedLeagueEntryReadWithLeague]);
@@ -101,7 +106,7 @@ class UserReadWithLeagueEntries {
             // validate the optional field `rated_league_entries` (array)
             for (const item of data['rated_league_entries']) {
                 SportRatedLeagueEntryReadWithLeague.validateJSON(item);
-            };
+            }
         }
 
         return true;
@@ -110,12 +115,17 @@ class UserReadWithLeagueEntries {
 
 }
 
-UserReadWithLeagueEntries.RequiredProperties = ["telegram_user_id"];
+UserReadWithLeagueEntries.RequiredProperties = ["telegram_user_id", "id"];
 
 /**
  * @member {Number} telegram_user_id
  */
 UserReadWithLeagueEntries.prototype['telegram_user_id'] = undefined;
+
+/**
+ * @member {Number} id
+ */
+UserReadWithLeagueEntries.prototype['id'] = undefined;
 
 /**
  * @member {Array.<module:model/SportRatedLeagueEntryReadWithLeague>} rated_league_entries

@@ -132,7 +132,6 @@ export default {
 			if (initData) {
 				this.usersApi.updateUser(initData, object)
 					.then((res) => {
-						console.log(res)
 						this.updateUserInfo()
 					})
 					.catch((err) => {

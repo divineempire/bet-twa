@@ -60,7 +60,7 @@ export default {
 	},
 	methods: {
 		openSettings() {
-			console.log('open settings')
+			// console.log('open settings')
 			this.showSettings = true
 		}
 	}

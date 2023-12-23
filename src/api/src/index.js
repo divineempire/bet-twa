@@ -13,7 +13,7 @@
 
 
 import ApiClient from './ApiClient';
-import Account from './model/Account';
+import AccountInfoShorten from './model/AccountInfoShorten';
 import BetOutcome from './model/BetOutcome';
 import BetType from './model/BetType';
 import HTTPValidationError from './model/HTTPValidationError';
@@ -30,7 +30,6 @@ import PageSportMatchRead from './model/PageSportMatchRead';
 import PageSportRatedLeagueEntryRead from './model/PageSportRatedLeagueEntryRead';
 import PageSportReward from './model/PageSportReward';
 import PageSportTeam from './model/PageSportTeam';
-import PageSportTournament from './model/PageSportTournament';
 import PhaseType from './model/PhaseType';
 import RewardType from './model/RewardType';
 import SportFreeBetNft from './model/SportFreeBetNft';
@@ -44,9 +43,9 @@ import SportRatedLeagueEntry from './model/SportRatedLeagueEntry';
 import SportRatedLeagueEntryRead from './model/SportRatedLeagueEntryRead';
 import SportRatedLeagueEntryReadWithLeague from './model/SportRatedLeagueEntryReadWithLeague';
 import SportReward from './model/SportReward';
-import SportRewardCreate from './model/SportRewardCreate';
 import SportTeam from './model/SportTeam';
 import SportTournament from './model/SportTournament';
+import SportTournamentRead from './model/SportTournamentRead';
 import User from './model/User';
 import UserCreate from './model/UserCreate';
 import UserNftItems from './model/UserNftItems';
@@ -104,10 +103,10 @@ export {
     ApiClient,
 
     /**
-     * The Account model constructor.
-     * @property {module:model/Account}
+     * The AccountInfoShorten model constructor.
+     * @property {module:model/AccountInfoShorten}
      */
-    Account,
+    AccountInfoShorten,
 
     /**
      * The BetOutcome model constructor.
@@ -206,12 +205,6 @@ export {
     PageSportTeam,
 
     /**
-     * The PageSportTournament model constructor.
-     * @property {module:model/PageSportTournament}
-     */
-    PageSportTournament,
-
-    /**
      * The PhaseType model constructor.
      * @property {module:model/PhaseType}
      */
@@ -290,12 +283,6 @@ export {
     SportReward,
 
     /**
-     * The SportRewardCreate model constructor.
-     * @property {module:model/SportRewardCreate}
-     */
-    SportRewardCreate,
-
-    /**
      * The SportTeam model constructor.
      * @property {module:model/SportTeam}
      */
@@ -306,6 +293,12 @@ export {
      * @property {module:model/SportTournament}
      */
     SportTournament,
+
+    /**
+     * The SportTournamentRead model constructor.
+     * @property {module:model/SportTournamentRead}
+     */
+    SportTournamentRead,
 
     /**
      * The User model constructor.

@@ -1,7 +1,6 @@
 <template>
-	<li class="championship-card"
-		v-show="filteredEvents.length > 0"
-	>
+	<li class="championship-card">
+<!--		v-show="filteredEvents.length > 0"-->
 		<div class="championship-card__main"
 			 :class="{active_card: showMore === true}"
 			 @click="showMore = !showMore"
@@ -11,7 +10,7 @@
 				<p class="championship-card__name">{{ item?.name }}</p>
 			</div>
 			<div class="championship-card__amount">
-				<p class="championship-card__text">{{ filteredEvents.length }}</p>
+				<p class="championship-card__text">{{ getCountMatches }}</p>
 				<div :class="{reverse: showMore === false}" class="championship-card__arrow-icon"></div>
 			</div>
 		</div>
@@ -26,26 +25,16 @@
 					:league="league"
 					:showMore="showMore"
 				/>
+				<li class="event-list__item skeleton"
+					v-if="filteredEvents.length === 0"
+				>
+					<SkeletonItem
+						v-for="(item, index) in getCountMatches"
+						:key="index"
+					/>
+				</li>
 			</ul>
-<!--			<ul class="events__list event-list"-->
-<!--				v-if="league === 'FANTASY'"-->
-<!--			>-->
-<!--				<EventCard-->
-<!--					v-for="(event, index) in filteredEvents"-->
-<!--					:key="index"-->
-<!--					:event="event"-->
-<!--					:league="league"-->
-<!--					:showMore="showMore"-->
-<!--				/>-->
-<!--			</ul>-->
 		</div>
-<!--		<transition name="fade">-->
-<!--			<Coupon-->
-<!--				:showPopup="showPopup"-->
-<!--				v-show="showPopup"-->
-<!--				@closePopup="closePopup"-->
-<!--			/>-->
-<!--		</transition>-->
 	</li>
 </template>
 
@@ -54,10 +43,12 @@
 import Coupon from "@/components/sport/Coupon.vue";
 import EventCard from "@/components/sport/EventCard.vue";
 import MatchesApi from "/src/api/src/api/MatchesApi.js";
+import SkeletonItem from "@/components/sport/SkeletonItem.vue";
 
 export default {
 	name: "ChampionshipCard",
 	components: {
+		SkeletonItem,
 		EventCard,
 		Coupon
 	},
@@ -101,6 +92,17 @@ export default {
 		},
 		filteredEvents() {
 			return this.sortEventsByTime.filter((item) => item?.finished === false)
+		},
+		getCountMatches() {
+			if (this.item.matches_count) {
+				if (this.item?.matches_count > 10) {
+					return 10
+				} else {
+					return this.item?.matches_count
+				}
+			} else {
+				return 5
+			}
 		}
 	},
 	methods: {
@@ -118,11 +120,12 @@ export default {
 			let opts = {
 				page: 1,
 				size: 5,
-				tournament_id: this.item.id
+				tournament_id: this.item.id,
+				finished: false
 			}
 			if (size) {
 				opts.size = size
-				opts.tournament_id = 1
+				// opts.tournament_id = 1
 			}
 			try {
 				let result = await this.matchesApi.getMatches(opts)
@@ -149,21 +152,30 @@ export default {
 			},
 			deep: true
 		},
+		showMore: {
+			handler: function() {
+				if (this.showMore === true && this.events.length === 0) {
+					this.getMatches(this.getCountMatches)
+				}
+			}
+		},
 		league: {
 			handler: function() {
 				if (this.league) {
 					this.events = []
-					if (this.league === 'REGULAR') {
-						this.getMatches(3)
-					} else {
-						this.getMatches()
-					}
+					// if (this.league === 'REGULAR') {
+					// 	this.getMatches(3)
+					// }
+					// else {
+					// 	this.getMatches()
+					// }
 				}
 			}
 		},
 	},
 	mounted() {
-		this.getMatches()
+		// console.log(this.item)
+		// this.getMatches()
 		if (this.index === 0) {
 			this.showMore = true
 		}
@@ -219,6 +231,7 @@ export default {
 .championship-card__amount {
 	display: flex;
 	align-items: center;
+	justify-content: flex-end;
 	padding: 0 0 0 8px;
 	border-radius: 8px;
 	background: rgba(0, 0, 0, 0.40);

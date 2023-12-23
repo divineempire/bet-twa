@@ -15,7 +15,7 @@ src/api/TonAPIApi.js
 src/api/TournamentsApi.js
 src/api/UsersApi.js
 src/index.js
-src/model/Account.js
+src/model/AccountInfoShorten.js
 src/model/BetOutcome.js
 src/model/BetType.js
 src/model/HTTPValidationError.js
@@ -32,7 +32,6 @@ src/model/PageSportMatchRead.js
 src/model/PageSportRatedLeagueEntryRead.js
 src/model/PageSportReward.js
 src/model/PageSportTeam.js
-src/model/PageSportTournament.js
 src/model/PhaseType.js
 src/model/RewardType.js
 src/model/SportFreeBetNft.js
@@ -46,9 +45,9 @@ src/model/SportRatedLeagueEntry.js
 src/model/SportRatedLeagueEntryRead.js
 src/model/SportRatedLeagueEntryReadWithLeague.js
 src/model/SportReward.js
-src/model/SportRewardCreate.js
 src/model/SportTeam.js
 src/model/SportTournament.js
+src/model/SportTournamentRead.js
 src/model/User.js
 src/model/UserCreate.js
 src/model/UserNftItems.js

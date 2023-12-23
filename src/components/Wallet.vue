@@ -97,12 +97,14 @@ export default {
 			}
 		},
 		fantasyBalance() {
-			console.log(this.GET_USER_INFO, 'GET_USER_INFO')
-			return this.GET_USER_INFO?.balance
+			if (this.GET_USER_INFO.balance) {
+				return this.GET_USER_INFO?.balance
+			} else {
+				return 0
+			}
 		},
 		getBalance() {
 			if (this.GET_WALLET_INFO.balance) {
-				console.log((this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2))
 				return (this.GET_WALLET_INFO?.balance / Math.pow(10, 9)).toFixed(2)
 			} else {
 				return 0
@@ -150,7 +152,6 @@ export default {
 			}
 			this.usersApi.grabReward(initData)
 				.then((res) => {
-					console.log(res)
 					this.updateUserInfo()
 				})
 				.catch((err) => {
@@ -164,7 +165,6 @@ export default {
 			}
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
-					console.log(res)
 					this.SAVE_USER_INFO(res)
 				})
 				.catch((err) => {

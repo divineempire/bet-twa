@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
+// import {subscribeTouchEvents, unsubscribeTouchEvents} from '/src/helpers/touch-events/swipes.js'
 import BetsApi from "/src/api/src/api/BetsApi.js";
 import {mapActions, mapGetters} from "vuex";
 import UsersApi from "/src/api/src/api/UsersApi.js";
@@ -224,10 +224,8 @@ export default {
 		]),
 		disabledButton() {
 			if (this.getActualBalance < this.betAmount || this.betAmount === 0 || this.betAmount === null || this.betAmount === '' || this.getCoefficient <= 1) {
-				console.log(true)
 				return true
 			} else {
-				console.log(false)
 				return false
 			}
 		},
@@ -267,7 +265,6 @@ export default {
 		},
 		getPossibleWin() {
 			if (this.betAmount !== null && this.betAmount > 0 && this.betAmount !== '') {
-				console.log(this.betAmount)
 				let winAmount = this.betAmount * this.getCoefficient
 				let feeAmount = winAmount / 100 * this.event?.fee
 				return winAmount.toFixed(1) - feeAmount.toFixed(1)
@@ -394,7 +391,6 @@ export default {
 			let obj = this.setFantasyData
 			this.betsApi.createFantasyBet(initData, obj)
 				.then((res) => {
-					console.log(res)
 					this.updateUserInfo()
 					this.closePopup()
 				})
@@ -412,7 +408,6 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
-			console.log(initData, 'getCurrentUser App.vue')
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					this.SAVE_USER_INFO(res)
@@ -468,7 +463,6 @@ export default {
 			// this.focusInput()
 		},
 		focusInput() {
-			console.log('focus')
 			let input = document.getElementById('bet-amount')
 			input.focus()
 		},

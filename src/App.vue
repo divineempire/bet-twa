@@ -1,10 +1,11 @@
 <template>
 <!--	<button id="connect-btn">Подключить кошелёк</button>-->
-	<router-view :tonConnectUi="tonConnectUi" />
+	<router-view />
+<!--	:tonConnectUi="tonConnectUi"-->
 </template>
 
 <script>
-import { TonConnectUI, THEME , toUserFriendlyAddress} from '@tonconnect/ui'
+// import { TonConnectUI, THEME , toUserFriendlyAddress} from '@tonconnect/ui'
 import {mapActions, mapGetters} from "vuex";
 import TournamentsApi from '/src/api/src/api/TournamentsApi.js'
 import MatchesApi from "/src/api/src/api/MatchesApi.js";
@@ -100,8 +101,8 @@ export default {
 		async getFootballTournaments() {
 			try {
 				let opts = {
-					page: 1,
-					size: 20,
+					// page: 1,
+					// size: 20,
 					// top: true,
 					sport_id: 18
 				}
@@ -116,11 +117,9 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
-			console.log(initData, 'getCurrentUser App.vue')
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					this.SAVE_USER_INFO(res)
-					console.log(this.GET_USER_INFO)
 					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.$router.push({name: 'Main'})
 				})
@@ -183,7 +182,6 @@ export default {
 		}
 		// this.subscribeConnector()
 		await this.getFootballTournaments()
-		console.log('Турниры загружены')
 		await this.getAllLeagues()
 		this.setTwaOptions()
 	},

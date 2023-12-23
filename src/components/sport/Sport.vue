@@ -278,7 +278,6 @@ export default {
 		},
 		league: {
 			handler: function() {
-				console.log(this.league)
 				if  (this.league === 'REGULAR') {
 					// console.log()
 					document.documentElement.style.overflow = 'hidden'
@@ -296,7 +295,6 @@ export default {
 
 .fade-enter-active {
 	transition: .5s linear;
-	//transform-origin: bottom;
 }
 
 .fade-leave-active {

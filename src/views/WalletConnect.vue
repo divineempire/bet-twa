@@ -134,7 +134,6 @@ export default {
 			}
 			this.usersApi.createUser(initData, obj)
 				.then((res) => {
-					console.log(res)
 					this.getCurrentUser()
 					localStorage.setItem('userAuth', JSON.stringify(true))
 					this.$router.push({name: 'Main'})
@@ -153,7 +152,6 @@ export default {
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
 			}
-			console.log(initData, 'getCurrentUser App.vue')
 			this.usersApi.getCurrentUser(initData)
 				.then((res) => {
 					this.SAVE_USER_INFO(res)

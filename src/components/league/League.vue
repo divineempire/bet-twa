@@ -88,7 +88,7 @@
 					<div class="leaderboard__amount">
 						<p class="leaderboard__win-amount">{{ item.score + ' Фентези' }}</p>
 						<div class="leaderboard__arrow-icon"
-							 :class="item.place >= item.previous_place ? 'up' : 'down'"
+							 :class="item.place <= item.previous_place ? 'up' : 'down'"
 						></div>
 					</div>
 				</li>
@@ -170,7 +170,6 @@ export default {
 			return new RatingApi()
 		},
 		getFantasyLeague() {
-			console.log(this.GET_LEAGUES)
 			if (this.GET_LEAGUES.length > 0) {
 				return this.GET_LEAGUES[0]
 			} else {
@@ -230,7 +229,6 @@ export default {
 				this.ratingApi.getLeagueEntries(this.getFantasyLeague?.id, this.opts)
 					.then((res) => {
 						this.fantasyLeaders = res.items
-						console.log(this.fantasyLeaders)
 						this.fantasyTotal = res.total
 					})
 					.catch((err) => {
@@ -242,11 +240,14 @@ export default {
 			let staticValue = 20
 			if (this.fantasyTotal > this.opts.size) {
 				this.opts.size = this.opts.size + staticValue
+				this.getFantasyRating()
 			}
 		}
 	},
 	mounted() {
-		this.getFantasyRating()
+		setTimeout(() => {
+			this.getFantasyRating()
+		}, 500)
 		this.interval = setInterval(() => {
 			this.getFantasyRating()
 		}, 15000)
@@ -329,7 +330,7 @@ export default {
 
 .active_btn {
 	background: rgba(255, 255, 255, 0.35);
-	box-shadow: 0px 3px 1px 0px rgba(0, 0, 0, 0.04), 0px 3px 8px 0px rgba(0, 0, 0, 0.12);
+	box-shadow: 0 3px 1px 0 rgba(0, 0, 0, 0.04), 0 3px 8px 0 rgba(0, 0, 0, 0.12);
 }
 
 .league__banner {

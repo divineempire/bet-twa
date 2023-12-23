@@ -13,7 +13,7 @@
 
 
 import ApiClient from "../ApiClient";
-import Account from '../model/Account';
+import AccountInfoShorten from '../model/AccountInfoShorten';
 import HTTPValidationError from '../model/HTTPValidationError';
 import UserNftItems from '../model/UserNftItems';
 
@@ -40,7 +40,7 @@ export default class TonAPIApi {
     /**
      * Account Info
      * @param {String} account_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Account} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/AccountInfoShorten} and HTTP response
      */
     accountInfoWithHttpInfo(account_id) {
       let postBody = null;
@@ -62,7 +62,7 @@ export default class TonAPIApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = Account;
+      let returnType = AccountInfoShorten;
       return this.apiClient.callApi(
         '/api/v1/tonapi/info/{account_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -73,7 +73,7 @@ export default class TonAPIApi {
     /**
      * Account Info
      * @param {String} account_id 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Account}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/AccountInfoShorten}
      */
     accountInfo(account_id) {
       return this.accountInfoWithHttpInfo(account_id)
@@ -110,7 +110,7 @@ export default class TonAPIApi {
       let accepts = ['application/json'];
       let returnType = UserNftItems;
       return this.apiClient.callApi(
-        '/api/v1/tonapinfts/{account_id}', 'GET',
+        '/api/v1/tonapi/nfts/{account_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null
       );
