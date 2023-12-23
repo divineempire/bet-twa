@@ -93,7 +93,8 @@
 							:key="index"
 							@click="setAmount(item.fantasy)"
 					>
-						{{ item.fantasy + ' ' + getValueType }}
+<!--						{{ item.fantasy + ' ' + getValueType }}-->
+						{{ item.fantasy === 'MAX' ? item.fantasy : item.fantasy + ' ' + getValueType }}
 					</button>
 				</div>
 <!--				<ul class="coupon__bonus-list">-->
@@ -156,6 +157,10 @@ export default {
 			],
 			active: [],
 			offers: [
+				{
+					regular: 'MAX',
+					fantasy: 'MAX',
+				},
 				{
 					regular: 15,
 					fantasy: 500
@@ -459,7 +464,13 @@ export default {
 			}
 		},
 		setAmount(value) {
-			this.betAmount = value
+			if (value === 'MAX') {
+				if (this.getActualBalance > 0) {
+					this.betAmount = this.getActualBalance
+				}
+			} else {
+				this.betAmount = value
+			}
 			// this.focusInput()
 		},
 		focusInput() {
@@ -474,7 +485,7 @@ export default {
 			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
 				height = viewport.height;
 			}
-			coupon.style.bottom = `${window.innerHeight - viewport.height - viewport.offsetTop}px`;
+			coupon.style.bottom = `${window?.innerHeight - viewport?.height - viewport?.offsetTop}px`;
 		}
 	},
 	watch: {

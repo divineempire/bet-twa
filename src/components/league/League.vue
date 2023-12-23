@@ -24,9 +24,11 @@
 			</button>
 		</div>
 		<div class="league__info">
+<!--			:class="{fantasy_banner: league === 'FANTASY'}"-->
 			<div class="league__banner"
-				 :class="{fantasy_banner: league === 'FANTASY'}"
+				 v-if="league === 'REGULAR'"
 			></div>
+			<img src="https://raw.githubusercontent.com/divineempire/twa-image/master/banners/fantasy-baner.webp" alt="" class="league__fantasy-banner" v-if="league === 'FANTASY'">
 			<h2 class="league__heading">{{ getHeading }}</h2>
 			<h4 class="league__title">{{ getTitle }}</h4>
 			<p class="league__text">Дата проведения акции: с 22.12.2023 по 31.12.2023 <br> 00:00 GMT </p>
@@ -83,7 +85,7 @@
 				>
 					<div class="leaderboard__placement">
 						<p class="leaderboard__place">{{ item?.place + '-й' }}</p>
-						<p class="leaderboard__account">{{ item?.user?.telegram_user_id }}</p>
+						<p class="leaderboard__account">{{ 'ID:' + item?.user?.telegram_user_id }}</p>
 					</div>
 					<div class="leaderboard__amount">
 						<p class="leaderboard__win-amount">{{ item.score + ' Фентези' }}</p>
@@ -95,7 +97,7 @@
 			</ul>
 			<p class="empty-text" v-if="sortFantasyLeaders.length === 0">Пока в лиге нет участников</p>
 			<button class="show-more-btn"
-				v-if="sortFantasyLeaders.length > 0 && fantasyTotal > opts.size"
+				v-if="sortFantasyLeaders.length > 0 && fantasyPages > loadPage"
 				@click="showMoreFantasy"
 			>
 				Показать ещё
@@ -151,7 +153,8 @@ export default {
 				// },
 			],
 			fantasyLeaders: [],
-			fantasyTotal: null,
+			fantasyPages: null,
+			loadPage: null,
 			opts: {
 				page: 1,
 				size: 20
@@ -228,18 +231,37 @@ export default {
 			if (this.getFantasyLeague.id) {
 				this.ratingApi.getLeagueEntries(this.getFantasyLeague?.id, this.opts)
 					.then((res) => {
-						this.fantasyLeaders = res.items
-						this.fantasyTotal = res.total
+						this.setTableData(res)
 					})
 					.catch((err) => {
 						console.log(err)
 					})
 			}
 		},
+		setTableData(res) {
+			if (this.fantasyLeaders.length === 0) {
+				this.fantasyLeaders = res.items
+			} else {
+				res.items.forEach((item) => {
+					let find = this.fantasyLeaders.find((user) => user.place === item.place)
+					if (!find) {
+						this.fantasyLeaders.push(item)
+					}
+				})
+			}
+			this.loadPage = res.page
+			this.fantasyPages = res.pages
+		},
+		// refreshFantasyTable() {
+		//
+		// },
 		showMoreFantasy() {
-			let staticValue = 20
-			if (this.fantasyTotal > this.opts.size) {
-				this.opts.size = this.opts.size + staticValue
+			// let staticValue = 20
+			// if (this.fantasyTotal > this.opts.size) {
+			// 	this.getFantasyRating()
+			// }
+			if (this.fantasyPages > this.loadPage) {
+				this.opts.page++
 				this.getFantasyRating()
 			}
 		}
@@ -248,9 +270,9 @@ export default {
 		setTimeout(() => {
 			this.getFantasyRating()
 		}, 500)
-		this.interval = setInterval(() => {
-			this.getFantasyRating()
-		}, 15000)
+		// this.interval = setInterval(() => {
+		// 	this.refreshFantasyTable()
+		// }, 30000)
 		lottie.loadAnimation({
 			container: document.getElementById('coming-soon'), // the dom element that will contain the animation
 			renderer: 'svg',
@@ -273,7 +295,14 @@ export default {
 				}
 				document.documentElement.style.overflow = 'auto'
 			}
-		}
+		},
+		// GET_LEAGUES: {
+		// 	handler() {
+		// 		if (this.GET_LEAGUES.length > 0) {
+		// 			this.getFantasyRating()
+		// 		}
+		// 	}
+		// }
 	},
 }
 </script>
@@ -341,6 +370,12 @@ export default {
 	background: #1C2197;
 }
 
+.league__fantasy-banner {
+	margin-bottom: 12px;
+	width: 100%;
+	height: max-content;
+}
+
 .fantasy_banner {
 	background: #521C97;
 }
@@ -397,7 +432,8 @@ export default {
 .member {
 	top: 14px;
 	position: sticky;
-	background: #3F3C42;
+	background: rgba(0, 0, 0, 0.80);
+	backdrop-filter: blur(20px);
 }
 
 .your-placement__text {

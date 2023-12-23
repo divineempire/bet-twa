@@ -2,14 +2,8 @@
 	<li class="event-list__item">
 		<div class="event-list__teams">
 			<div class="event-list__team first-team">
-<!--				<img :src="event.team1?.icon_url" alt="" class="event-list__logo">-->
-<!--				<img :src="getFirstTeamLogo" alt="team_logo" class="event-list__logo">-->
-<!--				<picture class="event-list__picture">-->
-<!--					<source :srcset="`${getFirstTeamLogo}, @/src/assets/sport/football.svg`" type="image/png"/>-->
-<!--					<source :srcset="'@/src/assets/sport/football.svg'" type="image/svg"/>-->
-<!--					<img src="/src/assets/sport/football.svg" :srcset="`${ getFirstTeamLogo }, ~@/src/assets/sport/football.svg`" alt="team_logo" class="event-list__logo">-->
-<!--				</picture>-->
-				<div class="event-list__logo" :class="getSportCategory"></div>
+				<img :src="getFirstTeamLogo" onerror="this.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'" alt="team_logo" class="event-list__logo">
+<!--				<div class="event-list__logo" :class="getSportCategory"></div>-->
 				<p class="event-list__team-name">{{ event.team1?.name }}</p>
 			</div>
 			<div class="event-list__date"
@@ -27,7 +21,8 @@
 			<div class="event-list__team second-team">
 <!--				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">-->
 <!--				<img :src="getSecondTeamLogo" alt="team_logo" class="event-list__logo">-->
-				<div class="event-list__logo" :class="getSportCategory"></div>
+<!--				<div class="event-list__logo" :class="getSportCategory"></div>-->
+				<img :src="getSecondTeamLogo" onerror="this.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'" alt="team_logo" class="event-list__logo">
 				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
 		</div>
@@ -146,10 +141,10 @@ export default {
 			return window.Telegram.WebApp
 		},
 		getFirstTeamLogo() {
-			return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team1_id}.png`
+			return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team1_id}_logo.png`
 		},
 		getSecondTeamLogo() {
-			return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team2_id}.png`
+			return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team2_id}_logo.png`
 		},
 		// teamsApi() {
 		// 	return new TeamsApi()
@@ -309,7 +304,7 @@ export default {
 	width: 26px;
 	height: 26px;
 	min-height: 26px;
-	opacity: .3;
+	//opacity: .8;
 }
 
 .football {
