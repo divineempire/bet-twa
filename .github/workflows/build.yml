@@ -71,4 +71,11 @@ jobs:
           --install
           --set=image.repository=${{ env.image_url }}
           --set=image.tag=${{ env.short_sha }}
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: '4bce0676a1a511ee9669a2929b07f9a8'
+          SENTRY_ORG: 'divineempire'
+          SENTRY_PROJECT: 'bet-twa'
+    # SENTRY_URL: https://sentry.io/
 
