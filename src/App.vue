@@ -151,14 +151,14 @@ export default {
 		// 			console.error(err)
 		// 		})
 		// },
-		async getAllLeagues() {
-			try {
-				let result = await this.ratingApi.getLeagues({page: 1, size: 10})
-				this.SAVE_LEAGUES(result)
-			} catch(err) {
-				console.log(err)
-			}
-		},
+		// async getAllLeagues() {
+		// 	try {
+		// 		let result = await this.ratingApi.getLeagues({page: 1, size: 10})
+		// 		this.SAVE_LEAGUES(result)
+		// 	} catch(err) {
+		// 		console.log(err)
+		// 	}
+		// },
 		setTwaOptions() {
 			if (!this.webApp.isExpanded) {
 				this.webApp.expand()
@@ -176,17 +176,14 @@ export default {
 		},
 	},
 	async created() {
-		// console.log(this.webApp.initData)
 		if (this.webApp.initData) {
 			this.getCurrentUser()
 		}
 		// this.subscribeConnector()
 		await this.getFootballTournaments()
-		await this.getAllLeagues()
+		// await this.getAllLeagues()
 		this.setTwaOptions()
 	},
-	// mounted() {
-	// },
 	unmounted() {
 		// if (this.unsubscribe !== null) {
 		// 	this.unsubscribe()

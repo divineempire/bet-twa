@@ -135,7 +135,7 @@
 import BetsApi from "/src/api/src/api/BetsApi.js";
 import {mapActions, mapGetters} from "vuex";
 import UsersApi from "/src/api/src/api/UsersApi.js";
-import {MatchesApi} from "@/api/src";
+import MatchesApi from "/src/api/src/api/MatchesApi.js";
 
 export default {
 	name: "Coupon",
@@ -148,13 +148,13 @@ export default {
 			activeFreeBet: null,
 			betAmount: null,
 			type: '',
-			bonuses: [
-				{
-					amount: '0.5 TON',
-					type: 'FREE',
-					date: '24.02.2024'
-				}
-			],
+			// bonuses: [
+			// 	{
+			// 		amount: '0.5 TON',
+			// 		type: 'FREE',
+			// 		date: '24.02.2024'
+			// 	}
+			// ],
 			active: [],
 			offers: [
 				{

@@ -304,7 +304,6 @@ export default {
 	width: 26px;
 	height: 26px;
 	min-height: 26px;
-	//opacity: .8;
 }
 
 .football {

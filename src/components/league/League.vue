@@ -32,7 +32,7 @@
 			<h2 class="league__heading">{{ getHeading }}</h2>
 			<h4 class="league__title">{{ getTitle }}</h4>
 			<p class="league__text">Дата проведения акции: с 22.12.2023 по 31.12.2023 <br> 00:00 GMT </p>
-			<p class="league__link" @click="openLink('https://t.me/betty_games/15')">Призовой фонд. Подробности тут.</p>
+			<p class="league__link" @click="openLink('https://t.me/betty_games/15')">Призовой фонд. Узнать подробнее.</p>
 <!--			<a href="" class="league__link">Подробнее об условиях акции</a>-->
 		</div>
 		<div class="league__leaderboard"
@@ -85,7 +85,7 @@
 				>
 					<div class="leaderboard__placement">
 						<p class="leaderboard__place">{{ item?.place + '-й' }}</p>
-						<p class="leaderboard__account">{{ 'ID:' + item?.user?.telegram_user_id }}</p>
+						<p class="leaderboard__account">{{ item?.user?.telegram_user_id }}</p>
 					</div>
 					<div class="leaderboard__amount">
 						<p class="leaderboard__win-amount">{{ item.score + ' Фентези' }}</p>
@@ -97,7 +97,7 @@
 			</ul>
 			<p class="empty-text" v-if="sortFantasyLeaders.length === 0">Пока в лиге нет участников</p>
 			<button class="show-more-btn"
-				v-if="sortFantasyLeaders.length > 0 && fantasyPages > loadPage"
+				v-if="sortFantasyLeaders.length > 0 && loadPage < 5"
 				@click="showMoreFantasy"
 			>
 				Показать ещё
@@ -108,7 +108,7 @@
 
 <script>
 import RatingApi from "/src/api/src/api/RatingApi.js";
-import { mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import lottie from "lottie-web";
 
 export default {
@@ -118,40 +118,7 @@ export default {
 			interval: null,
 			league: 'FANTASY',
 			regularPlacement: null,
-			// fantasyPlacement: null,
-			// userInFantasy: null,
-			regularLeaders: [
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 101,
-				// 	rising: 'up'
-				// },
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 10,
-				// 	rising: 'down'
-				// },
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 24,
-				// 	rising: 'up'
-				// },
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 15,
-				// 	rising: 'down'
-				// },
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 33,
-				// 	rising: 'up'
-				// },
-				// {
-				// 	account: 'UQCav_Y8Mdb9sQUaNVAS-2C6xpnIY3-uEPx4uKY4DBRO17GM',
-				// 	winAmount: 80,
-				// 	rising: 'up'
-				// },
-			],
+			regularLeaders: [],
 			fantasyLeaders: [],
 			fantasyPages: null,
 			loadPage: null,
@@ -224,8 +191,19 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions([
+			'SAVE_LEAGUES',
+		]),
 		openLink(url) {
 			this.webApp.openLink(url)
+		},
+		async getAllLeagues() {
+			try {
+				let result = await this.ratingApi.getLeagues({page: 1, size: 10})
+				await this.SAVE_LEAGUES(result)
+			} catch(err) {
+				console.log(err)
+			}
 		},
 		getFantasyRating() {
 			if (this.getFantasyLeague.id) {
@@ -252,27 +230,40 @@ export default {
 			this.loadPage = res.page
 			this.fantasyPages = res.pages
 		},
-		// refreshFantasyTable() {
-		//
-		// },
+		refreshFantasyTable() {
+			let opts = {
+				page: 1,
+				size: this.fantasyLeaders.length
+			}
+			if (this.getFantasyLeague.id) {
+				this.ratingApi.getLeagueEntries(this.getFantasyLeague?.id, opts)
+					.then((res) => {
+						this.fantasyLeaders = res.items
+					})
+					.catch((err) => {
+						console.log(err)
+					})
+			}
+		},
 		showMoreFantasy() {
 			// let staticValue = 20
 			// if (this.fantasyTotal > this.opts.size) {
 			// 	this.getFantasyRating()
 			// }
 			if (this.fantasyPages > this.loadPage) {
-				this.opts.page++
-				this.getFantasyRating()
+				if (this.opts.page < 5) {
+					this.opts.page++
+					this.getFantasyRating()
+				}
 			}
 		}
 	},
-	mounted() {
-		setTimeout(() => {
-			this.getFantasyRating()
-		}, 500)
-		// this.interval = setInterval(() => {
-		// 	this.refreshFantasyTable()
-		// }, 30000)
+	async mounted() {
+		await this.getAllLeagues()
+		this.getFantasyRating()
+		this.interval = setInterval(() => {
+			this.refreshFantasyTable()
+		}, 40000)
 		lottie.loadAnimation({
 			container: document.getElementById('coming-soon'), // the dom element that will contain the animation
 			renderer: 'svg',
@@ -373,7 +364,7 @@ export default {
 .league__fantasy-banner {
 	margin-bottom: 12px;
 	width: 100%;
-	height: max-content;
+	height: calc(100vw - 20px);
 }
 
 .fantasy_banner {

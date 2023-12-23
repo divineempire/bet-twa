@@ -51,7 +51,6 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'GET_LEAGUES',
 			'GET_USER_INFO'
 		]),
 		getYourPlacement() {
