@@ -1,6 +1,7 @@
 <template>
 	<div class="container">
-		<Wallet :tonConnectUi="tonConnectUi"/>
+<!--		:tonConnectUi="tonConnectUi-->
+		<Wallet />
 		<div class='main'>
 			<router-view />
 		</div>
