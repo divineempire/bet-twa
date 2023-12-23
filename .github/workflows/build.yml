@@ -74,7 +74,7 @@ jobs:
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
-          SENTRY_AUTH_TOKEN: '4bce0676a1a511ee9669a2929b07f9a8'
+          SENTRY_AUTH_TOKEN: '300f21995c1ada082de2a073184a4485823e36cb5b653b12402716e040b1f114'
           SENTRY_ORG: 'divineempire'
           SENTRY_PROJECT: 'bet-twa'
     # SENTRY_URL: https://sentry.io/
