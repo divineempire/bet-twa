@@ -18,7 +18,7 @@
 				<div class="match-info__coefficient">
 					<p class="match-info__value coefficient">{{ 'x' + card?.bet_ratio }}</p>
 					<button type="button" class="match-info__btn"
-							v-if="status === 'WAIT'"
+							v-if="card?.match?.phase === 'prematch'"
 					></button>
 				</div>
 			</div>
@@ -42,12 +42,12 @@
 				<p class="match-info__name">Потенциальный выигрыш</p>
 				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
-<!--			<button type="button" class="match-info__cancel-btn"-->
-<!--					v-if="status === 'WAIT'"-->
-<!--					@click="cancelBet"-->
-<!--			>-->
-<!--				Отменить ставку-->
-<!--			</button>-->
+			<button type="button" class="match-info__cancel-btn"
+					v-if="status === 'WAIT'"
+					@click="cancelBet"
+			>
+				Отменить ставку
+			</button>
 		</div>
 		<div class="hidden-info"
 			 v-show="showMore"
@@ -73,6 +73,8 @@
 <script>
 // import Profile from "@/components/menu/Profile.vue";
 import { getFullDate, getDateTime } from "@/helpers/time/time.js";
+import { FOOTBALL, HOCKEY } from "@/helpers/sport-type/sport-type";
+
 export default {
 	name: "BetsHistoryCard",
 	data() {
@@ -91,8 +93,10 @@ export default {
 	},
 	computed: {
 		getSportType() {
-			if (this.card?.match?.sport_id === 18) {
+			if (this.card?.match?.sport_id === FOOTBALL) {
 				return 'football'
+			} else if (this.card?.match?.sport_id === HOCKEY) {
+
 			}
 		},
 		getBetType() {
@@ -239,6 +243,11 @@ export default {
 
 .football {
 	background: url('~@/assets/sport/football.svg') no-repeat;
+	background-size: cover;
+}
+
+.hockey {
+	background: url('~@/assets/sport/hockey.svg') no-repeat;
 	background-size: cover;
 }
 

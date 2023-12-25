@@ -27,9 +27,6 @@ export default {
 		getRouteName() {
 			return this.$route.name
 		},
-		usersApi() {
-			return new UsersApi()
-		},
 		betsApi() {
 			return new BetsApi()
 		},

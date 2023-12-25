@@ -21,7 +21,7 @@
 				v-if="historyMode === 'UNCALCULATED'"
 			>
 				<BetsHistoryCard
-					v-for="(item, index) in filterUncalculated.reverse()"
+					v-for="(item, index) in filterUncalculated"
 					:key="index"
 					:card="item"
 				/>
@@ -35,7 +35,7 @@
 				v-if="historyMode === 'CALCULATED'"
 			>
 				<BetsHistoryCard
-					v-for="(item, index) in filterCalculated.reverse()"
+					v-for="(item, index) in filterCalculated"
 					:key="index"
 					:card="item"
 				/>

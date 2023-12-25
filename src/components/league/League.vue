@@ -305,7 +305,7 @@ export default {
 
 .soon {
 	position: relative;
-	padding-bottom: calc(100vh - (530px));
+	padding-bottom: calc(100vh - (570px));
 }
 
 .coming-soon {

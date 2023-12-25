@@ -68,10 +68,12 @@
 					<label for="bet-amount" class="coupon__label">
 						<p class="label-text"
 						   :class="{message_red: inputMessage === 'Недостаточно средств'}"
-						   v-if="betAmount !== null && betAmount !== '' && betAmount > 0">
+						   v-if="inputFocused || betAmount !== null && betAmount !== ''">
 							{{ inputMessage }}
 						</p>
-						<input inputmode="numeric" type="number" class="coupon__input" placeholder="Сумма ставки" v-model="betAmount" @input="inputBetAmount" id="bet-amount">
+						<input inputmode="numeric" type="number" class="coupon__input" placeholder="Сумма ставки"
+							   v-model="betAmount" @input="inputBetAmount" id="bet-amount"
+							   @focus="inputFocused = true" @blur="inputFocused = false">
 					</label>
 				</div>
 				<div class="coupon__button-block"
@@ -117,12 +119,13 @@
 <!--					</li>-->
 <!--				</ul>-->
 				<div class="coupon__make-bet">
-					<button class="coupon__main-btn"
-							:disabled="disabledButton"
+					<div class="coupon__main-btn"
+							:class="{disabled_btn: disabledButton, success_bet: btnText === 'Ставка принята'}"
 							@click="makeBet"
 					>
-						Сделать ставку
-					</button>
+						<p class="btn-text" v-show="!waitResponse">{{ btnText }}</p>
+						<div class="btn-loader" v-show="waitResponse"></div>
+					</div>
 				</div>
 				<p class="coupon__notice">Коэффициент может измениться до начала матча, <br> в зависимости от ставок других игроков</p>
 			</div>
@@ -148,6 +151,9 @@ export default {
 			activeFreeBet: null,
 			betAmount: null,
 			type: '',
+			inputFocused: false,
+			btnText: 'Сделать ставку',
+			waitResponse: false,
 			// bonuses: [
 			// 	{
 			// 		amount: '0.5 TON',
@@ -389,6 +395,7 @@ export default {
 			}
 		},
 		fantasyBet() {
+			this.waitResponse = true
 			let initData = null
 			if (this.webApp.initData) {
 				initData = this.webApp.initData
@@ -397,9 +404,19 @@ export default {
 			this.betsApi.createFantasyBet(initData, obj)
 				.then((res) => {
 					this.updateUserInfo()
-					this.closePopup()
+					setTimeout(() => {
+						this.btnText = 'Ставка принята'
+						this.waitResponse = false
+					}, 500)
+					setTimeout(() => {
+						this.closePopup()
+						this.btnText = 'Сделать ставку'
+					}, 2500)
 				})
 				.catch((err) => {
+					setTimeout(() => {
+						this.waitResponse = false
+					}, 500)
 					console.error(err)
 					if (err.error.status === 400) {
 						console.log('status 400')
@@ -699,6 +716,10 @@ export default {
 	opacity: 0.6;
 }
 
+.coupon__input:focus {
+	outline: 1px solid #00F59B;
+}
+
 .coupon__input::-webkit-outer-spin-button,
 .coupon__input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
@@ -855,24 +876,61 @@ export default {
 
 .coupon__main-btn {
 	transition: .2s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
-	padding: 16px 0 16px 0;
+	padding: 13px 0;
 	outline: none;
 	border: none;
 	border-radius: 10px;
 	background: #00F59B;
+}
+
+.disabled_btn {
+	background: #3F3C42;
+}
+
+.success_bet {
+	background: rgba(0, 245, 155, 0.40);
+}
+
+.btn-text {
 	color: #141414;
 	font-size: 15px;
+	line-height: 24px;
 	font-family: Roboto-Medium, sans-serif;
 }
 
-.coupon__main-btn:disabled {
-	background: #3F3C42;
-	color: rgba(255, 255, 255, .5);
+.disabled_btn .btn-text {
+	color: #fff;
+	opacity: 0.5;
+}
+
+.success_btn .btn-text {
+	color: #00F59B;
+}
+
+.btn-loader {
+	margin: 0 auto;
+	width: 24px;
+	height: 24px;
+	background: url('~@/assets/sport/btn-loader.png') no-repeat;
+	background-size: cover;
+	animation: 1s forwards linear infinite Loader;
 }
 
 .coupon__notice {
 	text-align: center;
 	font-size: 12px;
+}
+
+@keyframes Loader {
+	0% {
+		transform: rotateZ(0deg);
+	}
+	100% {
+		transform: rotateZ(-360deg);
+	}
 }
 </style>
