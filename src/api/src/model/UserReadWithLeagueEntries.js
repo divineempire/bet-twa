@@ -106,7 +106,7 @@ class UserReadWithLeagueEntries {
             // validate the optional field `rated_league_entries` (array)
             for (const item of data['rated_league_entries']) {
                 SportRatedLeagueEntryReadWithLeague.validateJSON(item);
-            }
+            };
         }
 
         return true;
