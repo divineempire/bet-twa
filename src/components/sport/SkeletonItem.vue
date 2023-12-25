@@ -1,24 +1,24 @@
 <template>
 	<div class="skeleton">
-			<div class="skeleton__flex">
-				<div class="skeleton__block">
-					<p class="top-item skeleton__anim-content"></p>
-					<p class="bottom-item skeleton__anim-content"></p>
-				</div>
-				<div class="skeleton__center">
-					<p class="top-item skeleton__anim-content"></p>
-					<p class="bottom-item skeleton__anim-content"></p>
-				</div>
-				<div class="skeleton__block">
-					<p class="top-item skeleton__anim-content"></p>
-					<p class="bottom-item skeleton__anim-content"></p>
-				</div>
+		<div class="skeleton__flex">
+			<div class="skeleton__block">
+				<p class="top-item skeleton__anim-content"></p>
+				<p class="bottom-item skeleton__anim-content"></p>
 			</div>
-			<div class="skeleton__flex">
-				<div class="skeleton__button skeleton__anim-content"></div>
-				<div class="skeleton__button skeleton__anim-content"></div>
-				<div class="skeleton__button skeleton__anim-content"></div>
+			<div class="skeleton__center">
+				<p class="top-item skeleton__anim-content"></p>
+				<p class="bottom-item skeleton__anim-content"></p>
 			</div>
+			<div class="skeleton__block">
+				<p class="top-item skeleton__anim-content"></p>
+				<p class="bottom-item skeleton__anim-content"></p>
+			</div>
+		</div>
+		<div class="skeleton__flex">
+			<div class="skeleton__button skeleton__anim-content"></div>
+			<div class="skeleton__button skeleton__anim-content"></div>
+			<div class="skeleton__button skeleton__anim-content"></div>
+		</div>
 	</div>
 </template>
 
@@ -88,7 +88,6 @@ export default {
 		background-image: linear-gradient(to right, #4e4e53 0%, rgba(14, 14, 14, 0.1) 15%, #4e4e53 30% , rgba(14, 14, 14, 0.1) 50%, #4e4e53 60%, rgba(14, 14, 14, 0.1) 80%, #4e4e53 100%);
 		background-repeat: no-repeat;
 		background-size: 600px 398px;
-		//background-position: -800px;
 		animation: Shimmer 10s linear infinite;
 		border-radius: 5px;
 	}

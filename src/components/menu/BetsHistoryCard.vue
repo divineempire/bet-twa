@@ -74,6 +74,9 @@
 // import Profile from "@/components/menu/Profile.vue";
 import { getFullDate, getDateTime } from "@/helpers/time/time.js";
 import { FOOTBALL, HOCKEY } from "@/helpers/sport-type/sport-type";
+import BetsApi from "/src/api/src/api/BetsApi.js";
+import UsersApi from "/src/api/src/api/UsersApi.js";
+import {mapActions} from "vuex";
 
 export default {
 	name: "BetsHistoryCard",
@@ -135,8 +138,53 @@ export default {
 	},
 	methods: {
 		cancelBet() {
+			this.$emit('cancelBet', this.card)
+			// let initData = null
+			// if (this.webApp.initData) {
+			// 	initData = this.webApp.initData
+			// }
+			// this.betsApi.cancelBet(this.card?.id, initData)
+			// 	.then((res) => {
+			// 		console.log(res)
+			// 		this.updateUserInfo()
+			// 		this.updateBetsHistory()
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err)
+			// 	})
 			// console.log('cancel')
-		}
+		},
+		// updateUserInfo() {
+		// 	let initData = null
+		// 	if (this.webApp.initData) {
+		// 		initData = this.webApp.initData
+		// 	}
+		// 	this.usersApi.getCurrentUser(initData)
+		// 		.then((res) => {
+		// 			this.SAVE_USER_INFO(res)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.error(err)
+		// 		})
+		// },
+		// updateBetsHistory() {
+		// 	let initData = null
+		// 	if (this.webApp.initData) {
+		// 		initData = this.webApp.initData
+		// 	}
+		// 	let opts = {
+		// 		fantasy: true,
+		// 		page: 1,
+		// 		size: 10
+		// 	}
+		// 	this.betsApi.getUserBets(initData, opts)
+		// 		.then((res) => {
+		// 			this.SAVE_BETS_HISTORY(res)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.log(err)
+		// 		})
+		// }
 	}
 }
 </script>

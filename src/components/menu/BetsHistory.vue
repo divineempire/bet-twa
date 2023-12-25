@@ -24,11 +24,20 @@
 					v-for="(item, index) in filterUncalculated"
 					:key="index"
 					:card="item"
+					@cancelBet="cancelBet"
 				/>
 				<li class="empty-card"
-					v-if="filterUncalculated.length === 0"
+					v-if="filterUncalculated.length === 0 && loadedHistory"
 				>
 					<p class="empty-text">У вас нет нерассчитанных ставок</p>
+				</li>
+				<li class="event-list__item skeleton"
+					v-if="filterUncalculated.length === 0 && !loadedHistory"
+				>
+					<SkeletonHistoryCard
+						v-for="(item, index) in 3"
+						:key="index"
+					/>
 				</li>
 			</ul>
 			<ul class="history__list"
@@ -40,9 +49,17 @@
 					:card="item"
 				/>
 				<li class="empty-card"
-					v-if="filterCalculated.length === 0"
+					v-if="filterCalculated.length === 0 && loadedHistory"
 				>
 					<p class="empty-text">У вас нет рассчитанных ставок</p>
+				</li>
+				<li class="event-list__item skeleton"
+					v-if="filterCalculated.length === 0 && !loadedHistory"
+				>
+					<SkeletonHistoryCard
+						v-for="(item, index) in 3"
+						:key="index"
+					/>
 				</li>
 			</ul>
 		</div>
@@ -52,17 +69,22 @@
 <script>
 import BetStats from "@/components/menu/BetStats.vue";
 import BetsHistoryCard from "@/components/menu/BetsHistoryCard.vue";
-import {mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import BetsApi from "../../api/src/api/BetsApi";
+import UsersApi from "../../api/src/api/UsersApi";
+import SkeletonHistoryCard from "@/components/menu/SkeletonHistoryCard.vue";
 
 export default {
 	name: "BetsHistory",
 	components: {
+		SkeletonHistoryCard,
 		BetsHistoryCard,
 		BetStats
 	},
 	data() {
 		return {
 			historyMode: 'UNCALCULATED',
+			loadedHistory: false,
 			history: [
 				{
 					category: 'DOTA',
@@ -171,6 +193,15 @@ export default {
 		...mapGetters([
 			'GET_BETS_HISTORY',
 		]),
+		webApp() {
+			return window.Telegram.WebApp
+		},
+		betsApi() {
+			return new BetsApi()
+		},
+		usersApi() {
+			return new UsersApi()
+		},
 		filterUncalculated() {
 			// return this.history.filter((item) => item.status === 'WAIT')
 			if (this.GET_BETS_HISTORY?.items) {
@@ -186,6 +217,74 @@ export default {
 			} else {
 				return []
 			}
+		}
+	},
+	methods: {
+		...mapActions([
+			'SAVE_BETS_HISTORY',
+			'SAVE_USER_INFO'
+		]),
+		cancelBet(card) {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.betsApi.cancelBet(card?.id, initData)
+				.then((res) => {
+					console.log(res)
+					this.updateUserInfo()
+					this.getBetsHistory()
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+			// console.log('cancel')
+		},
+		updateUserInfo() {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			this.usersApi.getCurrentUser(initData)
+				.then((res) => {
+					this.SAVE_USER_INFO(res)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+		getBetsHistory() {
+			let initData = null
+			if (this.webApp.initData) {
+				initData = this.webApp.initData
+			}
+			let opts = {
+				fantasy: true,
+				page: 1,
+				size: 15
+			}
+			this.betsApi.getUserBets(initData, opts)
+				.then((res) => {
+					this.SAVE_BETS_HISTORY(res)
+					setTimeout(() => {
+						if (this.loadedHistory === false) {
+							this.loadedHistory = true
+						}
+					},1000)
+				})
+				.catch((err) => {
+					console.error(err)
+					setTimeout(() => {
+						if (this.loadedHistory === false) {
+							this.loadedHistory = true
+						}
+					},1000)
+				})
+		}
+	},
+	created() {
+		if (this.webApp.initData)  {
+			this.getBetsHistory()
 		}
 	}
 }

@@ -9,9 +9,9 @@
 
 <script>
 import MenuNav from "@/components/menu/MenuNav.vue";
-import BetsApi from "/src/api/src/api/BetsApi.js";
-import { mapActions } from "vuex";
-import UsersApi from "/src/api/src/api/UsersApi";
+// import BetsApi from "/src/api/src/api/BetsApi.js";
+// import { mapActions } from "vuex";
+// import UsersApi from "/src/api/src/api/UsersApi";
 
 export default {
 	name: "Menu",
@@ -27,41 +27,41 @@ export default {
 		getRouteName() {
 			return this.$route.name
 		},
-		betsApi() {
-			return new BetsApi()
-		},
-		webApp() {
-			return window.Telegram.WebApp
-		}
+		// betsApi() {
+		// 	return new BetsApi()
+		// },
+		// webApp() {
+		// 	return window.Telegram.WebApp
+		// }
 	},
 	methods: {
-		...mapActions([
-			'SAVE_BETS_HISTORY',
-		]),
-		getBetsHistory() {
-			let initData = null
-			if (this.webApp.initData) {
-				initData = this.webApp.initData
-			}
-			let opts = {
-				fantasy: true,
-				page: 1,
-				size: 10
-			}
-			this.betsApi.getUserBets(initData, opts)
-				.then((res) => {
-					this.SAVE_BETS_HISTORY(res)
-				})
-				.catch((err) => {
-					console.log(err)
-				})
-		},
+		// ...mapActions([
+		// 	'SAVE_BETS_HISTORY',
+		// ]),
+		// getBetsHistory() {
+		// 	let initData = null
+		// 	if (this.webApp.initData) {
+		// 		initData = this.webApp.initData
+		// 	}
+		// 	let opts = {
+		// 		fantasy: true,
+		// 		page: 1,
+		// 		size: 10
+		// 	}
+		// 	this.betsApi.getUserBets(initData, opts)
+		// 		.then((res) => {
+		// 			this.SAVE_BETS_HISTORY(res)
+		// 		})
+		// 		.catch((err) => {
+		// 			console.log(err)
+		// 		})
+		// },
 	},
-	created() {
-		if (this.webApp.initData)  {
-			this.getBetsHistory()
-		}
-	},
+	// created() {
+	// 	if (this.webApp.initData)  {
+	// 		this.getBetsHistory()
+	// 	}
+	// },
 }
 </script>
 

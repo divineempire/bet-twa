@@ -907,7 +907,7 @@ export default {
 	opacity: 0.5;
 }
 
-.success_btn .btn-text {
+.success_bet .btn-text {
 	color: #00F59B;
 }
 
