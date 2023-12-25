@@ -12,6 +12,7 @@ import MatchesApi from "/src/api/src/api/MatchesApi.js";
 import UsersApi from "/src/api/src/api/UsersApi.js";
 import RatingApi from "/src/api/src/api/RatingApi.js";
 import TonAPIApi from "/src/api/src/api/TonAPIApi.js";
+import { FOOTBALL } from "@/helpers/sport-type/sport-type.js";
 
 export default {
 	data() {
@@ -104,7 +105,7 @@ export default {
 					// page: 1,
 					// size: 20,
 					// top: true,
-					sport_id: 18
+					sport_id: FOOTBALL
 				}
 				let result = await this.tournamentsApi.getTournaments(opts)
 				this.SAVE_FOOTBALL_TOURNAMENTS(result)

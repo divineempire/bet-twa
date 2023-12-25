@@ -627,6 +627,10 @@ export default {
 .match-info__teams {
 	margin-bottom: 4px;
 	font-size: 13px;
+	max-width: 67vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .match-info__category {

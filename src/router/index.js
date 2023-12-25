@@ -35,11 +35,11 @@ const routes = [
                         name: 'Football',
                         component: Football,
                     },
-                    // {
-                    //     path: 'hockey',
-                    //     name: 'Hockey',
-                    //     component: Hockey,
-                    // },
+                    {
+                        path: 'hockey',
+                        name: 'Hockey',
+                        component: Hockey,
+                    },
                     // {
                     //     path: 'basketball',
                     //     name: 'Basketball',

@@ -415,7 +415,7 @@ export default {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 14px;
-	padding: 12px 16px;
+	padding: 16px 16px;
 	border-radius: 8px;
 	background: rgba(63, 60, 66, 0.50);
 }
@@ -519,7 +519,7 @@ export default {
 
 .show-more-btn {
 	width: 100%;
-	padding: 14px;
+	padding: 17px;
 	outline: none;
 	border: none;
 	border-radius: 12px;

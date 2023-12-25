@@ -36,7 +36,7 @@
 		</div>
 		<SearchPopup
 			v-if="showSearch"
-			:sportId="sportId"
+			:sportId="getSportId"
 			:league="league"
 		/>
 	</div>
@@ -47,13 +47,16 @@ import SportNavigation from "@/components/sport/SportNavigation.vue";
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
 import SearchPopup from "@/components/sport/SearchPopup.vue";
 import lottie from "lottie-web";
+import TournamentsApi from "/src/api/src/api/TournamentsApi.js";
+import {mapActions} from "vuex";
+import {FOOTBALL, HOCKEY} from "@/helpers/sport-type/sport-type";
 export default {
 	name: 'Sport',
 	data() {
 		return {
 			league: 'FANTASY',
 			showSearch: '',
-			sportId: 18,
+			// sportId: null,
 			// championships: [
 			// 	{
 			// 		name: 'Аргентина. Кубок Профессиональной Лиги',
@@ -200,6 +203,9 @@ export default {
 		webApp() {
 			return window.Telegram.WebApp
 		},
+		tournamentsApi() {
+			return new TournamentsApi()
+		},
 		getOptions() {
 			return {
 				page: 1,
@@ -207,9 +213,27 @@ export default {
 				top: true,
 				sport_id: 18
 			}
+		},
+		getSportId() {
+			let path = this.$route.path
+			if (path === '/sport/football') {
+				return FOOTBALL
+			} else if (path === '/sport/hockey') {
+				return HOCKEY
+			}
+			// else if (path === '/sport/basketball') {
+			// 	return
+			// } else if (path === '/sport/volleyball') {
+			// 	return
+			// } else if (path === '/sport/tennis') {
+			// 	return
+			// }
 		}
 	},
 	methods: {
+		...mapActions([
+			'SAVE_HOCKEY_TOURNAMENTS',
+		]),
 		chooseLeague(value) {
 			this.league = value
 		},
@@ -225,32 +249,29 @@ export default {
 				this.webApp.BackButton.onClick(this.closeSearch)
 			}
 		},
-		// async getSportTournaments(sportId) {
-		// 	let opts = {
-		// 		page: 1,
-		// 		size: 20,
-		// 		top: true,
-		// 	}
-		// 	opts.sport_id = sportId
-		// 	try {
-		// 		let result = await this.tournamentsApi.getTournaments(opts)
-		// 		if (sportId === hockey_id) {
-		//			SAVE_HOCKEY_TOURNAMENTS(result)
-		// 		} else if(sportId === basketball_id) {
-		//			SAVE_BASKETBALL_TOURNAMENTS(result)
-		// 		} else if(sportId === tennis_id) {
-		//			SAVE_TENNIS_TOURNAMENTS(result)
-		// 		} else if(sportId === volleyball_id) {
-		//			SAVE_VOLLEYBALL_TOURNAMENTS(result)
-		// 		}
-		// 	} catch(err) {
-		// 		console.log(err)
-		// 	}
-		// },
+		async getSportTournaments(sportId) {
+			let opts = {}
+			opts.sport_id = sportId
+			try {
+				let result = await this.tournamentsApi.getTournaments(opts)
+				if (sportId === HOCKEY) {
+					await this.SAVE_HOCKEY_TOURNAMENTS(result)
+				}
+				// else if(sportId === basketball_id) {
+				// 	this.SAVE_BASKETBALL_TOURNAMENTS(result)
+				// } else if(sportId === tennis_id) {
+				// 	this.SAVE_TENNIS_TOURNAMENTS(result)
+				// } else if(sportId === volleyball_id) {
+				// 	this.SAVE_VOLLEYBALL_TOURNAMENTS(result)
+				// }
+			} catch(err) {
+				console.log(err)
+			}
+		},
 	},
 	async created() {
 		// Получить турниры баскетбол, хоккей и т.д.
-		// await this.getSportTournaments(18)
+		await this.getSportTournaments(HOCKEY)
 		// await this.getSportTournaments(18)
 		// await this.getSportTournaments(18)
 		// await this.getSportTournaments(18)

@@ -20,6 +20,7 @@ import SportMatchBet from '../model/SportMatchBet';
 import SportMatchBetCreate from '../model/SportMatchBetCreate';
 import SportMatchBetRead from '../model/SportMatchBetRead';
 import SportMatchBetUpdate from '../model/SportMatchBetUpdate';
+import User from '../model/User';
 
 /**
 * Bets service.
@@ -39,6 +40,59 @@ export default class BetsApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
+
+
+    /**
+     * Cancel Bet
+     * @param {Number} bet_id 
+     * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/User} and HTTP response
+     */
+    cancelBetWithHttpInfo(bet_id, X_Init_Data) {
+      let postBody = null;
+      // verify the required parameter 'bet_id' is set
+      if (bet_id === undefined || bet_id === null) {
+        throw new Error("Missing the required parameter 'bet_id' when calling cancelBet");
+      }
+      // verify the required parameter 'X_Init_Data' is set
+      if (X_Init_Data === undefined || X_Init_Data === null) {
+        throw new Error("Missing the required parameter 'X_Init_Data' when calling cancelBet");
+      }
+
+      let pathParams = {
+        'bet_id': bet_id
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+        'X-Init-Data': X_Init_Data
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = User;
+      return this.apiClient.callApi(
+        '/api/v1/bets/cancel/{bet_id}', 'PATCH',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null
+      );
+    }
+
+    /**
+     * Cancel Bet
+     * @param {Number} bet_id 
+     * @param {String} X_Init_Data initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/User}
+     */
+    cancelBet(bet_id, X_Init_Data) {
+      return this.cancelBetWithHttpInfo(bet_id, X_Init_Data)
+        .then(function(response_and_data) {
+          return response_and_data.data;
+        });
+    }
 
 
     /**

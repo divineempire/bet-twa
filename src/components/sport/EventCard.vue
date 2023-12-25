@@ -2,7 +2,7 @@
 	<li class="event-list__item">
 		<div class="event-list__teams">
 			<div class="event-list__team first-team">
-				<img :src="getFirstTeamLogo" onerror="this.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'" alt="team_logo" class="event-list__logo">
+				<img :src="getFirstTeamLogo" @error="errorFirstTeamImage" alt="team_logo" class="event-list__logo">
 <!--				<div class="event-list__logo" :class="getSportCategory"></div>-->
 				<p class="event-list__team-name">{{ event.team1?.name }}</p>
 			</div>
@@ -22,7 +22,7 @@
 <!--				<img :src="event.team2?.icon_url" alt="" class="event-list__logo">-->
 <!--				<img :src="getSecondTeamLogo" alt="team_logo" class="event-list__logo">-->
 <!--				<div class="event-list__logo" :class="getSportCategory"></div>-->
-				<img :src="getSecondTeamLogo" onerror="this.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'" alt="team_logo" class="event-list__logo">
+				<img :src="getSecondTeamLogo" @error="errorSecondTeamImage" alt="team_logo" class="event-list__logo">
 				<p class="event-list__team-name">{{ event.team2?.name }}</p>
 			</div>
 		</div>
@@ -74,13 +74,13 @@
 		</div>
 		<div class="event-list__progress-bar">
 			<div class="progress-line first-line"
-				 :style="{flexBasis: getPercentFromCoefficient('TEAM1') > '0%' ? getPercentFromCoefficient('TEAM1') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('TEAM1') > '0%' ? getPercentFromCoefficient('TEAM1') : '33%'}"
 			></div>
 			<div class="progress-line second-line"
-				 :style="{flexBasis: getPercentFromCoefficient('DRAW') > '0%' ? getPercentFromCoefficient('DRAW') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('DRAW') > '0%' ? getPercentFromCoefficient('DRAW') : '33%'}"
 			></div>
 			<div class="progress-line third-line"
-				 :style="{flexBasis: getPercentFromCoefficient('TEAM2') > '0%' ? getPercentFromCoefficient('TEAM2') : '2%'}"
+				 :style="{flexBasis: getPercentFromCoefficient('TEAM2') > '0%' ? getPercentFromCoefficient('TEAM2') : '33%'}"
 			></div>
 		</div>
 		<transition name="fade">
@@ -100,6 +100,7 @@
 import Coupon from "@/components/sport/Coupon.vue";
 // import TeamsApi from "/src/api/src/api/TeamsApi.js";
 import { getFullDate, getDateTime } from "@/helpers/time/time.js";
+import {FOOTBALL, HOCKEY} from "@/helpers/sport-type/sport-type";
 
 export default {
 	name: "EventCard",
@@ -134,7 +135,7 @@ export default {
 			default() {
 				return false
 			}
-		}
+		},
 	},
 	computed: {
 		webApp() {
@@ -146,9 +147,21 @@ export default {
 		getSecondTeamLogo() {
 			return `https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/${this.event.team2_id}_logo.png`
 		},
-		// teamsApi() {
-		// 	return new TeamsApi()
-		// },
+		getSportId() {
+			let path = this.$route.path
+			if (path === '/sport/football') {
+				return FOOTBALL
+			} else if (path === '/sport/hockey') {
+				return HOCKEY
+			}
+			// else if (path === '/sport/basketball') {
+			// 	return
+			// } else if (path === '/sport/volleyball') {
+			// 	return
+			// } else if (path === '/sport/tennis') {
+			// 	return
+			// }
+		},
 		getScore() {
 			return this.event.team1_score + ':' + this.event.team2_score
 		},
@@ -166,9 +179,23 @@ export default {
 		getSportCategory() {
 			let path = this.$route.path
 			return path.replaceAll('/sport/', '')
-		}
+		},
 	},
 	methods: {
+		errorFirstTeamImage(event) {
+			if (this.getSportId === FOOTBALL) {
+				event.target.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'
+			} else if (this.getSportId === HOCKEY) {
+				event.target.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/hockey.svg'
+			}
+		},
+		errorSecondTeamImage(event) {
+			if (this.getSportId === FOOTBALL) {
+				event.target.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/football.svg'
+			} else if (this.getSportId === HOCKEY) {
+				event.target.src='https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/hockey.svg'
+			}
+		},
 		getPercentFromCoefficient(value) {
 			let total = this.event.team1_ratio + this.event.draw_ratio + this.event.team2_ratio
 			if (value === 'TEAM1') {

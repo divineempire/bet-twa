@@ -24,11 +24,11 @@
 			</div>
 			<div class="match-info__column match-result">
 				<div class="match-result__value">
-					<p class="match-info__name">{{ card?.match.team1.name }}</p>
+					<p class="match-info__name">{{ card?.match?.team1.name }}</p>
 					<p class="match-info__value">{{ card?.match?.team1_score }}</p>
 				</div>
 				<div class="match-result__value">
-					<p class="match-info__name">{{ card?.match.team2.name }}</p>
+					<p class="match-info__name">{{ card?.match?.team2.name }}</p>
 					<p class="match-info__value">{{ card?.match?.team2_score }}</p>
 				</div>
 			</div>

@@ -42,64 +42,6 @@ export default {
 			activeBet: '',
 			successSearch: false,
 			events: [],
-			// events: [
-			// 	{
-			// 		firstTeam: {
-			// 			name: 'Реал Мадрид',
-			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 		},
-			// 		secondTeam: {
-			// 			name: 'Барселона',
-			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 		},
-			// 		date: 'Завтра',
-			// 		dateTime: '02:25',
-			// 		started: false,
-			// 		p1: {
-			// 			sum: 1500,
-			// 			coefficient: 1.34,
-			// 			percent: 43,
-			// 		},
-			// 		draw: {
-			// 			sum: 500,
-			// 			coefficient: 8.2,
-			// 			percent: 7,
-			// 		},
-			// 		p2: {
-			// 			sum: 2000,
-			// 			coefficient: 1.28,
-			// 			percent: 50
-			// 		}
-			// 	},
-			// 	{
-			// 		firstTeam: {
-			// 			name: 'Сан Лоренцо',
-			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 		},
-			// 		secondTeam: {
-			// 			name: 'Сентраль Кордоба СдЕ',
-			// 			logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 		},
-			// 		date: 'Завтра',
-			// 		dateTime: '04:45',
-			// 		started: false,
-			// 		p1: {
-			// 			sum: 240,
-			// 			coefficient: 3.6,
-			// 			percent: 17,
-			// 		},
-			// 		draw: {
-			// 			sum: 1000,
-			// 			coefficient: 1.2,
-			// 			percent: 70,
-			// 		},
-			// 		p2: {
-			// 			sum: 190,
-			// 			coefficient: 4.7,
-			// 			percent: 13
-			// 		}
-			// 	}
-			// ],
 			showPopup: false,
 			debounce: null,
 		}
@@ -229,9 +171,16 @@ export default {
 	background: transparent url('~@/assets/sport/cancel.svg') no-repeat;
 }
 
+.search__list {
+	max-height: 100%;
+	overflow-y: scroll;
+	padding-bottom: 24px;
+}
+
 .search__empty {
 	font-size: 18px;
 	font-family: Roboto-Medium, sans-serif;
 	opacity: 0.5;
 }
+
 </style>

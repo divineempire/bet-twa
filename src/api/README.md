@@ -102,9 +102,9 @@ var BetCoffeeApi = require('bet_coffee_api');
 
 
 var api = new BetCoffeeApi.BetsApi()
+var bet_id = 56; // {Number} 
 var X_Init_Data = "X_Init_Data_example"; // {String} initData из <a href=\"https://core.telegram.org/bots/webapps#webappinitdata\">window.Telegram.WebApp</a>
-var SportMatchBetCreate = new BetCoffeeApi.SportMatchBetCreate(); // {SportMatchBetCreate} 
-api.createFantasyBet(X_Init_Data, SportMatchBetCreate).then(function(data) {
+api.cancelBet(bet_id, X_Init_Data).then(function(data) {
   console.log('API called successfully. Returned data: ' + data);
 }, function(error) {
   console.error(error);
@@ -120,6 +120,8 @@ All URIs are relative to *http://localhost*
 [//]: # (Class | Method | HTTP request | Description)
 
 [//]: # (------------ | ------------- | ------------- | -------------)
+
+[//]: # (*BetCoffeeApi.BetsApi* | [**cancelBet**]&#40;docs/BetsApi.md#cancelBet&#41; | **PATCH** /api/v1/bets/cancel/{bet_id} | Cancel Bet)
 
 [//]: # (*BetCoffeeApi.BetsApi* | [**createFantasyBet**]&#40;docs/BetsApi.md#createFantasyBet&#41; | **POST** /api/v1/bets/fantasy | Create Bet)
 
