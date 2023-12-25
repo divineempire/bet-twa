@@ -96,7 +96,7 @@ export default {
 			if (this.card?.match?.sport_id === FOOTBALL) {
 				return 'football'
 			} else if (this.card?.match?.sport_id === HOCKEY) {
-
+				return 'hockey'
 			}
 		},
 		getBetType() {
@@ -238,7 +238,6 @@ export default {
 	margin-right: 6px;
 	width: 14px;
 	height: 14px;
-	//background: url('~@/assets/menu/category/dota.png') no-repeat;
 }
 
 .football {
