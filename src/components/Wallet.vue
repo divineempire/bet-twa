@@ -25,11 +25,13 @@
 			<div class="wallet__balance">
 				<div class="wallet__main-balance">
 					<p class="wallet__text">Основной счёт:</p>
-					<p class="wallet__value">{{ getBalance || 0 }} TON</p>
+					<p class="wallet__value" v-show="!showSkeleton">{{ getBalance || 0 }} TON</p>
+					<div class="skeleton anim-content" v-show="showSkeleton"></div>
 				</div>
 				<div class="wallet__fantasy-balance">
 					<p class="wallet__text">Фентези счет:</p>
-					<p class="wallet__value">{{ fantasyBalance || 0 }} Ф</p>
+					<p class="wallet__value" v-show="!showSkeleton">{{ getFantasyBalance || 0 }} Ф</p>
+					<div class="skeleton anim-content" v-show="showSkeleton"></div>
 				</div>
 			</div>
 			<button class="wallet__gift-btn"
@@ -54,6 +56,7 @@ export default {
 		return {
 			connected: true,
 			timeToFantasy: null,
+			showSkeleton: true
 			// gift: {
 			// 	ready: false,
 			// 	time: '23:45:34'
@@ -96,7 +99,7 @@ export default {
 				return `Время до следующей награды ${this.timeToFantasy || 0}ч`
 			}
 		},
-		fantasyBalance() {
+		getFantasyBalance() {
 			if (this.GET_USER_INFO.balance) {
 				return this.GET_USER_INFO?.balance
 			} else {
@@ -173,6 +176,9 @@ export default {
 		},
 	},
 	mounted() {
+		setTimeout(() => {
+			this.showSkeleton = false
+		}, 700)
 		// console.log(this.tonConnectUi)
 	}
 }
@@ -279,5 +285,42 @@ export default {
 	.ready_btn {
 		background: #00F59B;
 		color: #000;
+	}
+
+	.skeleton {
+		width: 40px;
+		max-width: 40px;
+		height: 15px;
+		border-radius: 5px;
+	}
+
+	.anim-content::after {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(to top right, #58585a 0%, rgba(67, 67, 66, 0.1) 15%, #58585a 30%, rgba(67, 67, 66, 0.1) 45%, #58585a 60%, rgba(67, 67, 66, 0.1) 75%, #58585a 100%);
+		background-repeat: no-repeat;
+		background-size: 800px 398px;
+		animation: Shimmer 8s linear infinite;
+		border-radius: 5px;
+	}
+
+	@keyframes Shimmer {
+		0% {
+			background-position: -650px -150px;
+		}
+		25% {
+			background-position: 0 0;
+		}
+		50% {
+			background-position: -650px -150px;
+		}
+		75% {
+			background-position: 0 0;
+		}
+		100%{
+			background-position: -650px -150px;
+		}
 	}
 </style>

@@ -7,16 +7,26 @@
 			:item="item"
 			:league="league"
 		/>
+		<li class="sport__championship-item"
+			v-if="hockeyTournaments.length === 0 && league === 'FANTASY'"
+		>
+			<SkeletonTournaments
+				v-for="(item, index) in 10"
+				:key="index"
+			/>
+		</li>
 	</ul>
 </template>
 
 <script>
 import ChampionshipCard from "@/components/sport/ChampionshipCard.vue";
 import { mapGetters } from "vuex";
+import SkeletonTournaments from "@/components/sport/SkeletonTournaments.vue";
 
 export default {
 	name: "Hockey",
 	components: {
+		SkeletonTournaments,
 		ChampionshipCard
 	},
 	data() {

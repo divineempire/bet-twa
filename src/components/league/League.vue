@@ -518,6 +518,7 @@ export default {
 }
 
 .show-more-btn {
+	transition: .2s;
 	width: 100%;
 	padding: 17px;
 	outline: none;
@@ -527,6 +528,10 @@ export default {
 	font-size: 14px;
 	line-height: 16px;
 	font-family: Roboto-Regular, sans-serif;
+}
+
+.show-more-btn:active {
+	background: #535056;
 }
 
 </style>

@@ -85,28 +85,29 @@ export default {
 		display: block;
 		width: 100%;
 		height: 100%;
-		background-image: linear-gradient(to right, #4e4e53 0%, rgba(14, 14, 14, 0.1) 15%, #4e4e53 30% , rgba(14, 14, 14, 0.1) 50%, #4e4e53 60%, rgba(14, 14, 14, 0.1) 80%, #4e4e53 100%);
+		//background-image: linear-gradient(to right, #4e4e53 0%, rgba(14, 14, 14, 0.1) 15%, #4e4e53 30% , rgba(14, 14, 14, 0.1) 50%, #4e4e53 60%, rgba(14, 14, 14, 0.1) 80%, #4e4e53 100%);
+		background-image: linear-gradient(to top right, #58585a 0%, rgba(67, 67, 66, 0.1) 15%, #58585a 30%, rgba(67, 67, 66, 0.1) 45%, #58585a 60%, rgba(67, 67, 66, 0.1) 75%, #58585a 100%);
 		background-repeat: no-repeat;
-		background-size: 600px 398px;
-		animation: Shimmer 10s linear infinite;
+		background-size: 800px 398px;
+		animation: Shimmer 8s linear infinite;
 		border-radius: 5px;
 	}
 
 	@keyframes Shimmer {
 		0% {
-			background-position: -450px 0;
+			background-position: -650px -150px;
 		}
 		25% {
 			background-position: 0 0;
 		}
 		50% {
-			background-position: -450px 0;
+			background-position: -650px -150px;
 		}
 		75% {
 			background-position: 0 0;
 		}
 		100%{
-			background-position: -450px 0;
+			background-position: -650px -150px;
 		}
 	}
 

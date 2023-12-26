@@ -3,11 +3,13 @@
 		<div class="league-placement">
 			<h3 class="profile__caption">Ваше положение в лиге</h3>
 			<div class="regular-league" :class="{active_league: regularPlacement !== null}">
-				<p class="regular-league__text">{{ getYourPlacement }}</p>
+				<div class="skeleton anim-content" v-show="showSkeleton"></div>
+				<p class="regular-league__text" v-show="!showSkeleton">{{ getYourPlacement }}</p>
 				<div class="arrow-icon" v-if="regularPlacement !== null"></div>
 			</div>
 			<div class="fantasy-league" :class="{active_league: userInFantasy !== null}">
-				<p class="fantasy-league__text">{{ getYourFantasyPlacement }}</p>
+				<div class="skeleton anim-content" v-show="showSkeleton"></div>
+				<p class="fantasy-league__text" v-show="!showSkeleton">{{ getYourFantasyPlacement }}</p>
 				<div class="arrow-icon" v-if="userInFantasy !== null"></div>
 			</div>
 		</div>
@@ -46,6 +48,7 @@ export default {
 	data() {
 		return {
 			regularPlacement: null,
+			showSkeleton: true
 			// fantasyPlacement: null
 		}
 	},
@@ -79,6 +82,11 @@ export default {
 				return null
 			}
 		},
+	},
+	mounted() {
+		setTimeout(() => {
+			this.showSkeleton = false
+		}, 700)
 	}
 }
 </script>
@@ -126,5 +134,42 @@ export default {
 		width: 20px;
 		height: 20px;
 		background: url('~@/assets/menu/arrow.svg') no-repeat;
+	}
+
+	.skeleton {
+		width: 80%;
+		max-width: 80%;
+		height: 20px;
+		border-radius: 5px;
+	}
+
+	.anim-content::after {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(to top right, #58585a 0%, rgba(67, 67, 66, 0.1) 15%, #58585a 30%, rgba(67, 67, 66, 0.1) 45%, #58585a 60%, rgba(67, 67, 66, 0.1) 75%, #58585a 100%);
+		background-repeat: no-repeat;
+		background-size: 1000px 398px;
+		animation: Shimmer 7s linear infinite;
+		border-radius: 5px;
+	}
+
+	@keyframes Shimmer {
+		0% {
+			background-position: -650px -150px;
+		}
+		25% {
+			background-position: 0 0;
+		}
+		50% {
+			background-position: -650px -150px;
+		}
+		75% {
+			background-position: 0 0;
+		}
+		100%{
+			background-position: -650px -150px;
+		}
 	}
 </style>

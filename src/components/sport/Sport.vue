@@ -56,142 +56,6 @@ export default {
 		return {
 			league: 'FANTASY',
 			showSearch: '',
-			// sportId: null,
-			// championships: [
-			// 	{
-			// 		name: 'Аргентина. Кубок Профессиональной Лиги',
-			// 		region: 'AR',
-			// 		amount: 1,
-			// 		events: [
-			// 			{
-			// 				firstTeam: {
-			// 					name: 'Сан Лоренцо',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 				},
-			// 				secondTeam: {
-			// 					name: 'Сентраль Кордоба СдЕ',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 				},
-			// 				date: 'Завтра',
-			// 				dateTime: '01:45',
-			// 				started: true,
-			// 				p1: {
-			// 					sum: 2555,
-			// 					coefficient: 1.81,
-			// 					percent: 30,
-			// 				},
-			// 				draw: {
-			// 					sum: 820,
-			// 					coefficient: 5.1,
-			// 					percent: 10,
-			// 				},
-			// 				p2: {
-			// 					sum: 5080,
-			// 					coefficient: 1.3,
-			// 					percent: 60
-			// 				}
-			// 			},
-			// 		]
-			// 	},
-			// 	{
-			// 		name: 'Аргентина. Кубок Профессиональной Лиги',
-			// 		region: 'AR',
-			// 		amount: 2,
-			// 		events: [
-			// 			{
-			// 				firstTeam: {
-			// 					name: 'Сан Лоренцо',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 				},
-			// 				secondTeam: {
-			// 					name: 'Сентраль Кордоба СдЕ',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 				},
-			// 				date: 'Завтра',
-			// 				dateTime: '02:25',
-			// 				started: false,
-			// 				p1: {
-			// 					sum: 1500,
-			// 					coefficient: 1.34,
-			// 					percent: 43,
-			// 				},
-			// 				draw: {
-			// 					sum: 500,
-			// 					coefficient: 8.2,
-			// 					percent: 7,
-			// 				},
-			// 				p2: {
-			// 					sum: 2000,
-			// 					coefficient: 1.28,
-			// 					percent: 50
-			// 				}
-			// 			},
-			// 			{
-			// 				firstTeam: {
-			// 					name: 'Сан Лоренцо',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 				},
-			// 				secondTeam: {
-			// 					name: 'Сентраль Кордоба СдЕ',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 				},
-			// 				date: 'Завтра',
-			// 				dateTime: '04:45',
-			// 				started: false,
-			// 				p1: {
-			// 					sum: 240,
-			// 					coefficient: 3.6,
-			// 					percent: 17,
-			// 				},
-			// 				draw: {
-			// 					sum: 1000,
-			// 					coefficient: 1.2,
-			// 					percent: 70,
-			// 				},
-			// 				p2: {
-			// 					sum: 190,
-			// 					coefficient: 4.7,
-			// 					percent: 13
-			// 				}
-			// 			}
-			// 		]
-			// 	},
-			// 	{
-			// 		name: 'Аргентина. Кубок Профессиональной Лиги',
-			// 		region: 'AR',
-			// 		amount: 1,
-			// 		events: [
-			// 			{
-			// 				firstTeam: {
-			// 					name: 'Сан Лоренцо',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/san-lorenzo-logo.png'
-			// 				},
-			// 				secondTeam: {
-			// 					name: 'Сентраль Кордоба СдЕ',
-			// 					logo: 'https://raw.githubusercontent.com/divineempire/twa-image/master/team-logos/sentral-cordoba-logo.png'
-			// 				},
-			// 				date: 'Завтра',
-			// 				dateTime: '10:30',
-			// 				started: false,
-			// 				p1: {
-			// 					sum: 650,
-			// 					coefficient: 1.22,
-			// 					percent: 65,
-			// 				},
-			// 				draw: {
-			// 					sum: 100,
-			// 					coefficient: 10,
-			// 					percent: 10,
-			// 				},
-			// 				p2: {
-			// 					sum: 250,
-			// 					coefficient: 4.8,
-			// 					percent: 25
-			// 				}
-			// 			},
-			// 		]
-			// 	}
-			// ]
 		}
 	},
 	components: {
@@ -233,6 +97,7 @@ export default {
 	methods: {
 		...mapActions([
 			'SAVE_HOCKEY_TOURNAMENTS',
+			'SAVE_FOOTBALL_TOURNAMENTS'
 		]),
 		chooseLeague(value) {
 			this.league = value
@@ -249,29 +114,28 @@ export default {
 				this.webApp.BackButton.onClick(this.closeSearch)
 			}
 		},
-		async getSportTournaments(sportId) {
+		getSportTournaments(sportId) {
 			let opts = {}
 			opts.sport_id = sportId
-			try {
-				let result = await this.tournamentsApi.getTournaments(opts)
-				if (sportId === HOCKEY) {
-					await this.SAVE_HOCKEY_TOURNAMENTS(result)
-				}
-				// else if(sportId === basketball_id) {
-				// 	this.SAVE_BASKETBALL_TOURNAMENTS(result)
-				// } else if(sportId === tennis_id) {
-				// 	this.SAVE_TENNIS_TOURNAMENTS(result)
-				// } else if(sportId === volleyball_id) {
-				// 	this.SAVE_VOLLEYBALL_TOURNAMENTS(result)
-				// }
-			} catch(err) {
-				console.log(err)
-			}
+
+			this.tournamentsApi.getTournaments(opts)
+				.then((res) => {
+					if (sportId === FOOTBALL) {
+						this.SAVE_FOOTBALL_TOURNAMENTS(res)
+					} else if (sportId === HOCKEY) {
+						this.SAVE_HOCKEY_TOURNAMENTS(res)
+					}
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+
 		},
 	},
-	async created() {
+	created() {
 		// Получить турниры баскетбол, хоккей и т.д.
-		await this.getSportTournaments(HOCKEY)
+		this.getSportTournaments(FOOTBALL)
+		this.getSportTournaments(HOCKEY)
 		// await this.getSportTournaments(18)
 		// await this.getSportTournaments(18)
 		// await this.getSportTournaments(18)

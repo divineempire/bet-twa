@@ -99,20 +99,17 @@ export default {
 		// 		throw(err)
 		// 	}
 		// },
-		async getFootballTournaments() {
-			try {
-				let opts = {
-					// page: 1,
-					// size: 20,
-					// top: true,
-					sport_id: FOOTBALL
-				}
-				let result = await this.tournamentsApi.getTournaments(opts)
-				this.SAVE_FOOTBALL_TOURNAMENTS(result)
-			} catch(err) {
-				console.log(err)
-			}
-		},
+		// async getFootballTournaments() {
+		// 	try {
+		// 		let opts = {
+		// 			sport_id: FOOTBALL
+		// 		}
+		// 		let result = await this.tournamentsApi.getTournaments(opts)
+		// 		this.SAVE_FOOTBALL_TOURNAMENTS(result)
+		// 	} catch(err) {
+		// 		console.log(err)
+		// 	}
+		// },
 		getCurrentUser() {
 			let initData = null
 			if (this.webApp.initData) {
@@ -181,7 +178,7 @@ export default {
 			this.getCurrentUser()
 		}
 		// this.subscribeConnector()
-		await this.getFootballTournaments()
+		// await this.getFootballTournaments()
 		// await this.getAllLeagues()
 		this.setTwaOptions()
 	},
