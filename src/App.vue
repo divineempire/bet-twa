@@ -173,14 +173,18 @@ export default {
 			this.webApp.ready()
 		},
 	},
-	async created() {
+	created() {
 		if (this.webApp.initData) {
 			this.getCurrentUser()
 		}
 		// this.subscribeConnector()
 		// await this.getFootballTournaments()
 		// await this.getAllLeagues()
-		this.setTwaOptions()
+	},
+	mounted() {
+		setTimeout(() => {
+			this.setTwaOptions()
+		}, 500)
 	},
 	unmounted() {
 		// if (this.unsubscribe !== null) {
