@@ -9,6 +9,7 @@
 			<div class="event-list__date"
 				v-if="event.phase === 'prematch'"
 			>
+				<p class="event-list__match-id">{{ '#' + event?.id }}</p>
 				<p class="event-list__date-text">{{ getDate }}</p>
 				<p class="event-list__date-time">{{ getDatetime }}</p>
 			</div>
@@ -323,7 +324,7 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	flex: 33.3%;
-	margin-top: 12px;
+	//margin-top: 12px;
 }
 
 .event-list__logo {
@@ -363,6 +364,15 @@ export default {
 	font-size: 10px;
 }
 
+.event-list__match-id {
+	margin-bottom: 4px;
+	font-size: 10px;
+	font-family: Roboto-Medium, sans-serif;
+	font-weight: 500;
+	line-height: 11px;
+	color: #7a7a7d;
+}
+
 .event-list__date-text {
 	margin-bottom: 8px;
 	font-size: 12px;
@@ -371,7 +381,7 @@ export default {
 }
 
 .event-list__date-time {
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 	font-size: 12px;
 	font-family: Roboto-Medium, sans-serif;
 	font-weight: 500;
