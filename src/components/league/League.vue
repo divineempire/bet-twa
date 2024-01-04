@@ -195,7 +195,8 @@ export default {
 			'SAVE_LEAGUES',
 		]),
 		openLink(url) {
-			this.webApp.openLink(url)
+			this.webApp.openTelegramLink(url)
+      this.webApp.close()
 		},
 		async getAllLeagues() {
 			try {
