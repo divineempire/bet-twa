@@ -16,6 +16,7 @@
 			<div class="event-list__date"
 				v-if="event.phase === 'live'"
 			>
+				<p class="event-list__match-id">{{ '#' + event?.id }}</p>
 				<p class="event-list__date-text">{{ getMatchTime }}</p>
 				<p class="event-list__score">{{ getScore }}</p>
 			</div>
@@ -389,7 +390,7 @@ export default {
 }
 
 .event-list__score {
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 	font-size: 12px;
 	font-family: Roboto-Medium, sans-serif;
 	font-weight: 500;
