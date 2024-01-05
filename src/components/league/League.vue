@@ -31,8 +31,8 @@
 			<img src="https://raw.githubusercontent.com/divineempire/twa-image/master/banners/fantasy-baner.webp" alt="" class="league__fantasy-banner" v-if="league === 'FANTASY'">
 			<h2 class="league__heading">{{ getHeading }}</h2>
 			<h4 class="league__title">{{ getTitle }}</h4>
-			<p class="league__text">Дата проведения акции: с 22.12.2023 по 31.12.2023 <br> 00:00 GMT </p>
-			<p class="league__link" @click="openLink('https://t.me/betty_games/15')">Призовой фонд. Узнать подробнее.</p>
+			<p class="league__text">Дата проведения акции: с 03.01.2024 по 01.02.2024 <br> 00:00 GMT </p>
+			<p class="league__link" @click="openLink('https://t.me/betty_games/21')">Призовой фонд. Узнать подробнее.</p>
 <!--			<a href="" class="league__link">Подробнее об условиях акции</a>-->
 		</div>
 		<div class="league__leaderboard"
@@ -195,7 +195,8 @@ export default {
 			'SAVE_LEAGUES',
 		]),
 		openLink(url) {
-			this.webApp.openLink(url)
+			this.webApp.openTelegramLink(url)
+      this.webApp.close()
 		},
 		async getAllLeagues() {
 			try {
