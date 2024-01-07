@@ -42,6 +42,10 @@
 				<p class="match-info__name">Потенциальный выигрыш</p>
 				<p class="match-info__value" :class="{win: status === 'WIN'}">{{ getPossibleWin }}</p>
 			</div>
+      <div class="match-info__row">
+				<p class="match-info__name">Время расчета ставки</p>
+				<p class="match-info__value match__bet_finalize_time">{{ getBetFinalizeTime }}</p>
+			</div>
 			<button type="button" class="match-info__cancel-btn"
 					v-if="status === 'WAIT'"
 					@click="cancelBet"
@@ -126,6 +130,11 @@ export default {
 		getDatetime() {
 			return getFullDate(this.card?.match?.match_start_time) + ' в ' + getDateTime(this.card?.match?.match_start_time)
 		},
+    getBetFinalizeTime() {
+      // TODO: может меняться в будущем
+      let finalizeTime = this.card?.match?.match_start_time + 130 * 60
+      return getFullDate(this.card?.match?.match_start_time) + ' в ~' + getDateTime(finalizeTime)
+    },
 		getPossibleWin() {
 			let winAmount = this.card?.bet_amount * this.card?.bet_ratio
 			let feeAmount = winAmount / 100 * this.card?.match?.fee
@@ -231,6 +240,10 @@ export default {
 .card__datetime {
 	font-size: 12px;
 	opacity: 0.8;
+}
+
+.match__bet_finalize_time {
+  opacity: 0.8;
 }
 
 .arrow-icon {
